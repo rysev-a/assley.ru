@@ -1,0 +1,42 @@
+{
+  "python.venvPath": "~/.virtualenvs/assley/bin/python",
+  "python.linting.enabled": false,
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.pytest_cache": true,
+    "**/node_modules": true,
+    "**/build": true,
+    "**/public": true,
+    "**/.fusebox": true,
+    "**/.idea": true
+  },
+  "editor.rulers": [80],
+  "editor.formatOnSave": true,
+  "python.formatting.provider": "autopep8",
+  "editor.insertSpaces": true,
+  "[javascript]": {
+    "editor.tabSize": 2
+  },
+  "[typescript]": {
+    "editor.tabSize": 2
+  },
+  "[typescriptreact]": {
+    "editor.tabSize": 2
+  },
+  "[json]": {
+    "editor.tabSize": 2
+  },
+  "[html]": {
+    "editor.tabSize": 2
+  },
+  "[css]": {
+    "editor.tabSize": 2
+  },
+  "[sass]": {
+    "editor.tabSize": 2
+  },
+  "[python]": {
+    "editor.tabSize": 4
+  },
+  "python.pythonPath": "/home/alex/.virtualenvs/assley/bin/python"
+}

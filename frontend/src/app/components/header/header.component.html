@@ -1,0 +1,52 @@
+<nav class="navbar is-primary">
+  <div class="container">
+    <div class="navbar-brand">
+      <a href="/" class="navbar-item">
+        Assley Team
+      </a>
+      <a
+        role="button"
+        class="navbar-burger burger"
+        aria-label="menu"
+        aria-expanded="false"
+        data-target="navMenu"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu" id="navMenu">
+      <div class="navbar-start">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a routerLink="/books" class="navbar-link">Категории</a>
+          <div class="navbar-dropdown">
+            <a
+              *ngFor="let category of categories"
+              routerLink="{{ category.url }}"
+              class="navbar-item"
+              >{{ category.name }}</a
+            >
+          </div>
+        </div>
+        <a routeLink="/forum" class="navbar-item">Форум</a>
+        <a routeLink="/faq" class="navbar-item">FAQ</a>
+        <a routeLink="/contacts" class="navbar-item">Контакты</a>
+      </div>
+      <div class="navbar-end">
+        <a class="navbar-item" routerLink="/login">
+          <span class="icon gh-sponsor">
+            <fa-icon [icon]="faSignInAlt"></fa-icon>
+          </span>
+          <span>Войти</span>
+        </a>
+        <a class="navbar-item" routerLink="/signup">
+          <span class="icon gh-sponsor">
+            <fa-icon [icon]="faUserPlus"></fa-icon>
+          </span>
+          <span>Регистрация</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>

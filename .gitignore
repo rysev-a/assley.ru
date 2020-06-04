@@ -1,0 +1,10 @@
+**/.pytest_cache
+**/__pycache__
+/backend/.env
+/backend/alembic.ini
+/backend/upload
+
+/frontend/node_modules
+/frontend/build
+**/.DS_Store
+

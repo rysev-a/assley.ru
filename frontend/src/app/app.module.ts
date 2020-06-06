@@ -18,6 +18,7 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { BooksComponent } from './components/books/books.component';
+import { httpInterceptorProviders } from './http-interceptors';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,7 @@ import { BooksComponent } from './components/books/books.component';
     //   delay: 0,
     // }),
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

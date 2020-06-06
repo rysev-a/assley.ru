@@ -15,9 +15,13 @@ export class BooksComponent implements OnInit {
   books: Book[] = [];
 
   getBooks() {
-    this.bookService.getBooks().subscribe((response) => {
-      console.log(response);
-      this.books = response.books;
-    });
+    this.bookService.getBooks().subscribe(
+      (response) => {
+        this.books = response.books;
+      },
+      (error) => {
+        console.log("Can't load books");
+      }
+    );
   }
 }

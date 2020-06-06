@@ -1,7 +1,7 @@
 <nav class="navbar is-primary">
   <div class="container">
     <div class="navbar-brand">
-      <a href="/" class="navbar-item">
+      <a routerLink="/" class="navbar-item">
         Assley Team
       </a>
       <a
@@ -33,20 +33,32 @@
         <a routeLink="/faq" class="navbar-item">FAQ</a>
         <a routeLink="/contacts" class="navbar-item">Контакты</a>
       </div>
-      <div class="navbar-end">
-        <a class="navbar-item" routerLink="/login">
-          <span class="icon gh-sponsor">
-            <fa-icon [icon]="faSignInAlt"></fa-icon>
-          </span>
-          <span>Войти</span>
-        </a>
-        <a class="navbar-item" routerLink="/signup">
-          <span class="icon gh-sponsor">
-            <fa-icon [icon]="faUserPlus"></fa-icon>
-          </span>
-          <span>Регистрация</span>
-        </a>
-      </div>
+      <ng-template [ngIf]="account.isLoaded">
+        <div class="navbar-end">
+          <ng-template [ngIf]="!account.isAuth">
+            <a class="navbar-item" routerLink="/login">
+              <span class="icon gh-sponsor">
+                <fa-icon [icon]="faSignInAlt"></fa-icon>
+              </span>
+              <span>Войти</span>
+            </a>
+            <a class="navbar-item" routerLink="/signup">
+              <span class="icon gh-sponsor">
+                <fa-icon [icon]="faUserPlus"></fa-icon>
+              </span>
+              <span>Регистрация</span>
+            </a>
+          </ng-template>
+          <ng-template [ngIf]="account.isAuth">
+            <a class="navbar-item" (click)="account.logout()">
+              <span class="icon gh-sponsor">
+                <fa-icon [icon]="faSignOutAlt"></fa-icon>
+              </span>
+              <span>Выход</span>
+            </a>
+          </ng-template>
+        </div>
+      </ng-template>
     </div>
   </div>
 </nav>

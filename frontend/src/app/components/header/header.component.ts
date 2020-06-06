@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core'
-import { faUserPlus, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
+import { Component, OnInit } from '@angular/core';
+import {
+  faUserPlus,
+  faSignInAlt,
+  faSignOutAlt,
+} from '@fortawesome/free-solid-svg-icons';
+import { AccountService } from 'src/app/services/account.service';
 
 interface Link {
-  url: string
-  name: string
+  url: string;
+  name: string;
 }
 
 @Component({
@@ -12,10 +17,11 @@ interface Link {
   styleUrls: ['./header.component.sass'],
 })
 export class HeaderComponent implements OnInit {
-  constructor() {}
+  constructor(private account: AccountService) {}
 
-  faUserPlus = faUserPlus
-  faSignInAlt = faSignInAlt
+  faUserPlus = faUserPlus;
+  faSignInAlt = faSignInAlt;
+  faSignOutAlt = faSignOutAlt;
 
   categories: Link[] = [
     { name: 'Манги', url: 'manga' },
@@ -27,7 +33,7 @@ export class HeaderComponent implements OnInit {
     { name: 'Синглов', url: 'manga' },
     { name: 'Весь', url: 'manga' },
     { name: 'Случайный тайтл', url: 'manga' },
-  ]
+  ];
 
   ngOnInit(): void {}
 }

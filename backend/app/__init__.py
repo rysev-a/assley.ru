@@ -3,13 +3,14 @@ from starlette.config import Config
 
 from app.core.routes import routes
 from app.core.database import db
+from app.core.auth import auth
 
 config = Config(".env")
-config('DATABASE_URL')
 
 app = Starlette(
     routes=routes,
     debug=config('DEBUG', cast=bool, default=False),
+    middleware=[auth]
 )
 
 

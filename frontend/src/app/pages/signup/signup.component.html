@@ -8,6 +8,7 @@
               <label for="" class="label">First Name</label>
               <div class="control has-icons-left">
                 <input
+                  #first_name
                   type="email"
                   placeholder="Alexey"
                   class="input"
@@ -23,6 +24,7 @@
               <label for="" class="label">Last Name</label>
               <div class="control has-icons-left">
                 <input
+                  #last_name
                   type="email"
                   placeholder="Popov"
                   class="input"
@@ -38,6 +40,7 @@
               <label for="" class="label">Email</label>
               <div class="control has-icons-left">
                 <input
+                  #email
                   type="email"
                   placeholder="e.g. bobsmith@gmail.com"
                   class="input"
@@ -57,6 +60,7 @@
                   placeholder="*******"
                   class="input"
                   required
+                  #password
                 />
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faLock"></fa-icon>
@@ -70,7 +74,17 @@
               </label>
             </div>
             <div class="field">
-              <button class="button is-success">
+              <button
+                (click)="
+                  submit({
+                    first_name: first_name.value,
+                    last_name: last_name.value,
+                    email: email.value,
+                    password: password.value
+                  })
+                "
+                class="button is-success"
+              >
                 Sign Up
               </button>
             </div>

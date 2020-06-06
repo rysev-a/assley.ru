@@ -1,12 +1,7 @@
 from starlette.responses import JSONResponse
-from .models import User
 from app.core.database import db
-from marshmallow import Schema, fields
-
-
-class UserSchema(Schema):
-    id = fields.Int()
-    nickname = fields.Str()
+from .models import User
+from .schemas import UserSchema
 
 
 async def user_list(request):

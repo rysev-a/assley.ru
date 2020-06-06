@@ -11,7 +11,9 @@
                   type="email"
                   placeholder="e.g. bobsmith@gmail.com"
                   class="input"
+                  [ngClass]="{ 'is-danger': errors.email }"
                   required
+                  #email
                 />
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faEnvelope"></fa-icon>
@@ -26,6 +28,8 @@
                   placeholder="*******"
                   class="input"
                   required
+                  [ngClass]="{ 'is-danger': errors.password }"
+                  #password
                 />
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faLock"></fa-icon>
@@ -39,7 +43,12 @@
               </label>
             </div>
             <div class="field">
-              <button class="button is-success">
+              <button
+                (click)="
+                  submit({ email: email.value, password: password.value })
+                "
+                class="button is-success"
+              >
                 Login
               </button>
             </div>

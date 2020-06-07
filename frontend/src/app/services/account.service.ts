@@ -7,6 +7,8 @@ import { tap } from 'rxjs/operators';
 export interface AccountData {
   id: number;
   email: string;
+  first_name: string;
+  last_name: string;
 }
 
 export interface LoginRequest {
@@ -76,6 +78,7 @@ export class AccountService {
       .pipe(
         tap((response: LoginResponse) => {
           Cookie.set('Access-Token', response.token);
+          this.setAccount(response.account);
           return response;
         })
       );
@@ -100,6 +103,8 @@ export class AccountService {
     this.data = {
       id: 0,
       email: '',
+      first_name: '',
+      last_name: '',
     };
   }
 }

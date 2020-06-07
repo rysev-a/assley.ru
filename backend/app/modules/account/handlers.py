@@ -24,7 +24,7 @@ def generate_jwt(account):
 async def load(request):
     account_jwt = check_access_token(request)
     if not account_jwt:
-        return JSONResponse({'success': False}, status_code=404)
+        return JSONResponse({'success': False}, status_code=400)
 
     account = await User.get(account_jwt.get('id'))
     account_schema = AccountSchema()
@@ -44,8 +44,8 @@ async def login(request):
     if not user:
         return JSONResponse({
             'success': False,
-            'form_errors': {'email': 'email not found'}
-        }, status_code=404)
+            'message': {'email': 'Такого email не существует'}
+        }, status_code=400)
 
     log_success = bcrypt.checkpw(
         password.encode('utf-8'),
@@ -55,8 +55,8 @@ async def login(request):
     if not log_success:
         return JSONResponse({
             'success': False,
-            'form_errors': {'password': 'invalid password'}
-        }, status_code=404)
+            'message': {'password': 'Неверный пароль'}
+        }, status_code=400)
 
     token = generate_jwt({
         "id": user.id,
@@ -66,14 +66,27 @@ async def login(request):
     })
 
     return JSONResponse({
-        'status': 'success',
-        'token': token
+        'success': True,
+        'token': token,
+        'account': AccountSchema().dump(user)
     })
 
 
 async def signup(request):
     json = await request.json()
     email = json.get('email')
+
+    user_email = await User.query.where(User.email == email).gino.first()
+
+    if user_email:
+        return JSONResponse({
+            'success': False,
+            # TODO: implement localiztion
+            'message': {
+                'email': 'Такой адрес уже занят'
+            }
+        }, status_code=400)
+
     password = json.get('password').encode('utf-8')
     password_hash = bcrypt.hashpw(password, salt)
 
@@ -85,6 +98,6 @@ async def signup(request):
     )
 
     return JSONResponse({
-        'status': 'success',
+        'success': True,
         **json
     })

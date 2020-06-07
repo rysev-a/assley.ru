@@ -29,14 +29,12 @@ export class LoginComponent implements OnInit {
 
   submit(data: LoginRequest) {
     this.accountService.login(data).subscribe(
-      (response: LoginResponse) => {
-        this.accountService.setAccount(response.account);
-        this.router.navigate(['']);
+      () => {
+        this.router.navigate(['/profile']);
       },
       (response) => {
-        console.log(response);
-        if (response.error && response.error.form_errors) {
-          this.errors = response.rror.form_errors;
+        if (response.error && response.error.message) {
+          this.errors = response.error.message;
         }
       }
     );

@@ -3,6 +3,7 @@ import {
   faUserPlus,
   faSignInAlt,
   faSignOutAlt,
+  faCog,
 } from '@fortawesome/free-solid-svg-icons';
 import { AccountService } from 'src/app/services/account.service';
 
@@ -22,6 +23,7 @@ export class HeaderComponent implements OnInit {
   faUserPlus = faUserPlus;
   faSignInAlt = faSignInAlt;
   faSignOutAlt = faSignOutAlt;
+  faCog = faCog;
 
   logout() {
     this.account.logout();
@@ -46,6 +48,10 @@ export class HeaderComponent implements OnInit {
     { name: 'Весь', url: 'manga' },
     { name: 'Случайный тайтл', url: 'manga' },
   ];
+
+  get email() {
+    return (this.account.data && this.account.data.email) || '';
+  }
 
   ngOnInit(): void {}
 }

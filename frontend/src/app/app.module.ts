@@ -19,6 +19,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { BooksComponent } from './components/books/books.component';
 import { httpInterceptorProviders } from './http-interceptors';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { httpInterceptorProviders } from './http-interceptors';
     HeaderComponent,
     FooterComponent,
     BooksComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

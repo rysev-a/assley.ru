@@ -50,12 +50,28 @@
             </a>
           </ng-template>
           <ng-template [ngIf]="isAccountAuth()">
-            <a class="navbar-item" (click)="logout()">
-              <span class="icon gh-sponsor">
-                <fa-icon [icon]="faSignOutAlt"></fa-icon>
-              </span>
-              <span>Выход</span>
-            </a>
+            <div
+              class="navbar-item has-dropdown is-hoverable"
+              id="account-dropdown"
+            >
+              <a class="navbar-link">{{ email }}</a>
+              <div class="navbar-dropdown account-menu-dropdown">
+                <a class="navbar-item" routerLink="/profile">
+                  <span class="icon gh-sponsor">
+                    <fa-icon [icon]="faCog"></fa-icon>
+                  </span>
+                  <span>Настройки</span>
+                </a>
+                <div class="sign-menu">
+                  <a class="navbar-item" (click)="logout()">
+                    <span class="icon gh-sponsor">
+                      <fa-icon [icon]="faSignOutAlt"></fa-icon>
+                    </span>
+                    <span>Выход</span>
+                  </a>
+                </div>
+              </div>
+            </div>
           </ng-template>
         </div>
       </ng-template>

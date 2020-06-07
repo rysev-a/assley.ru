@@ -2,17 +2,19 @@
   <div class="hero-body">
     <div class="container">
       <div class="columns is-centered">
-        <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+        <div class="column is-4-tablet is-4-desktop is-4-widescreen">
           <form action="" class="box">
             <div class="field">
-              <label for="" class="label">First Name</label>
+              <label for="" class="label">Имя</label>
               <div class="control has-icons-left">
                 <input
                   #first_name
-                  type="email"
+                  type="text"
                   placeholder="Alexey"
                   class="input"
                   required
+                  [ngClass]="{ 'is-danger': errors.first_name }"
+                  (input)="errors.first_name = ''"
                 />
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faUser"></fa-icon>
@@ -21,14 +23,16 @@
             </div>
 
             <div class="field">
-              <label for="" class="label">Last Name</label>
+              <label for="" class="label">Фамилия</label>
               <div class="control has-icons-left">
                 <input
                   #last_name
-                  type="email"
+                  type="text"
                   placeholder="Popov"
                   class="input"
                   required
+                  [ngClass]="{ 'is-danger': errors.last_name }"
+                  (input)="errors.last_name = ''"
                 />
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faUser"></fa-icon>
@@ -44,23 +48,31 @@
                   type="email"
                   placeholder="e.g. bobsmith@gmail.com"
                   class="input"
+                  (input)="errors.email = ''"
+                  (blur)="validateEmail(email.value)"
+                  [ngClass]="{ 'is-danger': errors.email }"
                   required
                 />
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faEnvelope"></fa-icon>
                 </span>
               </div>
+              <ng-template [ngIf]="errors.email">
+                <p class="help is-danger">{{ errors.email }}</p>
+              </ng-template>
             </div>
 
             <div class="field">
-              <label for="" class="label">Password</label>
+              <label for="" class="label">Пароль</label>
               <div class="control has-icons-left">
                 <input
                   type="password"
                   placeholder="*******"
                   class="input"
                   required
+                  [ngClass]="{ 'is-danger': errors.password }"
                   #password
+                  (input)="errors.password = ''"
                 />
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faLock"></fa-icon>
@@ -69,9 +81,17 @@
             </div>
             <div class="field">
               <label for="accept" class="checkbox">
-                <input type="checkbox" id="accept" />
-                Accept the user agreement
+                <input
+                  type="checkbox"
+                  id="accept"
+                  #accept
+                  (input)="errors.accept = ''"
+                />
+                Принимаю пользовательское соглашение
               </label>
+              <ng-template [ngIf]="errors.accept">
+                <p class="help is-danger">{{ errors.accept }}</p>
+              </ng-template>
             </div>
             <div class="field">
               <button
@@ -80,12 +100,13 @@
                     first_name: first_name.value,
                     last_name: last_name.value,
                     email: email.value,
-                    password: password.value
+                    password: password.value,
+                    accept: accept.checked
                   })
                 "
                 class="button is-success"
               >
-                Sign Up
+                Зарегистрироваться
               </button>
             </div>
           </form>

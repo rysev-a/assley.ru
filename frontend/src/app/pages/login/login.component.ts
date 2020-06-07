@@ -33,8 +33,11 @@ export class LoginComponent implements OnInit {
         this.accountService.setAccount(response.account);
         this.router.navigate(['']);
       },
-      ({ error }) => {
-        this.errors = error.form_errors;
+      (response) => {
+        console.log(response);
+        if (response.error && response.error.form_errors) {
+          this.errors = response.rror.form_errors;
+        }
       }
     );
   }

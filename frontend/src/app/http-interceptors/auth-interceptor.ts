@@ -9,7 +9,6 @@ import {
 
 import { Observable } from 'rxjs';
 
-/** Pass untouched request through to the next request handler. */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   intercept(
@@ -18,11 +17,14 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const accessToken = this.getAccessToken();
 
-    const authReq = req.clone({
-      headers: req.headers.set('Access-Token', accessToken),
-    });
+    if (accessToken) {
+      const authReq = req.clone({
+        headers: req.headers.set('Access-Token', accessToken),
+      });
 
-    return next.handle(authReq);
+      return next.handle(authReq);
+    }
+    return next.handle(req);
   }
 
   private getAccessToken() {

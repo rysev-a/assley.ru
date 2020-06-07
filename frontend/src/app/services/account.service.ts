@@ -76,6 +76,7 @@ export class AccountService {
       .pipe(
         tap((response: LoginResponse) => {
           Cookie.set('Access-Token', response.token);
+          return response;
         })
       );
   }

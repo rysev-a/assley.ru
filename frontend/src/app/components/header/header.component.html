@@ -33,9 +33,9 @@
         <a routeLink="/faq" class="navbar-item">FAQ</a>
         <a routeLink="/contacts" class="navbar-item">Контакты</a>
       </div>
-      <ng-template [ngIf]="account.isLoaded">
+      <ng-template [ngIf]="isAccountLoaded()">
         <div class="navbar-end">
-          <ng-template [ngIf]="!account.isAuth">
+          <ng-template [ngIf]="!isAccountAuth()">
             <a class="navbar-item" routerLink="/login">
               <span class="icon gh-sponsor">
                 <fa-icon [icon]="faSignInAlt"></fa-icon>
@@ -49,8 +49,8 @@
               <span>Регистрация</span>
             </a>
           </ng-template>
-          <ng-template [ngIf]="account.isAuth">
-            <a class="navbar-item" (click)="account.logout()">
+          <ng-template [ngIf]="isAccountAuth()">
+            <a class="navbar-item" (click)="logout()">
               <span class="icon gh-sponsor">
                 <fa-icon [icon]="faSignOutAlt"></fa-icon>
               </span>

@@ -17,11 +17,23 @@ interface Link {
   styleUrls: ['./header.component.sass'],
 })
 export class HeaderComponent implements OnInit {
-  constructor(public account: AccountService) {}
+  constructor(private account: AccountService) {}
 
   faUserPlus = faUserPlus;
   faSignInAlt = faSignInAlt;
   faSignOutAlt = faSignOutAlt;
+
+  logout() {
+    this.account.logout();
+  }
+
+  isAccountAuth() {
+    return this.account.isAuth;
+  }
+
+  isAccountLoaded() {
+    return this.account.isLoaded;
+  }
 
   categories: Link[] = [
     { name: 'Манги', url: 'manga' },

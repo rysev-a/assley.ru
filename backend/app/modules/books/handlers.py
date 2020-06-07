@@ -5,6 +5,7 @@ from app.core.database import db
 from .schemas import BookSchema
 
 
+@requires('authenticated')
 async def book_list(request):
     books = await Book.query.gino.all()
     books_schema = BookSchema(many=True)

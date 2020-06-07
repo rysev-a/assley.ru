@@ -29,6 +29,6 @@ export class BookService {
   private booksUrl = 'api/v1/books';
 
   getBooks(): Observable<BookResponse> {
-    return this.http.get<BookResponse>(this.booksUrl, this.httpOptions);
+    return this.http.get<BookResponse>(this.booksUrl);
   }
 }

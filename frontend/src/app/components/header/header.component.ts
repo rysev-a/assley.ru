@@ -17,7 +17,7 @@ interface Link {
   styleUrls: ['./header.component.sass'],
 })
 export class HeaderComponent implements OnInit {
-  constructor(private account: AccountService) {}
+  constructor(public account: AccountService) {}
 
   faUserPlus = faUserPlus;
   faSignInAlt = faSignInAlt;

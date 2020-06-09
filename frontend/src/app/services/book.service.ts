@@ -26,7 +26,7 @@ export class BookService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
-  private booksUrl = 'api/v1/books';
+  private booksUrl = 'api/v1/books/';
 
   getBooks(): Observable<BookResponse> {
     return this.http.get<BookResponse>(this.booksUrl);

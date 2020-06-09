@@ -37,6 +37,5 @@
   },
   "[python]": {
     "editor.tabSize": 4
-  },
-  "python.pythonPath": "/home/alex/.virtualenvs/assley/bin/python"
+  }
 }

@@ -38,15 +38,11 @@ export class HeaderComponent implements OnInit {
   }
 
   categories: Link[] = [
-    { name: 'Манги', url: 'manga' },
-    { name: 'Манхвы', url: 'manga' },
-    { name: 'Маньхуа', url: 'manga' },
-    { name: 'OEL-манги', url: 'manga' },
-    { name: 'Руманга', url: 'manga' },
-    { name: 'Комикс западный', url: 'manga' },
-    { name: 'Синглов', url: 'manga' },
-    { name: 'Весь', url: 'manga' },
-    { name: 'Случайный тайтл', url: 'manga' },
+    { name: 'Манги', url: 'books/manga' },
+    { name: 'Манхвы', url: 'books/manhwa' },
+    { name: 'Маньхуа', url: 'books/manhua' },
+    { name: 'OEL-манги', url: 'books/oel' },
+    { name: 'Синглов', url: 'books/singles' },
   ];
 
   get email() {

@@ -49,20 +49,38 @@ class Book(db.Model):
     description = db.Column(db.Unicode())
     painter = db.Column(db.Unicode())
     release_year = db.Column(db.Integer())
+    url = db.Column(db.Unicode())
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self._genres = set()
+
+    @property
+    def genres(self):
+        return self._genres
+
+    def add_genre(self, genre):
+        self._genres.add(genre)
+        genre._books.add(self)
 
 
 class Genre(db.Model):
     __tablename__ = 'genres'
-
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.Unicode())
 
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self._books = set()
 
-books_genres_association = db.Table(
-    'books_projects', db,
-    db.Column('book_id', db.Integer, db.ForeignKey('books.id')),
-    db.Column('genre_id', db.Integer, db.ForeignKey('genres.id'))
-)
+    @property
+    def books(self):
+        return self._books
 
-# class BookGenreAssocciation(db.Model):
-#     __tablename__ = 'books_genres'
+
+class BookGenreAssocciation(db.Model):
+    __tablename__ = 'books_genres'
+
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('books.id'))
+    genre_id = db.Column(db.Integer, db.ForeignKey('genres.id'))

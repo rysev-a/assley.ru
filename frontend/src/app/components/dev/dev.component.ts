@@ -10,11 +10,27 @@ export class DevComponent implements OnInit {
   constructor(private devService: DevService) {}
 
   generateBooks() {
-    this.devService.generateBooks();
+    this.devService.runCommand('generate-books').subscribe((response) => {
+      console.log(response);
+    });
   }
 
   generateGenres() {
-    this.devService.generateGenres();
+    this.devService.runCommand('generate-genres').subscribe((response) => {
+      console.log(response);
+    });
+  }
+
+  clearDatabase() {
+    this.devService.runCommand('clear-database').subscribe((response) => {
+      console.log(response);
+    });
+  }
+
+  test() {
+    this.devService.runCommand('test').subscribe((response) => {
+      console.log(response);
+    });
   }
 
   ngOnInit(): void {}

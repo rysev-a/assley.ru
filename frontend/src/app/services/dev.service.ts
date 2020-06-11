@@ -13,12 +13,8 @@ export class DevService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
-  generateBooks() {
-    this.httpClient.post(
-      this.devUrl,
-      { command: 'generate-books' },
-      this.httpOptions
-    );
+  runCommand(command) {
+    return this.httpClient.post(this.devUrl, { command }, this.httpOptions);
   }
 
   generateGenres() {

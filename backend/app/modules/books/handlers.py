@@ -1,14 +1,15 @@
+import json
 from sqlalchemy import desc, asc
 from starlette.authentication import requires
 from starlette.responses import JSONResponse
-from .models import Book, Genre, BookGenreAssocciation
+from .models import Book, Genre, Tag, BookGenreAssocciation
 from app.core.database import db
-from .schemas import BookSchema, GenreSchema
+from app.core.api.list_resource import ListResource
+from .schemas import BookSchema, GenreSchema, TagSchema
 
 
 async def book_list(request):
     books_schema = BookSchema(many=True)
-
     query = Book.outerjoin(BookGenreAssocciation).outerjoin(Genre).select().order_by(
         asc(Book.id)
     ).limit(3).offset(4)
@@ -17,16 +18,18 @@ async def book_list(request):
         Book.distinct(Book.id).load(add_genre=Genre.distinct(Genre.id))).all()
 
     return JSONResponse({
-        "status": "success",
-        "books": books_schema.dump(books)
+        'status': 'success',
+        'books': books_schema.dump(books)
     })
 
 
-async def genre_list(request):
-    genres = await Genre.query.gino.all()
-    genres_schema = GenreSchema(many=True)
+class GenreList(ListResource):
+    schema = GenreSchema
+    model = Genre
+    db = db
 
-    return JSONResponse({
-        "status": "success",
-        "genres": genres_schema.dump(genres)
-    })
+
+class TagList(ListResource):
+    schema = TagSchema
+    model = Tag
+    db = db

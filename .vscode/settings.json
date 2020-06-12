@@ -6,6 +6,7 @@
     "**/.pytest_cache": true,
     "**/node_modules": true,
     "**/build": true,
+    "**/dist": true,
     "**/public": true,
     "**/.fusebox": true,
     "**/.idea": true
@@ -37,5 +38,6 @@
   },
   "[python]": {
     "editor.tabSize": 4
-  }
+  },
+  "python.pythonPath": "/home/alex/.virtualenvs/assley/bin/python"
 }

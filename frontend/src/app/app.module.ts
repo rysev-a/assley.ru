@@ -17,6 +17,13 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { BooksComponent } from './pages/books/books.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { DevComponent } from './components/dev/dev.component';
+import { AdminPanelComponent } from './pages/admin/panel/panel.component';
+import { AsideMenuComponent } from './pages/admin/panel/aside-menu/aside-menu.component';
+import { GenresComponent } from './pages/admin/genres/genres.component';
+import { StartComponent } from './pages/admin/start/start.component';
+import { ProcessingComponent } from './components/processing/processing.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
+import { TagsComponent } from './pages/admin/tags/tags.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +35,13 @@ import { DevComponent } from './components/dev/dev.component';
     BooksComponent,
     ProfileComponent,
     DevComponent,
+    AdminPanelComponent,
+    AsideMenuComponent,
+    GenresComponent,
+    StartComponent,
+    ProcessingComponent,
+    PaginationComponent,
+    TagsComponent,
   ],
   imports: [
     BrowserModule,

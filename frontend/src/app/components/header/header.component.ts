@@ -4,6 +4,7 @@ import {
   faSignInAlt,
   faSignOutAlt,
   faCog,
+  faWrench,
 } from '@fortawesome/free-solid-svg-icons';
 import { AccountService } from 'src/app/services/account.service';
 
@@ -24,6 +25,7 @@ export class HeaderComponent implements OnInit {
   faSignInAlt = faSignInAlt;
   faSignOutAlt = faSignOutAlt;
   faCog = faCog;
+  faWrench = faWrench;
 
   logout() {
     this.account.logout();

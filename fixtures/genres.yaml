@@ -1,6 +1,44 @@
-- name: action movie
-- name: detective
-- name: shonen
-- name: ragedy
-- name: horrors
-- name: fantasy
+- name: арт
+- name: боевик
+- name: боевые искусства
+- name: вампиры
+- name: гарем
+- name: гендерная интрига
+- name: героическое фэнтези
+- name: детектив
+- name: дзёсэй
+- name: драма
+- name: игра
+- name: исекай
+- name: история
+- name: киберпанк
+- name: кодомо
+- name: комедия
+- name: махо-сёдзё
+- name: меха
+- name: мистика
+- name: научная фантастика
+- name: омегаверс
+- name: повседневность
+- name: постапокалиптика
+- name: приключения
+- name: психология
+- name: романтика
+- name: самурайский боевик
+- name: сверхъестественное
+- name: сёдзё
+- name: сёдзё-ай
+- name: сёнэн
+- name: сёнэн-ай
+- name: спорт
+- name: сэйнэн
+- name: трагедия
+- name: триллер
+- name: ужасы
+- name: фантастика
+- name: фэнтези
+- name: школа
+- name: эротика
+- name: этти
+- name: юри
+- name: яой

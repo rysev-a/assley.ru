@@ -2,7 +2,7 @@ import yaml
 from starlette.responses import JSONResponse
 from starlette.config import Config
 from app.core.database import db
-from app.modules.books.models import Book, Genre, BookGenreAssocciation
+from app.modules.books.models import Book, Genre, Tag, BookGenreAssocciation
 
 config = Config(".env")
 
@@ -17,6 +17,15 @@ async def generate(mock, Model):
 
 
 async def test():
+    print('test')
+
+
+async def get_count():
+    genres_count = await db.func.count(Genre.id).gino.scalar()
+    print(genres_count)
+
+
+async def select_with_nested():
     query = Book.outerjoin(BookGenreAssocciation).outerjoin(Genre).select()
     books = await query.gino.load(
         Book.distinct(Book.id).load(add_genre=Genre.distinct(Genre.id))).all()
@@ -29,6 +38,10 @@ async def test():
 
 async def generate_genres():
     await generate('genres', Genre)
+
+
+async def generate_tags():
+    await generate('tags', Tag)
 
 
 async def generate_books():
@@ -47,6 +60,7 @@ async def clear_database():
 commands = {
     'generate-books': generate_books,
     'generate-genres': generate_genres,
+    'generate-tags': generate_tags,
     'clear-database': clear_database,
     'test': test
 }

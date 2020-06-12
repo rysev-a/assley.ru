@@ -1,0 +1,30 @@
+<nav class="pagination" role="navigation" aria-label="pagination">
+  <button
+    class="pagination-previous button"
+    title="This is the first page"
+    [disabled]="page === 1"
+    (click)="updatePage(page - 1)"
+  >
+    Назад
+  </button>
+  <button
+    disabled
+    class="pagination-next button"
+    [disabled]="pages === page"
+    (click)="updatePage(page + 1)"
+  >
+    Вперед
+  </button>
+  <ul class="pagination-list">
+    <li *ngFor="let paginationPage of getPages()">
+      <a
+        class="pagination-link"
+        (click)="updatePage(paginationPage)"
+        [ngClass]="{ 'is-current': paginationPage == page }"
+        aria-current="page"
+      >
+        {{ paginationPage }}
+      </a>
+    </li>
+  </ul>
+</nav>

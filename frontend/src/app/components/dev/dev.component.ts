@@ -21,6 +21,12 @@ export class DevComponent implements OnInit {
     });
   }
 
+  generateTags() {
+    this.devService.runCommand('generate-tags').subscribe((response) => {
+      console.log(response);
+    });
+  }
+
   clearDatabase() {
     this.devService.runCommand('clear-database').subscribe((response) => {
       console.log(response);

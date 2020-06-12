@@ -57,6 +57,13 @@
             >
               <a class="navbar-link">{{ email }}</a>
               <div class="navbar-dropdown account-menu-dropdown">
+                <a class="navbar-item" routerLink="/admin">
+                  <span class="icon gh-sponsor">
+                    <fa-icon [icon]="faWrench"></fa-icon>
+                  </span>
+                  <span>Панель управления</span>
+                </a>
+
                 <a class="navbar-item" routerLink="/profile">
                   <span class="icon gh-sponsor">
                     <fa-icon [icon]="faCog"></fa-icon>

@@ -6,6 +6,11 @@ class GenreSchema(Schema):
     name = fields.Str()
 
 
+class TagSchema(Schema):
+    id = fields.Int()
+    name = fields.Str()
+
+
 class BookSchema(Schema):
     id = fields.Int()
     title = fields.Str()
@@ -15,4 +20,3 @@ class BookSchema(Schema):
     release_year = fields.Int()
 
     genres = fields.List(fields.Nested(GenreSchema))
-

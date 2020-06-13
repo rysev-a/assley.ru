@@ -1,0 +1,21 @@
+<div class="messages">
+  <div *ngIf="messageService.messages.length">
+    <div
+      class="notification is-info"
+      [ngClass]="{
+        'is-danger': message.status === 'danger',
+        'is-success': message.status === 'success',
+        'is-warning': message.status === 'warning',
+        'is-info': message.status === 'info',
+        active: message.active
+      }"
+      *ngFor="let message of messageService.messages"
+    >
+      <button
+        class="delete"
+        (click)="messageService.clear(message.id)"
+      ></button>
+      {{ message.content }}
+    </div>
+  </div>
+</div>

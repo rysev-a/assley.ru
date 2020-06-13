@@ -41,7 +41,7 @@ export class PaginationComponent implements OnInit {
 
   @Input() page: number;
   @Input() pages: number;
-  @Input() updatePage;
+  @Input() setPage;
 
   getPages() {
     return calculate({

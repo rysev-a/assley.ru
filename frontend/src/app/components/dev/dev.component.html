@@ -1,9 +1,25 @@
-<div class="dev">
-  <div class="buttons">
-    <a class="button" (click)="generateBooks()">generate books</a>
-    <a class="button" (click)="generateGenres()">generate genres</a>
-    <a class="button" (click)="generateTags()">generate tags</a>
-    <a class="button" (click)="clearDatabase()">clear database</a>
-    <a class="button is-primary" (click)="test()">test</a>
+<div class="dev card">
+  <div class="card-content">
+    <div class="buttons">
+      <a class="button is-small is-info" (click)="generate('books')"
+        >generate books</a
+      >
+      <a class="button is-small is-info" (click)="generate('genres')"
+        >generate genres</a
+      >
+      <a class="button is-small is-info" (click)="generate('tags')"
+        >generate tags</a
+      >
+      <a class="button is-small is-info" (click)="generate('sections')"
+        >generate sections</a
+      >
+      <a class="button is-small is-success" (click)="loadDatabase()"
+        >load database</a
+      >
+      <a class="button is-small is-danger" (click)="clearDatabase()"
+        >clear database</a
+      >
+      <a class="button is-small is-primary" (click)="test()">test</a>
+    </div>
   </div>
 </div>

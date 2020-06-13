@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DevService } from 'src/app/services/dev.service';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-dev',
@@ -7,30 +8,60 @@ import { DevService } from 'src/app/services/dev.service';
   styleUrls: ['./dev.component.sass'],
 })
 export class DevComponent implements OnInit {
-  constructor(private devService: DevService) {}
+  constructor(
+    private devService: DevService,
+    private messageService: MessageService
+  ) {}
 
-  generateBooks() {
-    this.devService.runCommand('generate-books').subscribe((response) => {
-      console.log(response);
-    });
+  generate(model) {
+    this.devService.runCommand(`generate-${model}`).subscribe(
+      () => {
+        this.messageService.add({
+          status: 'success',
+          content: `Success generate ${model} items`,
+        });
+      },
+      () => {
+        this.messageService.add({
+          status: 'danger',
+          content: `Can't generate ${model} items`,
+        });
+      }
+    );
   }
 
-  generateGenres() {
-    this.devService.runCommand('generate-genres').subscribe((response) => {
-      console.log(response);
-    });
-  }
-
-  generateTags() {
-    this.devService.runCommand('generate-tags').subscribe((response) => {
-      console.log(response);
-    });
+  loadDatabase() {
+    this.devService.runCommand('load-database').subscribe(
+      () => {
+        this.messageService.add({
+          status: 'success',
+          content: 'Success load database',
+        });
+      },
+      () => {
+        this.messageService.add({
+          status: 'danger',
+          content: "Can't load database",
+        });
+      }
+    );
   }
 
   clearDatabase() {
-    this.devService.runCommand('clear-database').subscribe((response) => {
-      console.log(response);
-    });
+    this.devService.runCommand('clear-database').subscribe(
+      () => {
+        this.messageService.add({
+          status: 'success',
+          content: 'Success clear database',
+        });
+      },
+      () => {
+        this.messageService.add({
+          status: 'danger',
+          content: "Can't clear database",
+        });
+      }
+    );
   }
 
   test() {

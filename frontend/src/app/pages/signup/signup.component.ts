@@ -11,6 +11,7 @@ import {
   SignupRequest,
   LoginResponse,
 } from 'src/app/services/account.service';
+import { MessageService } from 'src/app/services/message.service';
 
 interface SignupErrors {
   email: string;
@@ -39,7 +40,11 @@ export class SignupComponent implements OnInit {
     accept: false,
   };
 
-  constructor(private accountService: AccountService, private router: Router) {}
+  constructor(
+    private accountService: AccountService,
+    private router: Router,
+    private messageService: MessageService
+  ) {}
 
   submit(data) {
     if (this.validate(data)) {
@@ -52,7 +57,16 @@ export class SignupComponent implements OnInit {
               this.router.navigate(['/profile']);
             });
         },
-        ({ error: { message } }) => {
+        (response) => {
+          this.messageService.add({
+            status: 'danger',
+            content: 'Что-то пошло не так, попробуйте повторить регистрацию',
+          });
+
+          const {
+            error: { message },
+          } = response;
+
           this.errors = message;
         }
       );

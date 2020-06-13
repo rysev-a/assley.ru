@@ -1,4 +1,5 @@
 import json
+from sqlalchemy import desc, asc
 from starlette.endpoints import HTTPEndpoint
 from starlette.responses import JSONResponse
 
@@ -9,6 +10,7 @@ class ListResource(HTTPEndpoint):
     limit = 0
 
     async def apply_paginate(self):
+        print('APPLY_PAGINATE')
         pagination = json.loads(
             self.request.query_params.get(
                 'pagination',
@@ -26,7 +28,7 @@ class ListResource(HTTPEndpoint):
 
     async def get(self, request):
         self.request = request
-        self.query = self.model.query
+        self.query = self.model.query.order_by(asc(self.model.id))
         await self.apply_paginate()
 
         items = await self.query.gino.all()
@@ -35,4 +37,14 @@ class ListResource(HTTPEndpoint):
             'success': True,
             'items': self.schema(many=True).dump(items),
             'pages': self.pages
+        })
+
+    async def post(self, request):
+
+        data = await request.json()
+        item = await self.model.create(**data)
+
+        return JSONResponse({
+            'success': True,
+            'item': self.schema().dump(item)
         })

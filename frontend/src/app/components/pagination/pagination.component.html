@@ -1,9 +1,14 @@
-<nav class="pagination" role="navigation" aria-label="pagination">
+<nav
+  class="pagination"
+  role="navigation"
+  aria-label="pagination"
+  *ngIf="pages > 1"
+>
   <button
     class="pagination-previous button"
     title="This is the first page"
     [disabled]="page === 1"
-    (click)="updatePage(page - 1)"
+    (click)="setPage(page - 1)"
   >
     Назад
   </button>
@@ -11,7 +16,7 @@
     disabled
     class="pagination-next button"
     [disabled]="pages === page"
-    (click)="updatePage(page + 1)"
+    (click)="setPage(page + 1)"
   >
     Вперед
   </button>
@@ -19,7 +24,7 @@
     <li *ngFor="let paginationPage of getPages()">
       <a
         class="pagination-link"
-        (click)="updatePage(paginationPage)"
+        (click)="setPage(paginationPage)"
         [ngClass]="{ 'is-current': paginationPage == page }"
         aria-current="page"
       >

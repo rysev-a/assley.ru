@@ -1,0 +1,53 @@
+<h1 class="title has-text-weight-normal is-size-2">Добавить книгу</h1>
+<form [formGroup]="bookForm">
+  <ng-select
+    [items]="resources.genre"
+    [multiple]="true"
+    [closeOnSelect]="false"
+    [searchable]="true"
+    bindLabel="name"
+    placeholder="Select people"
+    (change)="onSelectGenre($event)"
+  >
+  </ng-select>
+
+  <div class="field">
+    <label class="label">Название</label>
+    <div class="control">
+      <input
+        class="input"
+        formControlName="title"
+        type="text"
+        placeholder="Введите название книги"
+      />
+    </div>
+  </div>
+  <div class="field">
+    <label class="label">Выберите категорию</label>
+    <div class="control">
+      <div class="select">
+        <select>
+          <option>Манга</option>
+          <option>Манхва</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label class="label">Описание</label>
+    <div class="control">
+      <textarea
+        formControlName="description"
+        class="textarea"
+        placeholder="Введите описание"
+      ></textarea>
+    </div>
+  </div>
+  <div class="field is-grouped">
+    <div class="control">
+      <button class="button is-success" (click)="onSubmit()">
+        Добавить книгу
+      </button>
+    </div>
+  </div>
+</form>

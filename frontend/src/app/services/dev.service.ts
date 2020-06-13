@@ -16,8 +16,4 @@ export class DevService {
   runCommand(command) {
     return this.httpClient.post(this.devUrl, { command }, this.httpOptions);
   }
-
-  generateGenres() {
-    console.log('generate genres');
-  }
 }

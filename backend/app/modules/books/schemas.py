@@ -11,6 +11,11 @@ class TagSchema(Schema):
     name = fields.Str()
 
 
+class SectionSchema(Schema):
+    id = fields.Int()
+    name = fields.Str()
+
+
 class BookSchema(Schema):
     id = fields.Int()
     title = fields.Str()

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 export interface Tag {
   id: number;
@@ -41,5 +41,18 @@ export class TagService {
 
     const requestURL = `${this.tagsUrl}?${queryString}`;
     return this.http.get<TagResponse>(requestURL);
+  }
+
+  remove(tagId) {
+    return this.http.delete(`${this.tagsUrl}/${tagId}`);
+  }
+
+  addTag(tag) {
+    return this.http.post(this.tagsUrl, tag, this.httpOptions);
+  }
+
+  update(tag) {
+    const url = `${this.tagsUrl}/${tag.id}`;
+    return this.http.put(url, { name: tag.name }, this.httpOptions);
   }
 }

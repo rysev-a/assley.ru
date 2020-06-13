@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { ApiService } from '../core/api.service';
 
 export interface Book {
   id: number;
@@ -12,22 +11,13 @@ export interface Book {
 
 export interface BookResponse {
   status: string;
-  books: Book[];
+  items: Book[];
+  pages: number;
 }
 
 @Injectable({
   providedIn: 'root',
 })
-export class BookService {
-  constructor(private http: HttpClient) {}
-
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
-
-  private booksUrl = 'api/v1/books/';
-
-  getBooks(): Observable<BookResponse> {
-    return this.http.get<BookResponse>(this.booksUrl);
-  }
+export class BookService extends ApiService {
+  url = 'api/v1/books/';
 }

@@ -8,6 +8,9 @@ import { AdminPanelComponent } from './pages/admin/panel/panel.component';
 import { GenresComponent } from './pages/admin/genres/genres.component';
 import { StartComponent } from './pages/admin/start/start.component';
 import { TagsComponent } from './pages/admin/tags/tags.component';
+import { SectionsComponent } from './pages/admin/sections/sections.component';
+import { AdminBooksComponent } from './pages/admin/books/books.component';
+import { CreateBookComponent } from './pages/admin/create-book/create-book.component';
 
 const routes: Routes = [
   {
@@ -36,6 +39,9 @@ const routes: Routes = [
       },
       { path: 'genres', component: GenresComponent },
       { path: 'tags', component: TagsComponent },
+      { path: 'sections', component: SectionsComponent },
+      { path: 'books', component: AdminBooksComponent },
+      { path: 'books/new', component: CreateBookComponent },
     ],
   },
 ];

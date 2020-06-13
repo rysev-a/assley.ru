@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { ApiService } from '../core/api.service';
 
 export interface Genre {
   id: number;
@@ -23,23 +22,6 @@ export interface QueryParams {
 @Injectable({
   providedIn: 'root',
 })
-export class GenreService {
-  constructor(private http: HttpClient) {}
-
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
-
-  private genresUrl = 'api/v1/genres';
-
-  getGenres(queryParams: QueryParams = {}): Observable<GenreResponse> {
-    const queryString = Object.keys(queryParams)
-      .map((key) => {
-        return `${key}=${JSON.stringify(queryParams[key])}`;
-      })
-      .join('&');
-
-    const requestURL = `${this.genresUrl}?${queryString}`;
-    return this.http.get<GenreResponse>(requestURL);
-  }
+export class GenreService extends ApiService {
+  url = '/api/v1/genres';
 }

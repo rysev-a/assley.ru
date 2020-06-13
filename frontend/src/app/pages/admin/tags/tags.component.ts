@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { faPen, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { faPen, faTimes, faPenNib } from '@fortawesome/free-solid-svg-icons';
 import {
   TagService,
   Tag,
   TagResponse,
   QueryParams,
 } from 'src/app/services/tag.service';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-tags',
@@ -13,10 +15,26 @@ import {
   styleUrls: ['./tags.component.sass'],
 })
 export class TagsComponent implements OnInit {
-  constructor(private tagSevice: TagService) {}
+  constructor(
+    private tagService: TagService,
+    private messageService: MessageService
+  ) {}
 
+  tagForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+  });
+
+  editingItem = { id: 0, name: '' };
+  editingItemError = { name: '' };
+
+  errors = {
+    name: '',
+  };
+
+  // icons
   faPen = faPen;
   faTimes = faTimes;
+  faPenNib = faPenNib;
 
   isProcessing: boolean = false;
   isLoaded: boolean = false;
@@ -26,7 +44,11 @@ export class TagsComponent implements OnInit {
 
   tags: Tag[] = [];
 
-  updatePage(page) {
+  setEditingItem(item) {
+    this.editingItem = { ...item };
+  }
+
+  setPage(page) {
     this.page = page;
     this.load();
   }
@@ -40,12 +62,59 @@ export class TagsComponent implements OnInit {
       },
     };
 
-    this.tagSevice.getTags(queryParams).subscribe((response: TagResponse) => {
+    this.tagService.getTags(queryParams).subscribe((response: TagResponse) => {
       this.tags = response.items;
       this.pages = response.pages;
       this.isLoaded = true;
       this.isProcessing = false;
     });
+  }
+
+  remove(id) {
+    this.isProcessing = true;
+    this.tagService.remove(id).subscribe(() => {
+      this.load();
+    });
+  }
+
+  addTag() {
+    const { name } = this.tagForm.value;
+    this.tagService.addTag(this.tagForm.value).subscribe(
+      () => {
+        this.tagForm.patchValue({
+          name: '',
+        });
+        this.load();
+
+        this.messageService.add({
+          status: 'success',
+          content: `Тэг ${name} успешно добавлен`,
+        });
+      },
+      // TODO: fix with async validators
+      ({ error }) => {
+        this.errors = error.message;
+      }
+    );
+  }
+
+  update() {
+    console.log(this.editingItem);
+    this.tagService.update(this.editingItem).subscribe(
+      () => {
+        this.tags = this.tags.map((tag) => {
+          if (tag.id === this.editingItem.id) {
+            return this.editingItem;
+          }
+
+          return tag;
+        });
+        this.editingItem = { id: 0, name: '' };
+      },
+      (response) => {
+        this.editingItemError = response.error.message;
+      }
+    );
   }
 
   ngOnInit(): void {

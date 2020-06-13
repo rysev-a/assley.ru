@@ -6,12 +6,12 @@ class Book(db.Model):
 
     id = db.Column(db.Integer(), primary_key=True)
 
-    title = db.Column(db.Unicode())
+    title = db.Column(db.Unicode(), unique=True)
     author = db.Column(db.Unicode())
     description = db.Column(db.Unicode())
     painter = db.Column(db.Unicode())
     release_year = db.Column(db.Integer())
-    url = db.Column(db.Unicode())
+    cover = db.Column(db.Unicode())
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -34,11 +34,19 @@ class Book(db.Model):
         self._tags.add(tag)
         tag._books.add(self)
 
+    @property
+    def sections(self):
+        return self._sections
+
+    def add_section(self, section):
+        self._sections.add(section)
+        section._books.add(self)
+
 
 class Genre(db.Model):
     __tablename__ = 'genres'
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.Unicode())
+    name = db.Column(db.Unicode(), unique=True)
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -52,7 +60,21 @@ class Genre(db.Model):
 class Tag(db.Model):
     __tablename__ = 'tags'
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.Unicode())
+    name = db.Column(db.Unicode(), unique=True)
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self._books = set()
+
+    @property
+    def books(self):
+        return self._books
+
+
+class Section(db.Model):
+    __tablename__ = 'sections'
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.Unicode(), unique=True)
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -77,3 +99,11 @@ class BookTagAssocciation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     book_id = db.Column(db.Integer, db.ForeignKey('books.id'))
     tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'))
+
+
+class BookSectionAssocciation(db.Model):
+    __tablename__ = 'books_sections'
+
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('books.id'))
+    section_id = db.Column(db.Integer, db.ForeignKey('sections.id'))

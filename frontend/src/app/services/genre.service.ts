@@ -23,5 +23,5 @@ export interface QueryParams {
   providedIn: 'root',
 })
 export class GenreService extends ApiService {
-  url = '/api/v1/genres';
+  url = '/api/v1/genres/';
 }

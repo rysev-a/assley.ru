@@ -23,5 +23,5 @@ export interface QueryParams {
   providedIn: 'root',
 })
 export class SectionService extends ApiService {
-  url = '/api/v1/sections';
+  url = '/api/v1/sections/';
 }

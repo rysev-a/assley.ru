@@ -23,5 +23,5 @@ export interface QueryParams {
   providedIn: 'root',
 })
 export class TagService extends ApiService {
-  url = '/api/v1/tags';
+  url = '/api/v1/tags/';
 }

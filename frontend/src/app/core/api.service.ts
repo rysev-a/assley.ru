@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+export interface SearchFilter {
+  key: string;
+  value: string;
+  operator: string;
+}
+
 export interface QueryParams {
   pagination?: {
     page: number;
     limit: number;
   };
+  filters?: SearchFilter[];
 }
 
 export interface ApiServiceResponse {

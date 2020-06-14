@@ -25,3 +25,4 @@ class BookSchema(Schema):
     release_year = fields.Int()
 
     genres = fields.List(fields.Nested(GenreSchema))
+    tags = fields.List(fields.Nested(TagSchema))

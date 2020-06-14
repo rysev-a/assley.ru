@@ -1,7 +1,10 @@
 import yaml
+import bcrypt
 from starlette.responses import JSONResponse
 from starlette.config import Config
 from app.core.database import db
+from app.modules.account.handlers import salt
+from app.modules.users.models import User
 from app.modules.books.models import (
     Book,
     Genre,
@@ -63,6 +66,21 @@ async def generate_books():
             await Book.create(**model_data)
 
 
+async def generate_users():
+    base_dir = config('APP_PATH')
+    mock_path = f'{base_dir}/fixtures/users.yaml'
+
+    with open(mock_path) as mock_data:
+        for model_data in yaml.load(mock_data, Loader=yaml.FullLoader):
+            password = model_data.get('password').encode('utf-8')
+            await User.create(
+                email=model_data.get('email'),
+                first_name=model_data.get('first_name'),
+                last_name=model_data.get('last_name'),
+                password_hash=bcrypt.hashpw(password, salt).decode('utf-8'),
+            )
+
+
 async def clear_database():
     await db.gino.drop_all()
     await db.gino.create_all()
@@ -73,7 +91,8 @@ async def load_database():
     await generate_genres()
     await generate_tags()
     await generate_sections()
-    await generate_books()
+    # await generate_books()
+    await generate_users()
 
 
 commands = {

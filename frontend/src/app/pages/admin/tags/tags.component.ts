@@ -62,7 +62,7 @@ export class TagsComponent implements OnInit {
       },
     };
 
-    this.tagService.getTags(queryParams).subscribe((response: TagResponse) => {
+    this.tagService.list(queryParams).subscribe((response: TagResponse) => {
       this.tags = response.items;
       this.pages = response.pages;
       this.isLoaded = true;
@@ -79,7 +79,7 @@ export class TagsComponent implements OnInit {
 
   addTag() {
     const { name } = this.tagForm.value;
-    this.tagService.addTag(this.tagForm.value).subscribe(
+    this.tagService.add(this.tagForm.value).subscribe(
       () => {
         this.tagForm.patchValue({
           name: '',

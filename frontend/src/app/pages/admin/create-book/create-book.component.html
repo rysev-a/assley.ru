@@ -1,16 +1,5 @@
 <h1 class="title has-text-weight-normal is-size-2">Добавить книгу</h1>
 <form [formGroup]="bookForm">
-  <ng-select
-    [items]="resources.genre"
-    [multiple]="true"
-    [closeOnSelect]="false"
-    [searchable]="true"
-    bindLabel="name"
-    placeholder="Select people"
-    (change)="onSelectGenre($event)"
-  >
-  </ng-select>
-
   <div class="field">
     <label class="label">Название</label>
     <div class="control">
@@ -22,17 +11,58 @@
       />
     </div>
   </div>
+
   <div class="field">
-    <label class="label">Выберите категорию</label>
+    <label class="label">Жанры</label>
     <div class="control">
-      <div class="select">
-        <select>
-          <option>Манга</option>
-          <option>Манхва</option>
-        </select>
-      </div>
+      <ng-select
+        [items]="resources.genre"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [searchable]="true"
+        bindLabel="name"
+        placeholder="Выберите жанры"
+        (change)="onSelectGenre($event)"
+        (search)="onSearchGenre($event)"
+      >
+      </ng-select>
     </div>
   </div>
+
+  <div class="field">
+    <label class="label">Тэги</label>
+    <div class="control">
+      <ng-select
+        [items]="resources.tag"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [searchable]="true"
+        bindLabel="name"
+        placeholder="Выберите тэги"
+        (change)="onSelectTag($event)"
+        (search)="onSearchTag($event)"
+      >
+      </ng-select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Категории</label>
+    <div class="control">
+      <ng-select
+        [items]="resources.section"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [searchable]="true"
+        bindLabel="name"
+        placeholder="Выберите категории"
+        (change)="onSelectSection($event)"
+        (search)="onSearchSection($event)"
+      >
+      </ng-select>
+    </div>
+  </div>
+
   <div class="field">
     <label class="label">Описание</label>
     <div class="control">

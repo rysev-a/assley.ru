@@ -63,7 +63,7 @@ export class SectionsComponent implements OnInit {
     };
 
     this.sectionService
-      .getSections(queryParams)
+      .list(queryParams)
       .subscribe((response: SectionResponse) => {
         this.sections = response.items;
         this.pages = response.pages;
@@ -81,7 +81,7 @@ export class SectionsComponent implements OnInit {
 
   addSection() {
     const { name } = this.sectionForm.value;
-    this.sectionService.addSection(this.sectionForm.value).subscribe(
+    this.sectionService.add(this.sectionForm.value).subscribe(
       () => {
         this.sectionForm.patchValue({
           name: '',

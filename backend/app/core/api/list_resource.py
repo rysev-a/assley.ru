@@ -9,8 +9,43 @@ class ListResource(HTTPEndpoint):
     pages = 1
     limit = 0
 
+    async def apply_filters(self):
+        filters = json.loads(
+            self.request.query_params.get('filters', '[]'))
+
+        for filter in filters:
+            key = filter.get('key')
+            value = filter.get('value')
+            method = filter.get('operator')
+
+            if not value:
+                continue
+
+            # start with helper
+            if method == 'startWith':
+                method = 'ilike'
+                value = f'{value}%'
+
+            column = getattr(self.model, key, None)
+            operator = getattr(column, method, None)
+
+            if operator:
+                self.query = self.query.where(operator(value))
+
+            if method == '==':
+                self.query = self.query.where(column == value)
+            if method == '>=':
+                self.query = self.query.where(column >= value)
+            if method == '>':
+                self.query = self.query.where(column > value)
+            if method == '<=':
+                self.query = self.query.where(column <= value)
+            if method == '<':
+                self.query = self.query.where(column < value)
+            if method == '!=':
+                self.query = self.query.where(column != value)
+
     async def apply_paginate(self):
-        print('APPLY_PAGINATE')
         pagination = json.loads(
             self.request.query_params.get(
                 'pagination',
@@ -30,6 +65,7 @@ class ListResource(HTTPEndpoint):
         self.request = request
         self.query = self.model.query.order_by(asc(self.model.id))
         await self.apply_paginate()
+        await self.apply_filters()
 
         items = await self.query.gino.all()
 

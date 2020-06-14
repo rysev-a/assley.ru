@@ -45,7 +45,7 @@ export class ApiService {
   }
 
   remove(id) {
-    return this.http.delete(`${this.url}/${id}`);
+    return this.http.delete(`${this.url}${id}`);
   }
 
   add(item) {
@@ -53,7 +53,7 @@ export class ApiService {
   }
 
   update(item) {
-    const url = `${this.url}/${item.id}`;
+    const url = `${this.url}${item.id}`;
     return this.http.put(url, item, this.httpOptions);
   }
 }

@@ -13,7 +13,6 @@ export class BooksComponent implements OnInit {
 
   loadCategory(category) {
     // const category = this.route.snapshot.paramMap.get('category');
-    console.log({ category });
     this.category = category;
   }
 

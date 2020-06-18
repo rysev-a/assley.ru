@@ -32,7 +32,28 @@ export class CreateBookComponent implements OnInit {
     genres: [[]],
     tags: [[]],
     sections: [[]],
+    episodes: this.formBuilder.array([]),
   });
+
+  get episodes() {
+    return this.bookForm.get('episodes') as FormArray;
+  }
+
+  newEpisode() {
+    return this.formBuilder.group({
+      name: this.formBuilder.control(['']),
+      season: this.formBuilder.control(['']),
+      file: this.formBuilder.control(null),
+    });
+  }
+
+  addEpisode() {
+    this.episodes.push(this.newEpisode());
+  }
+
+  removeEpisode(i) {
+    this.episodes.removeAt(i);
+  }
 
   serialize() {
     const book = this.bookForm.value;
@@ -47,6 +68,7 @@ export class CreateBookComponent implements OnInit {
       genres: book.genres,
       tags: book.tags,
       sections: book.sections,
+      file: book.file,
     };
   }
 
@@ -98,10 +120,28 @@ export class CreateBookComponent implements OnInit {
     this.loadResource('tag');
   }
 
+  onFileChange(event, index) {
+    let reader = new FileReader();
+
+    const { episodes }: any = this.bookForm.controls;
+    const episodeForm = episodes.controls[index];
+
+    if (event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        episodeForm.patchValue({
+          file: reader.result,
+        });
+      };
+    }
+  }
+
   onSubmit() {
-    this.serialize();
-    this.bookService.add(this.serialize()).subscribe((response) => {
-      console.log(response);
-    });
+    console.log(this.bookForm.value);
+    // this.bookService.add(this.serialize()).subscribe((response) => {
+    //   console.log(response);
+    // });
   }
 }

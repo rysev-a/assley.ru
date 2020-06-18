@@ -7,7 +7,7 @@ from starlette.responses import JSONResponse
 class ListResource(HTTPEndpoint):
     page = 1
     pages = 1
-    limit = 0
+    limit = 10
 
     async def apply_filters(self):
         filters = json.loads(
@@ -49,7 +49,7 @@ class ListResource(HTTPEndpoint):
         pagination = json.loads(
             self.request.query_params.get(
                 'pagination',
-                '{"page": 1, "limit": 10}'))
+                f'{{"page": 1, "limit": {self.limit} }}'))
 
         page = pagination.get('page')
         limit = pagination.get('limit')

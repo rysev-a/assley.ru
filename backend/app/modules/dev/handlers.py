@@ -10,7 +10,9 @@ from app.modules.books.models import (
     Genre,
     Tag,
     Section,
-    BookGenreAssocciation
+    BookGenreAssocciation,
+    BookTagAssocciation,
+    BookSectionAssocciation,
 )
 
 config = Config(".env")
@@ -61,9 +63,30 @@ async def generate_books():
     base_dir = config('APP_PATH')
     mock_path = f'{base_dir}/fixtures/books.yaml'
 
+    genres = await Genre.query.gino.all()
+    sections = await Section.query.gino.all()
+    tags = await Tag.query.gino.all()
+
     with open(mock_path) as mock_data:
         for model_data in yaml.load(mock_data, Loader=yaml.FullLoader):
-            await Book.create(**model_data)
+            book = await Book.create(**model_data)
+            for genre in genres[0:10]:
+                await BookGenreAssocciation.create(
+                    book_id=book.id,
+                    genre_id=genre.id,
+                )
+
+            for tag in tags[0:10]:
+                await BookTagAssocciation.create(
+                    book_id=book.id,
+                    tag_id=tag.id,
+                )
+
+            for section in sections[0:10]:
+                await BookSectionAssocciation.create(
+                    book_id=book.id,
+                    section_id=section.id,
+                )
 
 
 async def generate_users():

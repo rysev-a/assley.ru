@@ -1,10 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { map, omit, prop } from 'ramda';
 import { FormBuilder, FormArray } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { BookService } from 'src/app/services/book.service';
 import { GenreService } from 'src/app/services/genre.service';
 import { SectionService } from 'src/app/services/section.service';
 import { TagService } from 'src/app/services/tag.service';
+
+interface Episode {
+  file: any;
+  episodeName: string;
+  episodeNumber: string;
+}
 
 @Component({
   selector: 'app-create-book',
@@ -32,7 +39,28 @@ export class CreateBookComponent implements OnInit {
     genres: [[]],
     tags: [[]],
     sections: [[]],
-    episodes: this.formBuilder.array([]),
+    episodes: this.formBuilder.array([
+      this.formBuilder.group({
+        seasonNumber: this.formBuilder.control('2', Validators.required),
+        episodeNumber: this.formBuilder.control('1', Validators.required),
+        episodeName: this.formBuilder.control(
+          'Первая глава',
+          Validators.required
+        ),
+        translator: this.formBuilder.control('Assley', Validators.required),
+        file: this.formBuilder.control(null, Validators.required),
+      }),
+      // this.formBuilder.group({
+      //   seasonNumber: this.formBuilder.control('2', Validators.required),
+      //   episodeNumber: this.formBuilder.control('2', Validators.required),
+      //   episodeName: this.formBuilder.control(
+      //     'Вторая глава',
+      //     Validators.required
+      //   ),
+      //   translator: this.formBuilder.control('Assley', Validators.required),
+      //   file: this.formBuilder.control(null, Validators.required),
+      // }),
+    ]),
   });
 
   get episodes() {
@@ -41,9 +69,11 @@ export class CreateBookComponent implements OnInit {
 
   newEpisode() {
     return this.formBuilder.group({
-      name: this.formBuilder.control(['']),
-      season: this.formBuilder.control(['']),
-      file: this.formBuilder.control(null),
+      seasonNumber: this.formBuilder.control([''], Validators.required),
+      episodeNumber: this.formBuilder.control([''], Validators.required),
+      episodeName: this.formBuilder.control([''], Validators.required),
+      translator: this.formBuilder.control([''], Validators.required),
+      file: this.formBuilder.control(null, Validators.required),
     });
   }
 
@@ -62,14 +92,21 @@ export class CreateBookComponent implements OnInit {
       title: `${date.getTime()}`,
     });
 
-    return {
+    const payload = {
       title: book.title,
       description: book.description,
       genres: book.genres,
       tags: book.tags,
       sections: book.sections,
-      file: book.file,
+      episodes: map((episode) => omit(['file'], episode), book.episodes as any),
     };
+
+    const files = map((episode: Episode) => ({
+      file: episode.file,
+      name: episode.episodeName,
+    }))(book.episodes);
+
+    return { payload, files };
   }
 
   loadResource(model) {
@@ -120,28 +157,38 @@ export class CreateBookComponent implements OnInit {
     this.loadResource('tag');
   }
 
-  onFileChange(event, index) {
-    let reader = new FileReader();
-
+  onUploadEpisode(event, index) {
     const { episodes }: any = this.bookForm.controls;
     const episodeForm = episodes.controls[index];
 
     if (event.target.files && event.target.files.length) {
       const [file] = event.target.files;
-      reader.readAsDataURL(file);
-
-      reader.onload = () => {
-        episodeForm.patchValue({
-          file: reader.result,
-        });
-      };
+      episodeForm.patchValue({
+        file: file,
+      });
     }
   }
 
   onSubmit() {
-    console.log(this.bookForm.value);
-    // this.bookService.add(this.serialize()).subscribe((response) => {
-    //   console.log(response);
+    const { payload, files } = this.serialize();
+    const bookForm = new FormData();
+
+    bookForm.append('payload', JSON.stringify(payload));
+
+    files.forEach(({ file, name }) => {
+      bookForm.append(name, file, file.name);
+    });
+
+    this.bookService.sendFormData(bookForm).subscribe((response) => {
+      console.log(response);
+    });
+    // for ( const key of Object.keys(formValue) ) {
+    //   const value = formValue[key];
+    //   formData.append(key, value);
+    // }
+
+    // this.bookService.add(bookData).subscribe((response) => {
+    //   console.log('success');
     // });
   }
 }

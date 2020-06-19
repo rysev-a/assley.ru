@@ -12,64 +12,6 @@
     </div>
   </div>
 
-  <div formArrayName="episodes">
-    <h3>Главы</h3>
-    <button (click)="addEpisode()">Добавить главу</button>
-
-    <div *ngFor="let episode of episodes.controls; let episodeIndex = index">
-      <div [formGroupName]="episodeIndex">
-        <input class="input" formControlName="name" />
-        <input class="input" formControlName="season" />
-
-        <div class="field">
-          <div class="file">
-            <label class="file-label">
-              <input
-                class="file-input"
-                type="file"
-                name="file"
-                (change)="onFileChange($event, episodeIndex)"
-              />
-              <span class="file-cta">
-                <span class="file-icon">
-                  <i class="fas fa-upload"></i>
-                </span>
-                <span class="file-label">
-                  Загрузить файл
-                </span>
-              </span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <button class="button is-danger" (click)="removeEpisode(episodeIndex)">
-        Remove
-      </button>
-    </div>
-  </div>
-
-  <!-- <div class="field">
-    <div class="file">
-      <label class="file-label">
-        <input
-          class="file-input"
-          type="file"
-          name="file"
-          (change)="onFileChange($event)"
-        />
-        <span class="file-cta">
-          <span class="file-icon">
-            <i class="fas fa-upload"></i>
-          </span>
-          <span class="file-label">
-            Загрузить файл
-          </span>
-        </span>
-      </label>
-    </div>
-  </div> -->
-
   <div class="field">
     <label class="label">Жанры</label>
     <div class="control">
@@ -122,6 +64,16 @@
   </div>
 
   <div class="field">
+    <create-book-episodes
+      [episodes]="episodes"
+      [addEpisode]="addEpisode.bind(this)"
+      [removeEpisode]="removeEpisode.bind(this)"
+      [onUploadEpisode]="onUploadEpisode.bind(this)"
+      [bookForm]="bookForm"
+    ></create-book-episodes>
+  </div>
+
+  <div class="field">
     <label class="label">Описание</label>
     <div class="control">
       <textarea
@@ -131,6 +83,7 @@
       ></textarea>
     </div>
   </div>
+
   <div class="field is-grouped">
     <div class="control">
       <button class="button is-success" (click)="onSubmit()">

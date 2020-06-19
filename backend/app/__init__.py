@@ -16,7 +16,8 @@ app = Starlette(
 
 @app.on_event('startup')
 async def startup():
-    engine = await db.set_bind(config('DATABASE_URL', cast=str, default=''))
+    engine = await db.set_bind(
+        config('DATABASE_URL', cast=str, default=''))
     db.bind = engine
 
 

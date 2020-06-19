@@ -7,7 +7,11 @@ from .handlers import (
     TagList,
     TagDetail,
     SectionDetail,
-    SectionList
+    SectionList,
+    SeasonDetail,
+    SeasonList,
+    EpisodeDetail,
+    EpisodeList
 )
 
 books_routes = [
@@ -28,4 +32,14 @@ tags_routes = [
 sections_routes = [
     Route('/', SectionList),
     Route('/{id:int}', SectionDetail)
+]
+
+seasons_routes = [
+    Route('/', SeasonList),
+    Route('/{id:int}', SeasonDetail)
+]
+
+episodes_routes = [
+    Route('/', EpisodeList),
+    Route('/{id:int}', EpisodeDetail)
 ]

@@ -9,15 +9,10 @@ config = Config(".env")
 app_path = config('APP_PATH')
 
 
-def unzip_episode(base64_file):
-    starter = base64_file.find(',')
-    file_data = base64_file[starter + 1:]
-    file_data = bytes(file_data, encoding="ascii")
-
+def unzip_episode(file_content):
     episode_filename = f'{tempfile.NamedTemporaryFile().name}.zip'
-
     episode_file = open(episode_filename, 'wb')
-    episode_file.write(base64.decodebytes(file_data))
+    episode_file.write(file_content)
     episode_file.close()
     episode_uuid = str(uuid.uuid4())
 
@@ -30,5 +25,5 @@ def unzip_episode(base64_file):
 
     return {
         'pages': pages,
-        'episode_uuid': episode_uuid
+        'uuid': episode_uuid
     }

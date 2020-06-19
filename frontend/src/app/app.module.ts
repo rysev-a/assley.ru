@@ -33,6 +33,7 @@ import { MessageComponent } from './components/message/message.component';
 import { SectionsComponent } from './pages/admin/sections/sections.component';
 import { AdminBooksComponent } from './pages/admin/books/books.component';
 import { CreateBookComponent } from './pages/admin/create-book/create-book.component';
+import { CreateBookEpisodesComponent } from './pages/admin/create-book/episodes/episodes.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { CreateBookComponent } from './pages/admin/create-book/create-book.compo
     SectionsComponent,
     AdminBooksComponent,
     CreateBookComponent,
+    CreateBookEpisodesComponent,
   ],
   imports: [
     BrowserModule,

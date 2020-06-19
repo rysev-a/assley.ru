@@ -9,18 +9,25 @@ from starlette.config import Config
 from app.core.database import db
 from app.core.api import ListResource, DetailResource
 
-from ..schemas import BookSchema, GenreSchema, TagSchema
+from ..schemas import (
+    BookSchema,
+    GenreSchema,
+    TagSchema,
+    SeasonSchema,
+    EpisodeSchema
+)
+
 from ..models import (
     Book,
     Genre,
     Tag,
     Section,
+    Season,
+    Episode,
     BookGenreAssocciation,
     BookSectionAssocciation,
     BookTagAssocciation
 )
-
-from ..utils import unzip_episode
 
 
 class BookList(ListResource):
@@ -89,23 +96,31 @@ class BookList(ListResource):
                 })
 
     async def post(self, request):
-        self.request = request
+        form = await request.form()
+        data = json.loads(form.get('payload'))
 
-        data = await self.request.json()
-        episode_info = unzip_episode(data.get('file'))
-
-        print(episode_info)
+        # self.request = request
 
         book = await Book.create(
             title=data.get('title'),
             description=data.get('description')
         )
-        await self.create_resources(book.id)
+
+        for episode_fields in data.get('episodes'):
+            file = form[episode_fields.get('episodeName')]
+            episode = {**episode_fields, 'file': file}
+            await Episode.upload(episode=episode, book_id=book.id)
+
         return JSONResponse({
-            'data': data,
-            'item': self.schema().dump(book),
-            'succes': True,
+            'success': True
         })
+
+        # await self.create_resources(book.id)
+        # return JSONResponse({
+        #     'data': data,
+        #     'item': self.schema().dump(book),
+        #     'succes': True,
+        # })
 
 
 class BookDetail(DetailResource):
@@ -138,15 +153,32 @@ class BookDetail(DetailResource):
 
         return resources
 
+    async def inject_seasons(self, id):
+        seasons = await Season.query.where(Season.book_id == id).gino.all()
+        episodes = EpisodeSchema(many=True).dump(
+            await Episode.query.where(Episode.season_id.in_(
+                [season.id for season in seasons]
+            )).gino.all())
+
+        return [{
+            **season,
+            'episodes': [
+                episode for episode in episodes
+                if episode.get('season_id') == season.get('id')
+            ]
+        } for season in SeasonSchema(many=True).dump(seasons)]
+
     async def get(self, request):
         id = request.path_params['id']
         item = await self.model.get(id)
         resources = await self.inject_resources(id)
+        seasons = await self.inject_seasons(id)
 
         return JSONResponse({
             'success': True,
             'item': {
                 **self.schema().dump(item),
                 **resources,
+                'seasons': seasons,
             }
         })

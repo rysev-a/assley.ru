@@ -5,7 +5,9 @@ from ..modules.books.routes import (
     books_routes,
     genres_routes,
     tags_routes,
-    sections_routes
+    sections_routes,
+    seasons_routes,
+    episodes_routes,
 )
 from ..modules.account.routes import account_routes
 from ..modules.dev.routes import dev_routes
@@ -21,4 +23,6 @@ routes = [
     Mount('/api/v1/genres', routes=genres_routes),
     Mount('/api/v1/tags', routes=tags_routes),
     Mount('/api/v1/sections', routes=sections_routes),
+    Mount('/api/v1/seasons', routes=seasons_routes),
+    Mount('/api/v1/episodes', routes=episodes_routes),
 ]

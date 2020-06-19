@@ -1,6 +1,8 @@
 from starlette.routing import Route
-from .handlers import user_list
+from .handlers import UserList, UserDetail
+
 
 users_routes = [
-    Route('/', user_list)
+    Route('/', UserList),
+    Route('/{id:int}', UserDetail)
 ]

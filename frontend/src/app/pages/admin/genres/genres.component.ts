@@ -36,7 +36,7 @@ export class GenresComponent implements OnInit {
   faTimes = faTimes;
   faPenNib = faPenNib;
 
-  isProcessing: boolean = false;
+  processing: boolean = false;
   isLoaded: boolean = false;
   page = 1;
   pages = 0;
@@ -54,7 +54,7 @@ export class GenresComponent implements OnInit {
   }
 
   load() {
-    this.isProcessing = true;
+    this.processing = true;
     const queryParams: QueryParams = {
       pagination: {
         page: this.page,
@@ -66,12 +66,12 @@ export class GenresComponent implements OnInit {
       this.genres = response.items;
       this.pages = response.pages;
       this.isLoaded = true;
-      this.isProcessing = false;
+      this.processing = false;
     });
   }
 
   remove(id) {
-    this.isProcessing = true;
+    this.processing = true;
     this.genreService.remove(id).subscribe(() => {
       this.load();
     });

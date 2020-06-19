@@ -24,9 +24,18 @@ from ..models import (
     Section,
     Season,
     Episode,
+    Author,
+    Translator,
+    Publisher,
+    Painter,
+
     BookGenreAssocciation,
     BookSectionAssocciation,
-    BookTagAssocciation
+    BookTagAssocciation,
+    BookAuthorAssocciation,
+    BookPainterAssocciation,
+    BookTranslatorAssocciation,
+    BookPublisherAssocciation,
 )
 
 
@@ -50,7 +59,11 @@ class BookList(ListResource):
         for (key, model, assocciation) in [
             ('genres', Genre, BookGenreAssocciation),
             ('tags', Tag, BookTagAssocciation),
-            ('sections', Section, BookSectionAssocciation)
+            ('sections', Section, BookSectionAssocciation),
+            ('authors', Author, BookAuthorAssocciation),
+            ('translators', Translator, BookTranslatorAssocciation),
+            ('publishers', Publisher, BookPublisherAssocciation),
+            ('painters', Painter, BookPainterAssocciation),
         ]:
             data = await model.join(assocciation)\
                 .select()\
@@ -80,16 +93,19 @@ class BookList(ListResource):
             'pages': self.pages
         })
 
-    async def create_resources(self, book_id):
-        data = await self.request.json()
+    async def create_resources(self, book_id, data):
         models = [
             ('genres', 'genre_id', BookGenreAssocciation),
             ('tags', 'tag_id', BookTagAssocciation),
-            ('sections', 'section_id', BookSectionAssocciation)]
+            ('sections', 'section_id', BookSectionAssocciation),
+            ('authors', 'author_id', BookAuthorAssocciation),
+            ('painters', 'painter_id', BookPainterAssocciation),
+            ('translators', 'translator_id', BookTranslatorAssocciation),
+            ('publishers', 'publisher_id', BookPublisherAssocciation),
+        ]
 
         for table, id_key, model in models:
             for id in data.get(table, []):
-                print(table, id_key, model, book_id)
                 await model.create(**{
                     'book_id': book_id,
                     id_key: id,
@@ -99,28 +115,23 @@ class BookList(ListResource):
         form = await request.form()
         data = json.loads(form.get('payload'))
 
-        # self.request = request
-
         book = await Book.create(
             title=data.get('title'),
             description=data.get('description')
         )
 
         for episode_fields in data.get('episodes'):
-            file = form[episode_fields.get('episodeName')]
+            file = form[episode_fields.get('file')]
             episode = {**episode_fields, 'file': file}
             await Episode.upload(episode=episode, book_id=book.id)
 
-        return JSONResponse({
-            'success': True
-        })
+        await self.create_resources(book.id, data)
 
-        # await self.create_resources(book.id)
-        # return JSONResponse({
-        #     'data': data,
-        #     'item': self.schema().dump(book),
-        #     'succes': True,
-        # })
+        return JSONResponse({
+            'data': data,
+            'item': self.schema().dump(book),
+            'succes': True,
+        })
 
 
 class BookDetail(DetailResource):
@@ -141,7 +152,11 @@ class BookDetail(DetailResource):
         for (key, model, assocciation) in [
             ('genres', Genre, BookGenreAssocciation),
             ('tags', Tag, BookTagAssocciation),
-            ('sections', Section, BookSectionAssocciation)
+            ('sections', Section, BookSectionAssocciation),
+            ('authors', Author, BookAuthorAssocciation),
+            ('translators', Translator, BookTranslatorAssocciation),
+            ('publishers', Publisher, BookPublisherAssocciation),
+            ('painters', Painter, BookPainterAssocciation),
         ]:
             data = await model.join(assocciation)\
                 .select()\

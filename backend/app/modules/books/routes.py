@@ -11,7 +11,15 @@ from .handlers import (
     SeasonDetail,
     SeasonList,
     EpisodeDetail,
-    EpisodeList
+    EpisodeList,
+    AuthorDetail,
+    AuthorList,
+    PainterDetail,
+    PainterList,
+    TranslatorDetail,
+    TranslatorList,
+    PublisherDetail,
+    PublisherList
 )
 
 books_routes = [
@@ -42,4 +50,24 @@ seasons_routes = [
 episodes_routes = [
     Route('/', EpisodeList),
     Route('/{id:int}', EpisodeDetail)
+]
+
+authors_routes = [
+    Route('/', AuthorList),
+    Route('/{id:int}', AuthorDetail)
+]
+
+translators_routes = [
+    Route('/', TranslatorList),
+    Route('/{id:int}', TranslatorDetail)
+]
+
+painters_routes = [
+    Route('/', PainterList),
+    Route('/{id:int}', PainterDetail)
+]
+
+publishers_routes = [
+    Route('/', PublisherList),
+    Route('/{id:int}', PublisherDetail)
 ]

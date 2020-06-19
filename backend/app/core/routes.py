@@ -8,6 +8,10 @@ from ..modules.books.routes import (
     sections_routes,
     seasons_routes,
     episodes_routes,
+    authors_routes,
+    translators_routes,
+    painters_routes,
+    publishers_routes,
 )
 from ..modules.account.routes import account_routes
 from ..modules.dev.routes import dev_routes
@@ -25,4 +29,8 @@ routes = [
     Mount('/api/v1/sections', routes=sections_routes),
     Mount('/api/v1/seasons', routes=seasons_routes),
     Mount('/api/v1/episodes', routes=episodes_routes),
+    Mount('/api/v1/authors', routes=authors_routes),
+    Mount('/api/v1/translators', routes=translators_routes),
+    Mount('/api/v1/painters', routes=painters_routes),
+    Mount('/api/v1/publishers', routes=publishers_routes)
 ]

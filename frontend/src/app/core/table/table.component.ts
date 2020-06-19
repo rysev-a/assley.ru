@@ -14,6 +14,13 @@ export class TableComponent {
   pages = 0;
   limit = 10;
   items = [];
+  fields = [
+    { name: 'id', label: 'id' },
+    {
+      name: 'name',
+      label: 'Название',
+    },
+  ];
 
   setPage(page) {
     this.page = page;

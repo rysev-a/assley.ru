@@ -2,10 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { map, omit, prop } from 'ramda';
 import { FormBuilder, FormArray } from '@angular/forms';
 import { Validators } from '@angular/forms';
+import { HttpEventType } from '@angular/common/http';
+import { MessageService } from 'src/app/services/message.service';
+
+// resource services
 import { BookService } from 'src/app/services/book.service';
 import { GenreService } from 'src/app/services/genre.service';
 import { SectionService } from 'src/app/services/section.service';
 import { TagService } from 'src/app/services/tag.service';
+import { AuthorService } from 'src/app/services/author.service';
+import { TranslatorService } from 'src/app/services/translator.service';
+import { PublisherService } from 'src/app/services/publisher.service';
+import { PainterService } from 'src/app/services/painter.service';
 
 interface Episode {
   file: any;
@@ -22,23 +30,42 @@ export class CreateBookComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private bookService: BookService,
+    private messageService: MessageService,
     private genreService: GenreService,
     private tagService: TagService,
-    private sectionService: SectionService
+    private sectionService: SectionService,
+    private authorService: AuthorService,
+    private translatorService: TranslatorService,
+    private publisherService: PublisherService,
+    private painterService: PainterService
   ) {}
+
+  processing = false;
+  progress = 0;
 
   resources = {
     genre: [],
     tag: [],
     section: [],
+    author: [],
+    painter: [],
+    translator: [],
+    publisher: [],
   };
 
   bookForm = this.formBuilder.group({
     title: ['', Validators.required],
     description: ['', Validators.required],
+
+    // book attributes
     genres: [[]],
     tags: [[]],
     sections: [[]],
+    authors: [[]],
+    translators: [[]],
+    publishers: [[]],
+    painters: [[]],
+
     episodes: this.formBuilder.array([
       this.formBuilder.group({
         seasonNumber: this.formBuilder.control('2', Validators.required),
@@ -50,16 +77,6 @@ export class CreateBookComponent implements OnInit {
         translator: this.formBuilder.control('Assley', Validators.required),
         file: this.formBuilder.control(null, Validators.required),
       }),
-      // this.formBuilder.group({
-      //   seasonNumber: this.formBuilder.control('2', Validators.required),
-      //   episodeNumber: this.formBuilder.control('2', Validators.required),
-      //   episodeName: this.formBuilder.control(
-      //     'Вторая глава',
-      //     Validators.required
-      //   ),
-      //   translator: this.formBuilder.control('Assley', Validators.required),
-      //   file: this.formBuilder.control(null, Validators.required),
-      // }),
     ]),
   });
 
@@ -98,14 +115,20 @@ export class CreateBookComponent implements OnInit {
       genres: book.genres,
       tags: book.tags,
       sections: book.sections,
-      episodes: map((episode) => omit(['file'], episode), book.episodes as any),
+      authors: book.authors,
+      publishers: book.publishers,
+      translators: book.translators,
+      painters: book.painters,
+
+      episodes: map((episode: Episode) => {
+        return {
+          ...episode,
+          file: episode.file.name,
+        };
+      }, book.episodes),
     };
 
-    const files = map((episode: Episode) => ({
-      file: episode.file,
-      name: episode.episodeName,
-    }))(book.episodes);
-
+    const files = map(prop('file'))(book.episodes);
     return { payload, files };
   }
 
@@ -143,18 +166,35 @@ export class CreateBookComponent implements OnInit {
     };
   }
 
+  // search methos
   onSearchGenre = this.onSearchResource('genre');
   onSearchTag = this.onSearchResource('tag');
   onSearchSection = this.onSearchResource('section');
+  onSearchAuthor = this.onSearchResource('author');
+  onSearchTranslator = this.onSearchResource('translator');
+  onSearchPublisher = this.onSearchResource('publisher');
+  onSearchPainter = this.onSearchResource('painter');
 
+  // select methos
   onSelectGenre = this.onSelectResource('genre');
   onSelectTag = this.onSelectResource('tag');
   onSelectSection = this.onSelectResource('section');
+  onSelectAuthor = this.onSelectResource('author');
+  onSelectTranslator = this.onSelectResource('translator');
+  onSelectPublisher = this.onSelectResource('publisher');
+  onSelectPainter = this.onSelectResource('painter');
 
   ngOnInit(): void {
-    this.loadResource('genre');
-    this.loadResource('section');
-    this.loadResource('tag');
+    const resources = [
+      'genre',
+      'section',
+      'tag',
+      'author',
+      'painter',
+      'publisher',
+      'translator',
+    ];
+    resources.forEach((resource) => this.loadResource(resource));
   }
 
   onUploadEpisode(event, index) {
@@ -173,22 +213,38 @@ export class CreateBookComponent implements OnInit {
     const { payload, files } = this.serialize();
     const bookForm = new FormData();
 
+    this.messageService.add({
+      status: 'success',
+      content: JSON.stringify(payload),
+    });
+
     bookForm.append('payload', JSON.stringify(payload));
 
-    files.forEach(({ file, name }) => {
-      bookForm.append(name, file, file.name);
+    files.forEach((file: File) => {
+      bookForm.append(file.name, file, file.name);
     });
 
-    this.bookService.sendFormData(bookForm).subscribe((response) => {
-      console.log(response);
-    });
-    // for ( const key of Object.keys(formValue) ) {
-    //   const value = formValue[key];
-    //   formData.append(key, value);
-    // }
+    this.processing = true;
+    this.bookService.sendFormData(bookForm).subscribe(
+      (response) => {
+        if (response.type === HttpEventType.UploadProgress) {
+          this.progress = Math.round((100 * response.loaded) / response.total);
+        }
 
-    // this.bookService.add(bookData).subscribe((response) => {
-    //   console.log('success');
-    // });
+        if (response.type === HttpEventType.Response) {
+          this.processing = false;
+          this.progress = 0;
+        }
+      },
+      () => {
+        this.processing = false;
+        this.progress = 0;
+        this.messageService.add({
+          status: 'danger',
+          content:
+            'Что-то пошло не так, попробуйте проверить все поля и загруить ещё раз',
+        });
+      }
+    );
   }
 }

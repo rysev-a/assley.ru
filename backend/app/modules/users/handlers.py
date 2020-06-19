@@ -1,14 +1,17 @@
 from starlette.responses import JSONResponse
 from app.core.database import db
+from app.core.api import ListResource, DetailResource
 from .models import User
 from .schemas import UserSchema
 
 
-async def user_list(request):
-    all_users = await User.query.gino.all()
-    users_schema = UserSchema(many=True)
+class UserList(ListResource):
+    db = db
+    model = User
+    schema = UserSchema
 
-    return JSONResponse({
-        "status": "success",
-        "users": users_schema.dump(all_users)
-    })
+
+class UserDetail(DetailResource):
+    db = db
+    model = User
+    schema = UserSchema

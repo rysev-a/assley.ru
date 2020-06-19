@@ -10,6 +10,10 @@ from app.modules.books.models import (
     Genre,
     Tag,
     Section,
+    Painter,
+    Author,
+    Publisher,
+    Translator,
     BookGenreAssocciation,
     BookTagAssocciation,
     BookSectionAssocciation,
@@ -57,6 +61,22 @@ async def generate_tags():
 
 async def generate_sections():
     await generate('sections', Section)
+
+
+async def generate_painter():
+    await generate('painters', Painter)
+
+
+async def generate_author():
+    await generate('authors', Author)
+
+
+async def generate_publisher():
+    await generate('publishers', Publisher)
+
+
+async def generate_translator():
+    await generate('translators', Translator)
 
 
 async def generate_books():
@@ -114,8 +134,12 @@ async def load_database():
     await generate_genres()
     await generate_tags()
     await generate_sections()
-    # await generate_books()
     await generate_users()
+
+    await generate_painter()
+    await generate_publisher()
+    await generate_translator()
+    await generate_author()
 
 
 commands = {

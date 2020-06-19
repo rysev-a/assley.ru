@@ -12,6 +12,12 @@ import { SectionsComponent } from './pages/admin/sections/sections.component';
 import { AdminBooksComponent } from './pages/admin/books/books.component';
 import { CreateBookComponent } from './pages/admin/create-book/create-book.component';
 
+import { AuthorsComponent } from './pages/admin/authors/authors.component';
+import { PaintersComponent } from './pages/admin/painters/painters.component';
+import { TranslatorsComponent } from './pages/admin/translators/translators.component';
+import { PublishersComponent } from './pages/admin/publishers/publishers.component';
+import { UsersComponent } from './pages/admin/users/users.component';
+
 const routes: Routes = [
   {
     path: 'login',
@@ -37,9 +43,18 @@ const routes: Routes = [
         path: '',
         component: StartComponent,
       },
+
+      { path: 'users', component: UsersComponent },
+
+      // book attributes
       { path: 'genres', component: GenresComponent },
       { path: 'tags', component: TagsComponent },
       { path: 'sections', component: SectionsComponent },
+      { path: 'authors', component: AuthorsComponent },
+      { path: 'painters', component: PaintersComponent },
+      { path: 'translators', component: TranslatorsComponent },
+      { path: 'publishers', component: PublishersComponent },
+
       { path: 'books', component: AdminBooksComponent },
       { path: 'books/new', component: CreateBookComponent },
     ],

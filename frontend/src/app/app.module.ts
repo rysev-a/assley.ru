@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -7,6 +7,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { httpInterceptorProviders } from './http-interceptors';
+import { CustomErrorHandler } from './core/CustomErrorHandler';
 
 // libs
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -34,6 +35,12 @@ import { SectionsComponent } from './pages/admin/sections/sections.component';
 import { AdminBooksComponent } from './pages/admin/books/books.component';
 import { CreateBookComponent } from './pages/admin/create-book/create-book.component';
 import { CreateBookEpisodesComponent } from './pages/admin/create-book/episodes/episodes.component';
+import { ProgressComponent } from './components/progress/progress.component';
+import { AuthorsComponent } from './pages/admin/authors/authors.component';
+import { TranslatorsComponent } from './pages/admin/translators/translators.component';
+import { PaintersComponent } from './pages/admin/painters/painters.component';
+import { PublishersComponent } from './pages/admin/publishers/publishers.component';
+import { UsersComponent } from './pages/admin/users/users.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +64,12 @@ import { CreateBookEpisodesComponent } from './pages/admin/create-book/episodes/
     AdminBooksComponent,
     CreateBookComponent,
     CreateBookEpisodesComponent,
+    ProgressComponent,
+    AuthorsComponent,
+    TranslatorsComponent,
+    PaintersComponent,
+    PublishersComponent,
+    UsersComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,7 +80,13 @@ import { CreateBookEpisodesComponent } from './pages/admin/create-book/episodes/
     HttpClientModule,
     NgSelectModule,
   ],
-  providers: [httpInterceptorProviders],
+  providers: [
+    httpInterceptorProviders,
+    {
+      provide: ErrorHandler,
+      useClass: CustomErrorHandler,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

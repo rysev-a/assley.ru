@@ -6,9 +6,7 @@ class Book(db.Model):
 
     id = db.Column(db.Integer(), primary_key=True)
     title = db.Column(db.Unicode())
-    author = db.Column(db.Unicode())
     description = db.Column(db.Unicode())
-    painter = db.Column(db.Unicode())
     release_year = db.Column(db.Integer())
     cover = db.Column(db.Unicode())
 

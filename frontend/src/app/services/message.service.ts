@@ -14,8 +14,7 @@ export interface Message {
 })
 export class MessageService {
   messages: Message[] = [];
-
-  cool = 'cool data';
+  timer: any;
 
   genId(): number {
     return this.messages.length > 0

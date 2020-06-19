@@ -1,5 +1,6 @@
 <h1 class="title has-text-weight-normal is-size-2">Добавить книгу</h1>
-<form [formGroup]="bookForm">
+<form [formGroup]="bookForm" class="create-book-form">
+  <app-progress [processing]="processing" [progress]="progress"></app-progress>
   <div class="field">
     <label class="label">Название</label>
     <div class="control">
@@ -58,6 +59,74 @@
         placeholder="Выберите категории"
         (change)="onSelectSection($event)"
         (search)="onSearchSection($event)"
+      >
+      </ng-select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Художники</label>
+    <div class="control">
+      <ng-select
+        [items]="resources.painter"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [searchable]="true"
+        bindLabel="name"
+        placeholder="Выберите художников"
+        (change)="onSelectPainter($event)"
+        (search)="onSearchPainter($event)"
+      >
+      </ng-select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Издатели</label>
+    <div class="control">
+      <ng-select
+        [items]="resources.publisher"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [searchable]="true"
+        bindLabel="name"
+        placeholder="Выберите издателей"
+        (change)="onSelectPublisher($event)"
+        (search)="onSearchPublisher($event)"
+      >
+      </ng-select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Авторы</label>
+    <div class="control">
+      <ng-select
+        [items]="resources.author"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [searchable]="true"
+        bindLabel="name"
+        placeholder="Выберите авторов"
+        (change)="onSelectAuthor($event)"
+        (search)="onSearchAuthor($event)"
+      >
+      </ng-select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Переводчики</label>
+    <div class="control">
+      <ng-select
+        [items]="resources.translator"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [searchable]="true"
+        bindLabel="name"
+        placeholder="Выберите переводчиков"
+        (change)="onSelectTranslator($event)"
+        (search)="onSearchTranslator($event)"
       >
       </ng-select>
     </div>

@@ -1,0 +1,12 @@
+<ng-template [ngIf]="progress < 100 && processing">
+  <div class="progress-wrapper active">
+    <progress
+      class="progress is-success"
+      [value]="progress"
+      max="100"
+    ></progress>
+  </div>
+</ng-template>
+<ng-template [ngIf]="progress === 100 && processing">
+  <app-processing processing="[true]"></app-processing>
+</ng-template>

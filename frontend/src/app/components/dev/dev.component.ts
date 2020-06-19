@@ -37,6 +37,7 @@ export class DevComponent implements OnInit {
           status: 'success',
           content: 'Success load database',
         });
+        window.location.reload();
       },
       () => {
         this.messageService.add({

@@ -1,4 +1,27 @@
+import enum
+from sqlalchemy import Enum
 from app.core.database import db
+
+
+class ReleaseFormat(enum.Enum):
+    color = 1
+    web = 2
+    sigle = 3
+    compilation = 4
+    doujinshi = 5
+
+
+class AgeLimit(enum.Enum):
+    unlimited = 1
+    sixteen = 2
+    eighteen = 3
+
+
+class TranslationStatus(enum.Enum):
+    complete = 1
+    processing = 2
+    frozen = 3
+    no_translator = 4
 
 
 class Book(db.Model):
@@ -8,7 +31,16 @@ class Book(db.Model):
     title = db.Column(db.Unicode())
     description = db.Column(db.Unicode())
     release_year = db.Column(db.Integer())
-    cover = db.Column(db.Unicode())
+    cover_image = db.Column(db.Unicode())
+    background_image = db.Column(db.Unicode())
+
+    # enum props
+    age_limit = db.Column(Enum(
+        AgeLimit),  nullable=False, default=AgeLimit.unlimited)
+    translation_status = db.Column(
+        Enum(TranslationStatus), nullable=False,  default=TranslationStatus.processing)
+    release_format = db.Column(
+        Enum(ReleaseFormat), nullable=False, default=ReleaseFormat.web)
 
     def __init__(self, **kw):
         super().__init__(**kw)

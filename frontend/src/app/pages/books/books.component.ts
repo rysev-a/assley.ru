@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BookService } from 'src/app/services/book.service';
 
 @Component({
   selector: 'app-books',
@@ -7,18 +8,12 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./books.component.sass'],
 })
 export class BooksComponent implements OnInit {
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private bookService: BookService
+  ) {}
 
   category: string = '';
 
-  loadCategory(category) {
-    // const category = this.route.snapshot.paramMap.get('category');
-    this.category = category;
-  }
-
-  ngOnInit(): void {
-    this.route.params.subscribe(({ category }) => {
-      this.loadCategory(category);
-    });
-  }
+  ngOnInit(): void {}
 }

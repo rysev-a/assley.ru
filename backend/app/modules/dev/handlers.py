@@ -125,7 +125,24 @@ async def generate_users():
 
 
 async def clear_database():
-    await db.gino.drop_all()
+    await db.scalar('DROP TABLE IF EXISTS users')
+    await db.scalar('DROP TABLE IF EXISTS books CASCADE')
+
+    # drop resources
+    await db.scalar('DROP TABLE IF EXISTS genres CASCADE')
+    await db.scalar('DROP TABLE IF EXISTS tags CASCADE')
+    await db.scalar('DROP TABLE IF EXISTS sections CASCADE')
+
+    # drop attributes
+    await db.scalar('DROP TABLE IF EXISTS translators CASCADE')
+    await db.scalar('DROP TABLE IF EXISTS painters CASCADE')
+    await db.scalar('DROP TABLE IF EXISTS authors CASCADE')
+    await db.scalar('DROP TABLE IF EXISTS publishers CASCADE')
+
+    # drop seasons
+    await db.scalar('DROP TABLE IF EXISTS seasons CASCADE')
+    await db.scalar('DROP TABLE IF EXISTS episodes CASCADE')
+
     await db.gino.create_all()
 
 

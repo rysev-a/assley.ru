@@ -5,8 +5,8 @@
     <thead>
       <tr>
         <td>id</td>
-        <td><span>Название</span></td>
-        <td><span>Автор</span></td>
+        <td>Название</td>
+        <td>Год выпуска</td>
         <th>Действия</th>
       </tr>
     </thead>
@@ -14,7 +14,7 @@
       <tr *ngFor="let item of items">
         <td>{{ item.id }}</td>
         <td>{{ item.title }}</td>
-        <td>{{ item.author }}</td>
+        <td>{{ item.release_year }}</td>
         <td>
           <div class="buttons">
             <a class="button is-small is-link"

@@ -8,6 +8,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { AccountService } from 'src/app/services/account.service';
 
+import { SectionService } from 'src/app/services/section.service';
+import { ApiServiceResponse } from 'src/app/core/api.service';
+
 interface Link {
   url: string;
   name: string;
@@ -19,7 +22,12 @@ interface Link {
   styleUrls: ['./header.component.sass'],
 })
 export class HeaderComponent implements OnInit {
-  constructor(private account: AccountService) {}
+  constructor(
+    private account: AccountService,
+    private sectionService: SectionService
+  ) {}
+
+  sections = [];
 
   faUserPlus = faUserPlus;
   faSignInAlt = faSignInAlt;
@@ -39,17 +47,13 @@ export class HeaderComponent implements OnInit {
     return this.account.isLoaded;
   }
 
-  categories: Link[] = [
-    { name: 'Манги', url: 'books/manga' },
-    { name: 'Манхвы', url: 'books/manhwa' },
-    { name: 'Маньхуа', url: 'books/manhua' },
-    { name: 'OEL-манги', url: 'books/oel' },
-    { name: 'Синглов', url: 'books/singles' },
-  ];
-
   get email() {
     return (this.account.data && this.account.data.email) || '';
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.sectionService.list().subscribe(({ items }: ApiServiceResponse) => {
+      this.sections = items;
+    });
+  }
 }

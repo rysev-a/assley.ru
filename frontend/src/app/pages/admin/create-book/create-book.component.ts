@@ -56,8 +56,20 @@ export class CreateBookComponent implements OnInit {
   bookForm = this.formBuilder.group({
     title: ['', Validators.required],
     description: ['', Validators.required],
+    release_year: ['', Validators.required],
 
-    // book attributes
+    // enum attributes
+    age_limit: [this.enumValues.age_limit[0].value, Validators.required],
+    translation_status: [
+      this.enumValues.translation_status[0].value,
+      Validators.required,
+    ],
+    release_format: [
+      this.enumValues.release_format[0].value,
+      Validators.required,
+    ],
+
+    // resource attributes
     genres: [[]],
     tags: [[]],
     sections: [[]],
@@ -79,6 +91,30 @@ export class CreateBookComponent implements OnInit {
       }),
     ]),
   });
+
+  get enumValues() {
+    return {
+      age_limit: [
+        { value: 'unlimited', label: 'Без ограничений' },
+        { value: 'sixteen', label: '16+' },
+        { value: 'eighteen', label: '18+' },
+      ],
+
+      translation_status: [
+        { value: 'complete', label: 'Завершен' },
+        { value: 'processing', label: 'В процессе' },
+        { value: 'frozen', label: 'Заморожен' },
+        { value: 'no_translator', label: 'Нет переводчика' },
+      ],
+      release_format: [
+        { value: 'color', label: 'В цвете' },
+        { value: 'web', label: 'Веб' },
+        { value: 'sigle', label: 'Сингл' },
+        { value: 'compilation', label: 'Сборник' },
+        { value: 'doujinshi', label: 'Додзинси' },
+      ],
+    };
+  }
 
   get episodes() {
     return this.bookForm.get('episodes') as FormArray;
@@ -112,6 +148,7 @@ export class CreateBookComponent implements OnInit {
     const payload = {
       title: book.title,
       description: book.description,
+      release_year: book.release_year,
       genres: book.genres,
       tags: book.tags,
       sections: book.sections,
@@ -119,6 +156,11 @@ export class CreateBookComponent implements OnInit {
       publishers: book.publishers,
       translators: book.translators,
       painters: book.painters,
+
+      // enums
+      age_limit: book.age_limit,
+      translation_status: book.translation_status,
+      release_format: book.release_format,
 
       episodes: map((episode: Episode) => {
         return {

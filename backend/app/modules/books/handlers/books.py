@@ -117,7 +117,11 @@ class BookList(ListResource):
 
         book = await Book.create(
             title=data.get('title'),
-            description=data.get('description')
+            description=data.get('description'),
+            release_year=data.get('release_year'),
+            age_limit=data.get('age_limit'),
+            translation_status=data.get('translation_status'),
+            release_format=data.get('release_format'),
         )
 
         for episode_fields in data.get('episodes'):

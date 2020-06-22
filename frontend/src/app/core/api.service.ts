@@ -63,4 +63,8 @@ export class ApiService {
       observe: 'events',
     });
   }
+
+  detail(id) {
+    return this.http.get(`${this.url}${id}`);
+  }
 }

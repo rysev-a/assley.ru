@@ -49,6 +49,38 @@ class SeasonSchema(Schema):
     book_id = fields.Int()
 
 
+class AgeLimit(fields.Field):
+    def _serialize(self, value, attr, obj, **kwargs):
+        return str(value).replace('AgeLimit.', '')
+
+    def _deserialize(self, value, attr, data, **kwargs):
+        return value
+
+
+class AgeLimit(fields.Field):
+    def _serialize(self, value, attr, obj, **kwargs):
+        return str(value).replace('AgeLimit.', '')
+
+    def _deserialize(self, value, attr, data, **kwargs):
+        return value
+
+
+class TranslationStatus(fields.Field):
+    def _serialize(self, value, attr, obj, **kwargs):
+        return str(value).replace('TranslationStatus.', '')
+
+    def _deserialize(self, value, attr, data, **kwargs):
+        return value
+
+
+class ReleaseFormat(fields.Field):
+    def _serialize(self, value, attr, obj, **kwargs):
+        return str(value).replace('ReleaseFormat.', '')
+
+    def _deserialize(self, value, attr, data, **kwargs):
+        return valu
+
+
 class BookSchema(Schema):
     id = fields.Int()
     title = fields.Str()
@@ -63,3 +95,6 @@ class BookSchema(Schema):
     translators = fields.List(fields.Nested(TranslatorSchema))
     publishers = fields.List(fields.Nested(PublisherSchema))
     painters = fields.List(fields.Nested(PainterSchema))
+    age_limit = AgeLimit()
+    translation_status = TranslationStatus()
+    release_format = ReleaseFormat()

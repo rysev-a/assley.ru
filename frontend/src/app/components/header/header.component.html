@@ -18,17 +18,17 @@
     </div>
     <div class="navbar-menu">
       <div class="navbar-start">
-        <div class="navbar-item has-dropdown is-hoverable">
+        <!-- <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">Категории</a>
           <div class="navbar-dropdown">
             <a
-              *ngFor="let category of categories"
-              routerLink="{{ category.url }}"
+              *ngFor="let section of sections"
+              routerLink="/books"
               class="navbar-item"
-              >{{ category.name }}</a
+              >{{ section.name }}</a
             >
           </div>
-        </div>
+        </div> -->
         <a routeLink="/forum" class="navbar-item">Форум</a>
         <a routeLink="/faq" class="navbar-item">FAQ</a>
         <a routeLink="/contacts" class="navbar-item">Контакты</a>

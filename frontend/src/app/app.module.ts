@@ -19,16 +19,18 @@ import { DevComponent } from './components/dev/dev.component';
 import { ProcessingComponent } from './components/processing/processing.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 
-// pages
+// regular pages
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { BooksComponent } from './pages/books/books.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { StartComponent } from './pages/start/start.component';
 
+// admin
 import { AdminPanelComponent } from './pages/admin/panel/panel.component';
 import { AsideMenuComponent } from './pages/admin/panel/aside-menu/aside-menu.component';
 import { GenresComponent } from './pages/admin/genres/genres.component';
-import { StartComponent } from './pages/admin/start/start.component';
+import { AdminStartComponent } from './pages/admin/start/start.component';
 import { TagsComponent } from './pages/admin/tags/tags.component';
 import { MessageComponent } from './components/message/message.component';
 import { SectionsComponent } from './pages/admin/sections/sections.component';
@@ -41,21 +43,29 @@ import { TranslatorsComponent } from './pages/admin/translators/translators.comp
 import { PaintersComponent } from './pages/admin/painters/painters.component';
 import { PublishersComponent } from './pages/admin/publishers/publishers.component';
 import { UsersComponent } from './pages/admin/users/users.component';
+import { BookDetailComponent } from './pages/book-detail/book-detail.component';
+import { BookReadComponent } from './pages/book-read/book-read.component';
 
 @NgModule({
   declarations: [
+    // components
     AppComponent,
     LoginComponent,
     SignupComponent,
     HeaderComponent,
     FooterComponent,
+
+    // regular pages
+    StartComponent,
     BooksComponent,
     ProfileComponent,
     DevComponent,
-    AdminPanelComponent,
+
+    // admin pages
     AsideMenuComponent,
     GenresComponent,
-    StartComponent,
+    AdminPanelComponent,
+    AdminStartComponent,
     ProcessingComponent,
     PaginationComponent,
     TagsComponent,
@@ -70,6 +80,8 @@ import { UsersComponent } from './pages/admin/users/users.component';
     PaintersComponent,
     PublishersComponent,
     UsersComponent,
+    BookDetailComponent,
+    BookReadComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,10 +94,10 @@ import { UsersComponent } from './pages/admin/users/users.component';
   ],
   providers: [
     httpInterceptorProviders,
-    {
-      provide: ErrorHandler,
-      useClass: CustomErrorHandler,
-    },
+    // {
+    //   provide: ErrorHandler,
+    //   useClass: CustomErrorHandler,
+    // },
   ],
   bootstrap: [AppComponent],
 })

@@ -14,6 +14,7 @@ import { AuthorService } from 'src/app/services/author.service';
 import { TranslatorService } from 'src/app/services/translator.service';
 import { PublisherService } from 'src/app/services/publisher.service';
 import { PainterService } from 'src/app/services/painter.service';
+import { Router } from '@angular/router';
 
 interface Episode {
   file: any;
@@ -31,6 +32,7 @@ export class CreateBookComponent implements OnInit {
     private formBuilder: FormBuilder,
     private bookService: BookService,
     private messageService: MessageService,
+    private router: Router,
     private genreService: GenreService,
     private tagService: TagService,
     private sectionService: SectionService,
@@ -77,19 +79,7 @@ export class CreateBookComponent implements OnInit {
     translators: [[]],
     publishers: [[]],
     painters: [[]],
-
-    episodes: this.formBuilder.array([
-      this.formBuilder.group({
-        seasonNumber: this.formBuilder.control('2', Validators.required),
-        episodeNumber: this.formBuilder.control('1', Validators.required),
-        episodeName: this.formBuilder.control(
-          'Первая глава',
-          Validators.required
-        ),
-        translator: this.formBuilder.control('Assley', Validators.required),
-        file: this.formBuilder.control(null, Validators.required),
-      }),
-    ]),
+    episodes: this.formBuilder.array([]),
   });
 
   get enumValues() {
@@ -140,10 +130,6 @@ export class CreateBookComponent implements OnInit {
 
   serialize() {
     const book = this.bookForm.value;
-    const date = new Date();
-    this.bookForm.patchValue({
-      title: `${date.getTime()}`,
-    });
 
     const payload = {
       title: book.title,
@@ -255,11 +241,6 @@ export class CreateBookComponent implements OnInit {
     const { payload, files } = this.serialize();
     const bookForm = new FormData();
 
-    this.messageService.add({
-      status: 'success',
-      content: JSON.stringify(payload),
-    });
-
     bookForm.append('payload', JSON.stringify(payload));
 
     files.forEach((file: File) => {
@@ -268,7 +249,7 @@ export class CreateBookComponent implements OnInit {
 
     this.processing = true;
     this.bookService.sendFormData(bookForm).subscribe(
-      (response) => {
+      (response: any) => {
         if (response.type === HttpEventType.UploadProgress) {
           this.progress = Math.round((100 * response.loaded) / response.total);
         }
@@ -276,6 +257,7 @@ export class CreateBookComponent implements OnInit {
         if (response.type === HttpEventType.Response) {
           this.processing = false;
           this.progress = 0;
+          this.router.navigate([`/books/${response.body.item.id}`]);
         }
       },
       () => {

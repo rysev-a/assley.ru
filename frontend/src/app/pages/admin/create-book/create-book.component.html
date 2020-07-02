@@ -133,6 +133,22 @@
   </div>
 
   <div class="field">
+    <label class="label">Формат выпуска</label>
+    <div class="control">
+      <ng-select
+        [items]="release_format_options"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [searchable]="true"
+        bindLabel="name"
+        placeholder="Выберите формат выпуска"
+        (change)="onSelectReleaseFormat($event)"
+      >
+      </ng-select>
+    </div>
+  </div>
+
+  <div class="field">
     <label class="label">Возрастные ограничения</label>
     <div class="select">
       <select formControlName="age_limit">
@@ -155,20 +171,6 @@
           [value]="translation_status.value"
         >
           {{ translation_status.label }}
-        </option>
-      </select>
-    </div>
-  </div>
-
-  <div class="field">
-    <label class="label">Формат выпуска</label>
-    <div class="select">
-      <select formControlName="release_format">
-        <option
-          *ngFor="let release_format of enumValues.release_format"
-          [value]="release_format.value"
-        >
-          {{ release_format.label }}
         </option>
       </select>
     </div>

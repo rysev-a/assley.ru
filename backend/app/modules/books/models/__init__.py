@@ -17,4 +17,5 @@ from .assocciations import (
     BookTranslatorAssocciation,
     BookPainterAssocciation,
     BookPublisherAssocciation,
+    BookReleaseFormatAssocciation,
 )

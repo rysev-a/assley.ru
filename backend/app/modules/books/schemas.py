@@ -97,4 +97,3 @@ class BookSchema(Schema):
     painters = fields.List(fields.Nested(PainterSchema))
     age_limit = AgeLimit()
     translation_status = TranslationStatus()
-    release_format = ReleaseFormat()

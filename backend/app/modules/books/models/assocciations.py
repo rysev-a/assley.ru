@@ -1,3 +1,5 @@
+import enum
+from sqlalchemy import Enum
 from app.core.database import db
 
 
@@ -105,3 +107,28 @@ class BookPublisherAssocciation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     book_id = db.Column(db.Integer, db.ForeignKey('books.id'))
     publisher_id = db.Column(db.Integer, db.ForeignKey('publishers.id'))
+
+
+class ReleaseFormat(enum.Enum):
+    color = 1
+    web = 2
+    sigle = 3
+    compilation = 4
+    doujinshi = 5
+
+
+class BookReleaseFormatAssocciation(db.Model):
+    __tablename__ = 'books_release_formates'
+    __table_args__ = (
+        db.ForeignKeyConstraint(
+            ['book_id'],
+            ['books.id'],
+            onupdate="CASCADE", ondelete="CASCADE"
+        ),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('books.id'))
+
+    release_format = db.Column(
+        Enum(ReleaseFormat), nullable=False, default=ReleaseFormat.web)

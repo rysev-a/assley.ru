@@ -3,14 +3,6 @@ from sqlalchemy import Enum
 from app.core.database import db
 
 
-class ReleaseFormat(enum.Enum):
-    color = 1
-    web = 2
-    sigle = 3
-    compilation = 4
-    doujinshi = 5
-
-
 class AgeLimit(enum.Enum):
     unlimited = 1
     sixteen = 2
@@ -39,8 +31,7 @@ class Book(db.Model):
         AgeLimit),  nullable=False, default=AgeLimit.unlimited)
     translation_status = db.Column(
         Enum(TranslationStatus), nullable=False,  default=TranslationStatus.processing)
-    release_format = db.Column(
-        Enum(ReleaseFormat), nullable=False, default=ReleaseFormat.web)
+
 
     def __init__(self, **kw):
         super().__init__(**kw)

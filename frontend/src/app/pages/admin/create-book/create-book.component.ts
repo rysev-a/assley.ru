@@ -66,10 +66,6 @@ export class CreateBookComponent implements OnInit {
       this.enumValues.translation_status[0].value,
       Validators.required,
     ],
-    release_format: [
-      this.enumValues.release_format[0].value,
-      Validators.required,
-    ],
 
     // resource attributes
     genres: [[]],
@@ -79,6 +75,7 @@ export class CreateBookComponent implements OnInit {
     translators: [[]],
     publishers: [[]],
     painters: [[]],
+    release_formates: [[]],
     episodes: this.formBuilder.array([]),
   });
 
@@ -96,15 +93,16 @@ export class CreateBookComponent implements OnInit {
         { value: 'frozen', label: 'Заморожен' },
         { value: 'no_translator', label: 'Нет переводчика' },
       ],
-      release_format: [
-        { value: 'color', label: 'В цвете' },
-        { value: 'web', label: 'Веб' },
-        { value: 'sigle', label: 'Сингл' },
-        { value: 'compilation', label: 'Сборник' },
-        { value: 'doujinshi', label: 'Додзинси' },
-      ],
     };
   }
+
+  release_format_options = [
+    { id: 'color', name: 'В цвете' },
+    { id: 'web', name: 'Веб' },
+    { id: 'sigle', name: 'Сингл' },
+    { id: 'compilation', name: 'Сборник' },
+    { id: 'doujinshi', name: 'Додзинси' },
+  ];
 
   get episodes() {
     return this.bookForm.get('episodes') as FormArray;
@@ -146,7 +144,7 @@ export class CreateBookComponent implements OnInit {
       // enums
       age_limit: book.age_limit,
       translation_status: book.translation_status,
-      release_format: book.release_format,
+      release_formates: book.release_formates,
 
       episodes: map((episode: Episode) => {
         return {
@@ -212,6 +210,12 @@ export class CreateBookComponent implements OnInit {
   onSelectPublisher = this.onSelectResource('publisher');
   onSelectPainter = this.onSelectResource('painter');
 
+  onSelectReleaseFormat = ($event) => {
+    this.bookForm.patchValue({
+      release_formates: $event.map((item) => item.id),
+    });
+  };
+
   ngOnInit(): void {
     const resources = [
       'genre',
@@ -239,6 +243,7 @@ export class CreateBookComponent implements OnInit {
 
   onSubmit() {
     const { payload, files } = this.serialize();
+    console.log(payload);
     const bookForm = new FormData();
 
     bookForm.append('payload', JSON.stringify(payload));
@@ -257,7 +262,7 @@ export class CreateBookComponent implements OnInit {
         if (response.type === HttpEventType.Response) {
           this.processing = false;
           this.progress = 0;
-          this.router.navigate([`/books/${response.body.item.id}`]);
+          // this.router.navigate([`/books/${response.body.item.id}`]);
         }
       },
       () => {

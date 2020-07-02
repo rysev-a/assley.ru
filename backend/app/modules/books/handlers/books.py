@@ -36,6 +36,7 @@ from ..models import (
     BookPainterAssocciation,
     BookTranslatorAssocciation,
     BookPublisherAssocciation,
+    BookReleaseFormatAssocciation,
 )
 
 
@@ -93,6 +94,13 @@ class BookList(ListResource):
             'pages': self.pages
         })
 
+    async def create_release_formattes(self, book_id, data):
+        for release_format in data.get('release_formates'):
+            await BookReleaseFormatAssocciation.create(**{
+                'book_id': book_id,
+                'release_format': release_format
+            })
+
     async def create_resources(self, book_id, data):
         models = [
             ('genres', 'genre_id', BookGenreAssocciation),
@@ -115,13 +123,14 @@ class BookList(ListResource):
         form = await request.form()
         data = json.loads(form.get('payload'))
 
+        print('release formates', data.get('release_formates'))
+
         book = await Book.create(
             title=data.get('title'),
             description=data.get('description'),
             release_year=data.get('release_year'),
             age_limit=data.get('age_limit'),
             translation_status=data.get('translation_status'),
-            release_format=data.get('release_format'),
         )
 
         for episode_fields in data.get('episodes'):
@@ -130,6 +139,7 @@ class BookList(ListResource):
             await Episode.upload(episode=episode, book_id=book.id)
 
         await self.create_resources(book.id, data)
+        await self.create_release_formattes(book.id, data)
 
         return JSONResponse({
             'data': data,
@@ -172,7 +182,7 @@ class BookDetail(DetailResource):
 
         return resources
 
-    async def inject_seasons(self, id):
+    async def get_seasons(self, id):
         seasons = await Season.query.where(Season.book_id == id).gino.all()
         episodes = EpisodeSchema(many=True).dump(
             await Episode.query.where(Episode.season_id.in_(
@@ -187,11 +197,20 @@ class BookDetail(DetailResource):
             ]
         } for season in SeasonSchema(many=True).dump(seasons)]
 
+    async def get_release_formates(self, id):
+        release_formates_raw = await BookReleaseFormatAssocciation.query.where(
+            BookReleaseFormatAssocciation.book_id == id
+        ).gino.all()
+
+        return [str(item.release_format).replace('ReleaseFormat.', '')
+                for item in release_formates_raw]
+
     async def get(self, request):
         id = request.path_params['id']
         item = await self.model.get(id)
         resources = await self.inject_resources(id)
-        seasons = await self.inject_seasons(id)
+        seasons = await self.get_seasons(id)
+        release_formates = await self.get_release_formates(id)
 
         return JSONResponse({
             'success': True,
@@ -199,5 +218,6 @@ class BookDetail(DetailResource):
                 **self.schema().dump(item),
                 **resources,
                 'seasons': seasons,
+                'release_formattes': release_formates,
             }
         })

@@ -19,6 +19,8 @@ export class BookDetailComponent implements OnInit {
     id: 0,
     title: '',
     description: '',
+    cover_image: '',
+
     authors: [],
 
     genres: [],

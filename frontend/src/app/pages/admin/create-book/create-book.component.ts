@@ -62,7 +62,7 @@ export class CreateBookComponent implements OnInit {
     title: ['', Validators.required],
     description: ['', Validators.required],
     release_year: ['', Validators.required],
-    cover_image: [null],
+    cover_image: [null, Validators.required],
 
     // enum attributes
     age_limit: [this.enumValues.age_limit[0].value, Validators.required],

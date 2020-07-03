@@ -1,88 +1,95 @@
 <section class="section">
-  <div class="container">
-    <div class="columns">
-      <div class="column is-4">
-        <div class="card">
-          <div class="card-image">
-            <figure class="image is-4by3 book-cover">
-              <img
-                [src]="book.cover_image"
-                alt="Placeholder image"
-                class="book-cover-image"
-              />
-            </figure>
-          </div>
-          <div class="card-content">
-            <a class="button is-primary" routerLink="/books/{{ book.id }}/read"
-              >Начать читать</a
-            >
-          </div>
-        </div>
-      </div>
-      <div class="column is-8">
-        <h1 class="is-title is-size-2 pb-5">{{ book.title }}</h1>
-
-        <div class="info-item">
-          <div class="info-item__title has-text-weight-semibol">Описание</div>
-          <div class="info-item__content">{{ book.description }}</div>
-        </div>
-
-        <div class="info-item">
-          <div class="info-item__title has-text-weight-semibol">
-            Год выпуска
-          </div>
-          <div class="info-item__content">{{ book.release_year }}</div>
-        </div>
-
-        <div class="info-item">
-          <div class="info-item__title has-text-weight-semibol">
-            Формат выпуска
-          </div>
-          <div class="info-item__content">{{ book.release_format }}</div>
-        </div>
-
-        <div class="info-item">
-          <div class="info-item__title has-text-weight-semibol">
-            Возрастные ограничения
-          </div>
-          <div class="info-item__content">{{ book.age_limit }}</div>
-        </div>
-
-        <div class="info-item">
-          <div class="info-item__title has-text-weight-semibol">
-            Авторы
-          </div>
-          <div class="info-item__content tags is-medium">
-            <span class="tag is-primary" *ngFor="let author of book.authors">{{
-              author.name
-            }}</span>
+  <ng-template [ngIf]="loaded">
+    <div class="container">
+      <div class="columns">
+        <div class="column is-4">
+          <div class="card">
+            <div class="card-image">
+              <figure class="image is-4by3 book-cover">
+                <img
+                  [src]="book.cover_image"
+                  alt="Placeholder image"
+                  class="book-cover-image"
+                />
+              </figure>
+            </div>
+            <div class="card-content">
+              <a
+                class="button is-primary"
+                routerLink="/books/{{ book.id }}/read/{{ readEpisodeId }}"
+                [queryParams]="{ page: 1 }"
+                >Начать читать</a
+              >
+            </div>
           </div>
         </div>
+        <div class="column is-8">
+          <h1 class="is-title is-size-2 pb-5">{{ book.title }}</h1>
 
-        <div class="info-item">
-          <div class="info-item__title has-text-weight-semibol">
-            Жанры
+          <div class="info-item">
+            <div class="info-item__title has-text-weight-semibol">Описание</div>
+            <div class="info-item__content">{{ book.description }}</div>
           </div>
-          <div class="info-item__content tags is-medium">
-            <span class="tag is-primary" *ngFor="let genre of book.genres">{{
-              genre.name
-            }}</span>
-          </div>
-        </div>
 
-        <div class="info-item">
-          <div class="info-item__title has-text-weight-semibol">
-            Категории
+          <div class="info-item">
+            <div class="info-item__title has-text-weight-semibol">
+              Год выпуска
+            </div>
+            <div class="info-item__content">{{ book.release_year }}</div>
           </div>
-          <div class="info-item__content tags is-medium">
-            <span
-              class="tag is-primary"
-              *ngFor="let section of book.sections"
-              >{{ section.name }}</span
-            >
+
+          <div class="info-item">
+            <div class="info-item__title has-text-weight-semibol">
+              Формат выпуска
+            </div>
+            <div class="info-item__content">{{ book.release_format }}</div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-item__title has-text-weight-semibol">
+              Возрастные ограничения
+            </div>
+            <div class="info-item__content">{{ book.age_limit }}</div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-item__title has-text-weight-semibol">
+              Авторы
+            </div>
+            <div class="info-item__content tags is-medium">
+              <span
+                class="tag is-primary"
+                *ngFor="let author of book.authors"
+                >{{ author.name }}</span
+              >
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-item__title has-text-weight-semibol">
+              Жанры
+            </div>
+            <div class="info-item__content tags is-medium">
+              <span class="tag is-primary" *ngFor="let genre of book.genres">{{
+                genre.name
+              }}</span>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-item__title has-text-weight-semibol">
+              Категории
+            </div>
+            <div class="info-item__content tags is-medium">
+              <span
+                class="tag is-primary"
+                *ngFor="let section of book.sections"
+                >{{ section.name }}</span
+              >
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </ng-template>
 </section>

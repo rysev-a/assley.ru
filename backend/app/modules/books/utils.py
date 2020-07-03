@@ -22,6 +22,7 @@ def unzip_episode(file_content):
     episode_zip = zipfile.ZipFile(episode_filename)
     episode_zip.extractall(path=episode_folder)
     pages = [item.filename for item in episode_zip.infolist()]
+    pages.sort()
 
     return {
         'pages': pages,

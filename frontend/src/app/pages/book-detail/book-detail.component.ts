@@ -31,12 +31,25 @@ export class BookDetailComponent implements OnInit {
     release_format: '',
     translation_status: '',
     age_limit: '',
+    seasons: [],
   };
+
+  get readEpisodeId() {
+    if (this.loaded) {
+      const season = this.book.seasons[0];
+      const episode = season.episodes[0];
+
+      return episode.id;
+    }
+
+    return 0;
+  }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     this.bookService.detail(id).subscribe((response: any) => {
       this.book = response.item;
+      this.loaded = true;
     });
   }
 }

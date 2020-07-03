@@ -6,8 +6,33 @@
   </div>
 </section>
 <section>
-  <div class="container">
-    <div *ngFor="let season of book.seasons">
+  <ng-template [ngIf]="loaded">
+    <div class="container">
+      <div class="field is-grouped">
+        <div class="select">
+          <select (change)="onSelectEpisode($event)">
+            <option *ngFor="let episode of episodes" [value]="episode.id">{{
+              episode.name
+            }}</option>
+          </select>
+        </div>
+
+        <div class="select">
+          <select (change)="onSelectPage($event)">
+            <option
+              *ngFor="let page of pages; let pageIndex = index"
+              [value]="pageIndex + 1"
+            >
+              Страница - {{ pageIndex + 1 }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="read-container">
+        <img [src]="pageImg" class="read-image" />
+      </div>
+      <!-- <div *ngFor="let season of book.seasons">
       <h2 class="is-size-3">Том {{ season.name }}</h2>
       <div *ngFor="let episode of season.episodes">
         <h3 class="is-size-4">{{ episode.name }}</h3>
@@ -15,6 +40,7 @@
           <img *ngFor="let page of episode.pages" [src]="page" />
         </div>
       </div>
+    </div> -->
     </div>
-  </div>
+  </ng-template>
 </section>

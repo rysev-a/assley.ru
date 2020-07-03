@@ -14,6 +14,30 @@
   </div>
 
   <div class="field">
+    <label class="label">Обложка</label>
+    <div class="control">
+      <div class="file">
+        <label class="file-label">
+          <input
+            class="file-input"
+            type="file"
+            name="file"
+            (change)="onUploadCover($event)"
+          />
+          <span class="file-cta">
+            <span class="file-icon">
+              <fa-icon [icon]="faUpload"></fa-icon>
+            </span>
+            <span class="file-label">
+              Загрузить обложку
+            </span>
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
     <label class="label">Жанры</label>
     <div class="control">
       <ng-select
@@ -213,7 +237,11 @@
 
   <div class="field is-grouped">
     <div class="control">
-      <button class="button is-success" (click)="onSubmit()">
+      <button
+        class="button is-success"
+        [disabled]="!bookForm.valid"
+        (click)="onSubmit()"
+      >
         Добавить книгу
       </button>
     </div>

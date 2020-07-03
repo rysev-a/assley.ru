@@ -27,3 +27,15 @@ def unzip_episode(file_content):
         'pages': pages,
         'uuid': episode_uuid
     }
+
+
+async def upload_cover(file):
+    filename, file_extension = os.path.splitext(file.filename)
+    cover_uuid = str(uuid.uuid4())
+    cover_filename = f'{cover_uuid}{file_extension}'
+    cover_folder = f'{app_path}/public/'
+    cover_file = open(f'{cover_folder}{cover_filename}', 'wb')
+    content = await file.read()
+    cover_file.write(content)
+
+    return cover_filename

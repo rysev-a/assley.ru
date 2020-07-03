@@ -1,8 +1,10 @@
+import { map, prop } from 'ramda';
 import { Component, OnInit } from '@angular/core';
-import { map, omit, prop } from 'ramda';
 import { FormBuilder, FormArray } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { HttpEventType } from '@angular/common/http';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
+
 import { MessageService } from 'src/app/services/message.service';
 
 // resource services
@@ -42,6 +44,7 @@ export class CreateBookComponent implements OnInit {
     private painterService: PainterService
   ) {}
 
+  faUpload = faUpload;
   processing = false;
   progress = 0;
 
@@ -59,6 +62,7 @@ export class CreateBookComponent implements OnInit {
     title: ['', Validators.required],
     description: ['', Validators.required],
     release_year: ['', Validators.required],
+    cover_image: [null],
 
     // enum attributes
     age_limit: [this.enumValues.age_limit[0].value, Validators.required],
@@ -154,8 +158,10 @@ export class CreateBookComponent implements OnInit {
       }, book.episodes),
     };
 
-    const files = map(prop('file'))(book.episodes);
-    return { payload, files };
+    const episodes = map(prop('file'))(book.episodes);
+    const cover_image = book.cover_image;
+
+    return { payload, episodes, cover_image };
   }
 
   loadResource(model) {
@@ -241,14 +247,27 @@ export class CreateBookComponent implements OnInit {
     }
   }
 
+  onUploadCover(event) {
+    if (event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      this.bookForm.patchValue({
+        cover_image: file,
+      });
+    }
+  }
+
   onSubmit() {
-    const { payload, files } = this.serialize();
-    console.log(payload);
+    const { payload, episodes, cover_image } = this.serialize();
     const bookForm = new FormData();
 
+    // append book cover image
+    bookForm.append('cover', cover_image, cover_image.name);
+
+    // append main info
     bookForm.append('payload', JSON.stringify(payload));
 
-    files.forEach((file: File) => {
+    // append episode files
+    episodes.forEach((file: File) => {
       bookForm.append(file.name, file, file.name);
     });
 

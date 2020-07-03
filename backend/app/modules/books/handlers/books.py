@@ -9,6 +9,8 @@ from starlette.config import Config
 from app.core.database import db
 from app.core.api import ListResource, DetailResource
 
+from ..utils import upload_cover
+
 from ..schemas import (
     BookSchema,
     GenreSchema,
@@ -122,8 +124,7 @@ class BookList(ListResource):
     async def post(self, request):
         form = await request.form()
         data = json.loads(form.get('payload'))
-
-        print('release formates', data.get('release_formates'))
+        cover_image = await upload_cover(form.get('cover'))
 
         book = await Book.create(
             title=data.get('title'),
@@ -131,6 +132,7 @@ class BookList(ListResource):
             release_year=data.get('release_year'),
             age_limit=data.get('age_limit'),
             translation_status=data.get('translation_status'),
+            cover_image=cover_image,
         )
 
         for episode_fields in data.get('episodes'):

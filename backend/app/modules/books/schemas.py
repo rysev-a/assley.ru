@@ -86,6 +86,7 @@ class BookSchema(Schema):
     title = fields.Str()
     description = fields.Str()
     painter = fields.Str()
+    cover_image = fields.Str()
     release_year = fields.Int()
 
     genres = fields.List(fields.Nested(GenreSchema))

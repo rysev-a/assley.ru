@@ -3,27 +3,38 @@
     <div class="container">
       <div class="columns is-centered">
         <div class="column is-5-tablet is-4-desktop is-3-widescreen">
-          <form action="" class="box">
+          <form
+            action=""
+            class="box"
+            [formGroup]="loginForm"
+            (ngSubmit)="onSubmit()"
+          >
             <div class="field">
-              <label for="" class="label">Email</label>
+              <label for="" class="label">Логин или email</label>
               <div class="control has-icons-left">
                 <input
-                  type="email"
-                  placeholder="e.g. bobsmith@gmail.com"
+                  type="text"
+                  placeholder="Введите login или email"
                   class="input"
-                  [ngClass]="{ 'is-danger': errors.email }"
-                  (input)="errors.email = ''"
+                  [ngClass]="{
+                    'is-danger': controls.email.touched && controls.email.errors
+                  }"
                   required
-                  #email
+                  formControlName="email"
                 />
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faEnvelope"></fa-icon>
                 </span>
               </div>
-              <ng-template [ngIf]="errors.email">
-                <p class="help is-danger">{{ errors.email }}</p>
-              </ng-template>
+
+              <p
+                *ngIf="controls.email.errors && controls.email.touched"
+                class="help is-danger"
+              >
+                {{ controls.email.errors.message }}
+              </p>
             </div>
+
             <div class="field">
               <label for="" class="label">Пароль</label>
               <div class="control has-icons-left">
@@ -32,25 +43,21 @@
                   placeholder="*******"
                   class="input"
                   required
-                  [ngClass]="{ 'is-danger': errors.password }"
-                  (input)="errors.password = ''"
-                  #password
+                  formControlName="password"
                 />
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faLock"></fa-icon>
                 </span>
               </div>
-              <ng-template [ngIf]="errors.password">
-                <p class="help is-danger">{{ errors.password }}</p>
-              </ng-template>
+              <p
+                *ngIf="controls.password.errors && controls.password.touched"
+                class="help is-danger"
+              >
+                {{ controls.password.errors.message }}
+              </p>
             </div>
             <div class="field">
-              <button
-                (click)="
-                  submit({ email: email.value, password: password.value })
-                "
-                class="button is-success"
-              >
+              <button class="button is-success" [disabled]="!loginForm.valid">
                 Войти
               </button>
             </div>

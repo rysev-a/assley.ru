@@ -7,8 +7,7 @@ import { tap } from 'rxjs/operators';
 export interface AccountData {
   id: number;
   email: string;
-  first_name: string;
-  last_name: string;
+  nickname: string;
 }
 
 export interface LoginRequest {
@@ -17,8 +16,7 @@ export interface LoginRequest {
 }
 
 export interface SignupRequest {
-  first_name: string;
-  last_name: string;
+  nickname: string;
   email: string;
   password: string;
 }
@@ -103,8 +101,7 @@ export class AccountService {
     this.data = {
       id: 0,
       email: '',
-      first_name: '',
-      last_name: '',
+      nickname: '',
     };
   }
 }

@@ -3,76 +3,73 @@
     <div class="container">
       <div class="columns is-centered">
         <div class="column is-4-tablet is-4-desktop is-4-widescreen">
-          <form action="" class="box">
+          <form
+            action=""
+            class="box"
+            [formGroup]="signupForm"
+            (ngSubmit)="onSubmit()"
+          >
             <div class="field">
-              <label for="" class="label">Имя</label>
+              <label for="" class="label">Логин</label>
               <div class="control has-icons-left">
                 <input
-                  #first_name
+                  formControlName="nickname"
                   type="text"
                   placeholder="Alexey"
                   class="input"
-                  required
-                  [ngClass]="{ 'is-danger': errors.first_name }"
-                  (input)="errors.first_name = ''"
+                  [ngClass]="{
+                    'is-danger':
+                      controls.nickname.touched && controls.nickname.errors
+                  }"
                 />
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faUser"></fa-icon>
                 </span>
               </div>
-            </div>
-
-            <div class="field">
-              <label for="" class="label">Фамилия</label>
-              <div class="control has-icons-left">
-                <input
-                  #last_name
-                  type="text"
-                  placeholder="Popov"
-                  class="input"
-                  required
-                  [ngClass]="{ 'is-danger': errors.last_name }"
-                  (input)="errors.last_name = ''"
-                />
-                <span class="icon is-small is-left">
-                  <fa-icon [icon]="faUser"></fa-icon>
-                </span>
-              </div>
+              <p
+                *ngIf="controls.nickname.errors && controls.nickname.touched"
+                class="help is-danger"
+              >
+                {{ controls.nickname.errors.message }}
+              </p>
             </div>
 
             <div class="field">
               <label for="" class="label">Email</label>
               <div class="control has-icons-left">
                 <input
-                  #email
                   type="email"
+                  formControlName="email"
                   placeholder="e.g. bobsmith@gmail.com"
                   class="input"
-                  (input)="errors.email = ''"
-                  (blur)="validateEmail(email.value)"
-                  [ngClass]="{ 'is-danger': errors.email }"
+                  [ngClass]="{
+                    'is-danger': controls.email.touched && controls.email.errors
+                  }"
                   required
                 />
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faEnvelope"></fa-icon>
                 </span>
               </div>
-              <ng-template [ngIf]="errors.email">
-                <p class="help is-danger">{{ errors.email }}</p>
-              </ng-template>
+              <p
+                *ngIf="controls.email.errors && controls.email.touched"
+                class="help is-danger"
+              >
+                {{ controls.email.errors.message }}
+              </p>
             </div>
 
             <div class="field">
-              <label for="" class="label">Пароль</label>
+              <label for="" class="label">Пароль (не менее 8 символов)</label>
               <div class="control has-icons-left">
                 <input
                   type="password"
                   placeholder="*******"
+                  formControlName="password"
                   class="input"
                   required
                   [ngClass]="{ 'is-danger': errors.password }"
                   #password
-                  (input)="errors.password = ''"
                 />
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faLock"></fa-icon>
@@ -81,12 +78,7 @@
             </div>
             <div class="field">
               <label for="accept" class="checkbox">
-                <input
-                  type="checkbox"
-                  id="accept"
-                  #accept
-                  (input)="errors.accept = ''"
-                />
+                <input type="checkbox" id="accept" formControlName="accept" />
                 Принимаю пользовательское соглашение
               </label>
               <ng-template [ngIf]="errors.accept">
@@ -94,18 +86,7 @@
               </ng-template>
             </div>
             <div class="field">
-              <button
-                (click)="
-                  submit({
-                    first_name: first_name.value,
-                    last_name: last_name.value,
-                    email: email.value,
-                    password: password.value,
-                    accept: accept.checked
-                  })
-                "
-                class="button is-success"
-              >
+              <button class="button is-success" [disabled]="!signupForm.valid">
                 Зарегистрироваться
               </button>
             </div>

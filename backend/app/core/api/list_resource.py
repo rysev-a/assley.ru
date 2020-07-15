@@ -10,6 +10,13 @@ class ListResource(HTTPEndpoint):
     limit = 10
 
     async def apply_filters(self):
+        '''
+          Apply filters for items
+          example url site.com/api/users?filters=[
+              {"key": "nickname", "operator": "==", "value": "leonardo"}
+          ]
+        '''
+
         filters = json.loads(
             self.request.query_params.get('filters', '[]'))
 
@@ -17,9 +24,6 @@ class ListResource(HTTPEndpoint):
             key = filter.get('key')
             value = filter.get('value')
             method = filter.get('operator')
-
-            if not value:
-                continue
 
             # start with helper
             if method == 'startWith':

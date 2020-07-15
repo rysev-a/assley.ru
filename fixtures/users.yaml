@@ -1,4 +1,11 @@
-- first_name: Алексей
-  last_name: Рысев
+- nickname: rysev-a
   email: rysev-a@yandex.ru
   password: alex88
+
+- nickname: vova
+  email: vova@mail.ru
+  password: vova91
+
+- nickname: irina
+  email: irina@yahoo.com
+  password: train

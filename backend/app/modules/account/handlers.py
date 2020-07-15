@@ -61,8 +61,7 @@ async def login(request):
     token = generate_jwt({
         "id": user.id,
         "email": user.email,
-        "first_name": user.first_name,
-        "last_name": user.last_name,
+        "nickname": user.nickname,
     })
 
     return JSONResponse({
@@ -92,8 +91,7 @@ async def signup(request):
 
     await User.create(
         email=json.get('email'),
-        first_name=json.get('first_name'),
-        last_name=json.get('last_name'),
+        nickname=json.get('nickname'),
         password_hash=password_hash.decode('utf-8')
     )
 

@@ -1,5 +1,4 @@
 {
-  "python.pythonPath": "~/.virtualenvs/assley/bin/python",
   "python.linting.enabled": false,
   "files.exclude": {
     "**/__pycache__": true,

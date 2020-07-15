@@ -6,7 +6,6 @@ class User(db.Model):
 
     id = db.Column(db.Integer(), primary_key=True)
 
-    first_name = db.Column(db.Unicode())
-    last_name = db.Column(db.Unicode())
-    email = db.Column(db.Unicode())
+    nickname = db.Column(db.Unicode(), unique=True)
+    email = db.Column(db.Unicode(), unique=True)
     password_hash = db.Column(db.Unicode())

@@ -118,8 +118,7 @@ async def generate_users():
             password = model_data.get('password').encode('utf-8')
             await User.create(
                 email=model_data.get('email'),
-                first_name=model_data.get('first_name'),
-                last_name=model_data.get('last_name'),
+                nickname=model_data.get('nickname'),
                 password_hash=bcrypt.hashpw(password, salt).decode('utf-8'),
             )
 

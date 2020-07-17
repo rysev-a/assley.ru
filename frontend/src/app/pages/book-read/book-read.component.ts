@@ -1,6 +1,6 @@
 import { map, flatten } from 'ramda';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from 'src/app/services/book.service';
 
 @Component({
@@ -11,6 +11,7 @@ import { BookService } from 'src/app/services/book.service';
 export class BookReadComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private bookService: BookService
   ) {}
 
@@ -47,13 +48,28 @@ export class BookReadComponent implements OnInit {
     });
   }
 
-  onSelectEpisode(event) {
-    this.read.episode = this.getEpisodeById(Number(event.target.value));
+  onSelectEpisode($episode) {
     this.read.page = 1;
+    this.updateReadPlace();
   }
 
   onSelectPage(event) {
     this.read.page = Number(event.target.value);
+    this.updateReadPlace();
+  }
+
+  updateReadPlace() {
+    this.router.navigate(
+      [`/books/${this.book.id}/read/${this.read.episode.id}`],
+      {
+        relativeTo: this.route,
+        queryParams: {
+          page: this.read.page,
+        },
+        queryParamsHandling: 'merge', // remove to replace all query params by provided
+      }
+    );
+    window.scrollTo(0, 0);
   }
 
   get episodes() {
@@ -83,6 +99,28 @@ export class BookReadComponent implements OnInit {
       return '';
     }
     return this.pages[this.read.page - 1];
+  }
+
+  getNextEpisode() {
+    const episode = this.read.episode;
+    const index = this.episodes.indexOf(episode);
+
+    if (index === this.episodes.length - 1) {
+      return this.episodes[0];
+    }
+
+    return this.episodes[index + 1];
+  }
+
+  nextPage() {
+    if (this.read.page == this.pages.length) {
+      this.read.episode = this.getNextEpisode();
+      this.read.page = 1;
+    } else {
+      this.read.page = this.read.page + 1;
+    }
+
+    this.updateReadPlace();
   }
 
   ngOnInit(): void {

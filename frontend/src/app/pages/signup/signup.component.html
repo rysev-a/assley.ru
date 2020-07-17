@@ -11,7 +11,7 @@
           >
             <div class="field">
               <label for="" class="label">Логин</label>
-              <div class="control has-icons-left">
+              <div class="control has-icons-left has-icons-right">
                 <input
                   formControlName="nickname"
                   type="text"
@@ -19,9 +19,19 @@
                   class="input"
                   [ngClass]="{
                     'is-danger':
-                      controls.nickname.touched && controls.nickname.errors
+                      controls.nickname.touched && controls.nickname.errors,
+                    'is-success':
+                      controls.nickname.touched && !controls.nickname.errors
                   }"
                 />
+
+                <span
+                  *ngIf="controls.nickname.touched && !controls.nickname.errors"
+                  class="icon is-small is-right"
+                >
+                  <fa-icon [icon]="faCheck"></fa-icon>
+                </span>
+
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faUser"></fa-icon>
                 </span>
@@ -36,19 +46,30 @@
 
             <div class="field">
               <label for="" class="label">Email</label>
-              <div class="control has-icons-left">
+              <div class="control has-icons-left has-icons-right">
                 <input
                   type="email"
                   formControlName="email"
                   placeholder="e.g. bobsmith@gmail.com"
                   class="input"
                   [ngClass]="{
-                    'is-danger': controls.email.touched && controls.email.errors
+                    'is-danger':
+                      controls.email.touched && controls.email.errors,
+                    'is-success':
+                      controls.email.touched && !controls.email.errors
                   }"
                   required
                 />
+
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faEnvelope"></fa-icon>
+                </span>
+
+                <span
+                  *ngIf="controls.email.touched && !controls.email.errors"
+                  class="icon is-small is-right"
+                >
+                  <fa-icon [icon]="faCheck"></fa-icon>
                 </span>
               </div>
               <p
@@ -61,18 +82,28 @@
 
             <div class="field">
               <label for="" class="label">Пароль (не менее 8 символов)</label>
-              <div class="control has-icons-left">
+              <div class="control has-icons-left has-icons-right">
                 <input
                   type="password"
                   placeholder="*******"
                   formControlName="password"
                   class="input"
                   required
-                  [ngClass]="{ 'is-danger': errors.password }"
-                  #password
+                  [ngClass]="{
+                    'is-danger':
+                      controls.password.touched && controls.password.errors,
+                    'is-success':
+                      controls.password.touched && !controls.password.errors
+                  }"
                 />
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faLock"></fa-icon>
+                </span>
+                <span
+                  *ngIf="controls.password.touched && !controls.password.errors"
+                  class="icon is-small is-right"
+                >
+                  <fa-icon [icon]="faCheck"></fa-icon>
                 </span>
               </div>
             </div>

@@ -11,6 +11,7 @@ import {
   faLock,
   faUserPlus,
   faUser,
+  faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   AccountService,
@@ -37,8 +38,10 @@ export class SignupComponent implements OnInit {
   faLock = faLock;
   faUserPlus = faUserPlus;
   faUser = faUser;
+  faCheck = faCheck;
 
   signupForm: FormGroup;
+  processing = false;
 
   errors: SignupErrors = {
     email: '',
@@ -58,7 +61,8 @@ export class SignupComponent implements OnInit {
     return this.signupForm.controls;
   }
 
-  submit() {
+  onSubmit() {
+    this.processing = true;
     const formData = this.signupForm.value;
     this.accountService.signup(this.serializeData(formData)).subscribe(
       () => {
@@ -69,17 +73,11 @@ export class SignupComponent implements OnInit {
             this.router.navigate(['/profile']);
           });
       },
-      (response) => {
+      () => {
         this.messageService.add({
           status: 'danger',
           content: 'Что-то пошло не так, попробуйте повторить регистрацию',
         });
-
-        const {
-          error: { message },
-        } = response;
-
-        console.log(message);
       }
     );
   }
@@ -134,9 +132,24 @@ export class SignupComponent implements OnInit {
       : null;
   }
 
+  loginValidator(control) {
+    if (control.value.length < 5) {
+      return { message: 'Логин должен содержать не менее 5 символов' };
+    }
+
+    const loginFormatRegExp = /^[a-zA-Z]+([A-Za-z0-9\-]+)?$/i;
+
+    if (!loginFormatRegExp.test(control.value)) {
+      return { message: 'Логин должен содержать только буквы, цифры и тире' };
+    }
+
+    return null;
+  }
+
   ngOnInit(): void {
     this.signupForm = new FormGroup({
       nickname: new FormControl('', {
+        validators: [this.loginValidator],
         asyncValidators: [this.validateIsFieldExist('nickname')],
       }),
       email: new FormControl('', {
@@ -146,9 +159,5 @@ export class SignupComponent implements OnInit {
       password: new FormControl('', [Validators.minLength(8)]),
       accept: new FormControl(false, [this.isAccepted]),
     });
-  }
-
-  onSubmit() {
-    console.log('submit');
   }
 }

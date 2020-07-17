@@ -1,46 +1,40 @@
-<section class="section">
-  <div class="container">
-    <h1 class="title">
-      {{ book.title }}
-    </h1>
-  </div>
-</section>
 <section>
   <ng-template [ngIf]="loaded">
-    <div class="container">
-      <div class="field is-grouped">
-        <div class="select">
-          <select (change)="onSelectEpisode($event)">
-            <option *ngFor="let episode of episodes" [value]="episode.id">{{
-              episode.name
-            }}</option>
-          </select>
-        </div>
-
-        <div class="select">
-          <select (change)="onSelectPage($event)">
-            <option
-              *ngFor="let page of pages; let pageIndex = index"
-              [value]="pageIndex + 1"
+    <div class="columns is-centered read-navigation">
+      <div class="column-is-1">
+        <a routerLink="/" class="home-link navbar-item">
+          Assley Team
+        </a>
+      </div>
+      <div class="column is-3">
+        <div class="field is-grouped">
+          <div class="select">
+            <select
+              [(ngModel)]="read.episode"
+              (change)="onSelectEpisode($event)"
             >
-              Страница - {{ pageIndex + 1 }}
-            </option>
-          </select>
-        </div>
-      </div>
+              <option *ngFor="let episode of episodes" [ngValue]="episode">{{
+                episode.name
+              }}</option>
+            </select>
+          </div>
 
-      <div class="read-container">
-        <img [src]="pageImg" class="read-image" />
-      </div>
-      <!-- <div *ngFor="let season of book.seasons">
-      <h2 class="is-size-3">Том {{ season.name }}</h2>
-      <div *ngFor="let episode of season.episodes">
-        <h3 class="is-size-4">{{ episode.name }}</h3>
-        <div class="pages">
-          <img *ngFor="let page of episode.pages" [src]="page" />
+          <div class="select">
+            <select (change)="onSelectPage($event)" [(ngModel)]="read.page">
+              <option
+                *ngFor="let page of pages; let pageIndex = index"
+                [value]="pageIndex + 1"
+              >
+                Страница - {{ pageIndex + 1 }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
-    </div> -->
+    </div>
+
+    <div class="read-container">
+      <img [src]="pageImg" class="read-image" (click)="nextPage()" />
     </div>
   </ng-template>
 </section>

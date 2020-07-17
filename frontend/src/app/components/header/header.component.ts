@@ -10,11 +10,7 @@ import { AccountService } from 'src/app/services/account.service';
 
 import { SectionService } from 'src/app/services/section.service';
 import { ApiServiceResponse } from 'src/app/core/api.service';
-
-interface Link {
-  url: string;
-  name: string;
-}
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -24,7 +20,8 @@ interface Link {
 export class HeaderComponent implements OnInit {
   constructor(
     private account: AccountService,
-    private sectionService: SectionService
+    private sectionService: SectionService,
+    private router: Router
   ) {}
 
   sections = [];
@@ -51,7 +48,19 @@ export class HeaderComponent implements OnInit {
     return (this.account.data && this.account.data.email) || '';
   }
 
+  hideHeader = false;
+
   ngOnInit(): void {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        if (/\/books\/[0-9]+\/read/i.test(window.document.location.pathname)) {
+          this.hideHeader = true;
+        } else {
+          this.hideHeader = false;
+        }
+      }
+    });
+
     this.sectionService.list().subscribe(({ items }: ApiServiceResponse) => {
       this.sections = items;
     });

@@ -1,6 +1,7 @@
 import bcrypt
 import jwt
 from time import time
+from sqlalchemy import or_
 from starlette.responses import JSONResponse
 from starlette.config import environ
 from starlette.config import Config
@@ -39,12 +40,15 @@ async def login(request):
     json = await request.json()
     email = json.get('email')
     password = json.get('password')
-    user = await User.query.where(User.email == email).gino.first()
+    user = await User.query.where(or_(
+        User.email == email,
+        User.nickname == email,
+    )).gino.first()
 
     if not user:
         return JSONResponse({
             'success': False,
-            'message': {'email': 'Такого email не существует'}
+            'message': {'email': 'Такого login/email не существует'}
         }, status_code=400)
 
     log_success = bcrypt.checkpw(

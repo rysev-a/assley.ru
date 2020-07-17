@@ -48,7 +48,7 @@ async def login(request):
     if not user:
         return JSONResponse({
             'success': False,
-            'message': {'email': 'Такого login/email не существует'}
+            'message': {'email': 'Такого nickname/email не существует'}
         }, status_code=400)
 
     log_success = bcrypt.checkpw(

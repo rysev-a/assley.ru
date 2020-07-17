@@ -134,13 +134,15 @@ export class SignupComponent implements OnInit {
 
   loginValidator(control) {
     if (control.value.length < 5) {
-      return { message: 'Логин должен содержать не менее 5 символов' };
+      return { message: 'Nickname должен содержать не менее 5 символов' };
     }
 
     const loginFormatRegExp = /^[a-zA-Z]+([A-Za-z0-9\-]+)?$/i;
 
     if (!loginFormatRegExp.test(control.value)) {
-      return { message: 'Логин должен содержать только буквы, цифры и тире' };
+      return {
+        message: 'Nickname должен содержать только буквы, цифры и тире',
+      };
     }
 
     return null;

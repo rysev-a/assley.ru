@@ -281,7 +281,7 @@ export class CreateBookComponent implements OnInit {
         if (response.type === HttpEventType.Response) {
           this.processing = false;
           this.progress = 0;
-          // this.router.navigate([`/books/${response.body.item.id}`]);
+          this.router.navigate([`/books/${response.body.item.id}`]);
         }
       },
       () => {

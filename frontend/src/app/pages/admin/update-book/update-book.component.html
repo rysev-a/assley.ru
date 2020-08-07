@@ -1,0 +1,51 @@
+<h1 class="title has-text-weight-normal is-size-2">Добавить книгу</h1>
+<form [formGroup]="bookForm" class="create-book-form">
+  <app-progress [processing]="processing" [progress]="progress"></app-progress>
+  <div class="field">
+    <label class="label">Название</label>
+    <div class="control">
+      <input
+        class="input"
+        formControlName="title"
+        type="text"
+        placeholder="Введите название книги"
+      />
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Обложка</label>
+    <div class="control">
+      <div class="file">
+        <label class="file-label">
+          <input
+            class="file-input"
+            type="file"
+            name="file"
+            (change)="onUploadCover($event)"
+          />
+          <span class="file-cta">
+            <span class="file-icon">
+              <fa-icon [icon]="faUpload"></fa-icon>
+            </span>
+            <span class="file-label">
+              Загрузить обложку
+            </span>
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="field is-grouped">
+    <div class="control">
+      <button
+        class="button is-success"
+        [disabled]="!bookForm.valid"
+        (click)="onSubmit()"
+      >
+        Обновить книгу
+      </button>
+    </div>
+  </div>
+</form>

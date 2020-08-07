@@ -34,7 +34,6 @@ class GenreDetail(DetailResource):
     db = db
 
     async def put(self, request):
-        print('put')
         id = request.path_params['id']
 
         data = await request.json()

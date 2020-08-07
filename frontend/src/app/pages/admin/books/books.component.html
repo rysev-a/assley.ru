@@ -17,7 +17,9 @@
         <td>{{ item.release_year }}</td>
         <td>
           <div class="buttons">
-            <a class="button is-small is-link"
+            <a
+              class="button is-small is-link"
+              routerLink="/admin/books/{{ item.id }}/update"
               ><span>Редактировать</span
               ><span class="icon is-small">
                 <fa-icon [icon]="faPen"></fa-icon>

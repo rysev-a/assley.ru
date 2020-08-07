@@ -163,6 +163,19 @@ class BookDetail(DetailResource):
             'success': True
         })
 
+    async def put(self, request):
+        id = request.path_params['id']
+        form = await request.form()
+        data = json.loads(form.get('payload'))
+
+        book = await self.model.get(id)
+
+        await book.update(**data).apply()
+
+        return JSONResponse({
+            'success': True
+        })
+
     async def inject_resources(self, id):
         resources = {}
         for (key, model, assocciation) in [

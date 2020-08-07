@@ -23,6 +23,7 @@ import { PublishersComponent } from './pages/admin/publishers/publishers.compone
 import { UsersComponent } from './pages/admin/users/users.component';
 import { BookDetailComponent } from './pages/book-detail/book-detail.component';
 import { BookReadComponent } from './pages/book-read/book-read.component';
+import { UpdateBookComponent } from './pages/admin/update-book/update-book.component';
 
 const routes: Routes = [
   {
@@ -71,6 +72,7 @@ const routes: Routes = [
 
       { path: 'books', component: AdminBooksComponent },
       { path: 'books/new', component: CreateBookComponent },
+      { path: 'books/:id/update', component: UpdateBookComponent },
     ],
   },
 ];

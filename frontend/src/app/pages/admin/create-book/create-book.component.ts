@@ -272,7 +272,7 @@ export class CreateBookComponent implements OnInit {
     });
 
     this.processing = true;
-    this.bookService.sendFormData(bookForm).subscribe(
+    this.bookService.putFormData(bookForm).subscribe(
       (response: any) => {
         if (response.type === HttpEventType.UploadProgress) {
           this.progress = Math.round((100 * response.loaded) / response.total);

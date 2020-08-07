@@ -57,8 +57,15 @@ export class ApiService {
     return this.http.put(url, item, this.httpOptions);
   }
 
-  sendFormData(formData) {
+  postFormData(formData) {
     return this.http.post(this.url, formData, {
+      reportProgress: true,
+      observe: 'events',
+    });
+  }
+
+  putFormData(formData, itemUrl = '') {
+    return this.http.put(`${this.url}${itemUrl}`, formData, {
       reportProgress: true,
       observe: 'events',
     });

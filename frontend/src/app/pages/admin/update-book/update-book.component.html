@@ -14,6 +14,17 @@
   </div>
 
   <div class="field">
+    <label class="label">Описание</label>
+    <div class="control">
+      <textarea
+        formControlName="description"
+        class="textarea"
+        placeholder="Введите описание"
+      ></textarea>
+    </div>
+  </div>
+
+  <div class="field">
     <label class="label">Обложка</label>
     <div class="control">
       <div class="file">
@@ -34,6 +45,132 @@
           </span>
         </label>
       </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Жанры</label>
+    <div class="control">
+      <ng-select
+        [items]="resources.genre"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [searchable]="true"
+        bindLabel="name"
+        placeholder="Выберите жанры"
+        (change)="onSelectGenre($event)"
+        (search)="onSearchGenre($event)"
+        formControlName="genres"
+      >
+      </ng-select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Тэги</label>
+    <div class="control">
+      <ng-select
+        [items]="resources.tag"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [searchable]="true"
+        bindLabel="name"
+        placeholder="Выберите тэги"
+        (change)="onSelectTag($event)"
+        (search)="onSearchTag($event)"
+        formControlName="tags"
+      >
+      </ng-select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Категории</label>
+    <div class="control">
+      <ng-select
+        [items]="resources.section"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [searchable]="true"
+        bindLabel="name"
+        placeholder="Выберите категории"
+        (change)="onSelectSection($event)"
+        (search)="onSearchSection($event)"
+        formControlName="sections"
+      >
+      </ng-select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Художники</label>
+    <div class="control">
+      <ng-select
+        [items]="resources.painter"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [searchable]="true"
+        bindLabel="name"
+        placeholder="Выберите художников"
+        (change)="onSelectPainter($event)"
+        (search)="onSearchPainter($event)"
+        formControlName="painters"
+      >
+      </ng-select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Издатели</label>
+    <div class="control">
+      <ng-select
+        [items]="resources.publisher"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [searchable]="true"
+        bindLabel="name"
+        placeholder="Выберите издателей"
+        (change)="onSelectPublisher($event)"
+        (search)="onSearchPublisher($event)"
+        formControlName="publishers"
+      >
+      </ng-select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Авторы</label>
+    <div class="control">
+      <ng-select
+        [items]="resources.author"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [searchable]="true"
+        bindLabel="name"
+        placeholder="Выберите авторов"
+        (change)="onSelectAuthor($event)"
+        (search)="onSearchAuthor($event)"
+        formControlName="authors"
+      >
+      </ng-select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Переводчики</label>
+    <div class="control">
+      <ng-select
+        [items]="resources.translator"
+        [multiple]="true"
+        [closeOnSelect]="false"
+        [searchable]="true"
+        bindLabel="name"
+        placeholder="Выберите переводчиков"
+        (change)="onSelectTranslator($event)"
+        (search)="onSearchTranslator($event)"
+        formControlName="translators"
+      >
+      </ng-select>
     </div>
   </div>
 

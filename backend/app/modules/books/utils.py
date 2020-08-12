@@ -40,3 +40,10 @@ async def upload_cover(file):
     cover_file.write(content)
 
     return cover_filename
+
+
+async def update_cover(file, cover_filename):
+    cover_folder = f'{app_path}/public/'
+    cover_file = open(f'{cover_folder}{cover_filename}', 'wb')
+    content = await file.read()
+    cover_file.write(content)

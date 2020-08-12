@@ -6,6 +6,7 @@ import { HttpEventType } from '@angular/common/http';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 
 import { MessageService } from 'src/app/services/message.service';
+import { Router } from '@angular/router';
 
 // resource services
 import { BookService } from 'src/app/services/book.service';
@@ -16,7 +17,6 @@ import { AuthorService } from 'src/app/services/author.service';
 import { TranslatorService } from 'src/app/services/translator.service';
 import { PublisherService } from 'src/app/services/publisher.service';
 import { PainterService } from 'src/app/services/painter.service';
-import { Router } from '@angular/router';
 
 interface Episode {
   file: any;
@@ -272,7 +272,7 @@ export class CreateBookComponent implements OnInit {
     });
 
     this.processing = true;
-    this.bookService.putFormData(bookForm).subscribe(
+    this.bookService.postFormData(bookForm).subscribe(
       (response: any) => {
         if (response.type === HttpEventType.UploadProgress) {
           this.progress = Math.round((100 * response.loaded) / response.total);

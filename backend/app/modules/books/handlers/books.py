@@ -1,7 +1,6 @@
 import json
 from functools import reduce
-
-from sqlalchemy import desc, asc, Constraint
+from sqlalchemy import desc, asc, Constraint, and_
 from starlette.authentication import requires
 from starlette.responses import JSONResponse
 from starlette.config import Config
@@ -9,7 +8,7 @@ from starlette.config import Config
 from app.core.database import db
 from app.core.api import ListResource, DetailResource
 
-from ..utils import upload_cover
+from ..utils import upload_cover, update_cover
 
 from ..schemas import (
     BookSchema,
@@ -170,11 +169,56 @@ class BookDetail(DetailResource):
 
         book = await self.model.get(id)
 
-        await book.update(**data).apply()
+        if (form.get('cover')):
+            if book.cover_image:
+                await update_cover(form.get('cover'), book.cover_image)
+            else:
+                cover_image = await upload_cover(form.get('cover'))
+                await book.update(cover_image=cover_image)
+
+        await self.udpate_resources(book, data)
+
+        await book.update(**{
+            'title': data.get('title'),
+            'description': data.get('description'),
+        }).apply()
 
         return JSONResponse({
             'success': True
         })
+
+    async def udpate_resources(self, book, form_data):
+        for (key, id_key, model, assocciation) in [
+            ('genres', 'genre_id', Genre, BookGenreAssocciation),
+            ('tags', 'tag_id', Tag, BookTagAssocciation),
+            ('sections', 'section_id', Section, BookSectionAssocciation),
+            ('authors', 'author_id', Author, BookAuthorAssocciation),
+            ('translators', 'translator_id', Translator, BookTranslatorAssocciation),
+            ('publishers', 'publisher_id', Publisher, BookPublisherAssocciation),
+            ('painters', 'painter_id', Painter, BookPainterAssocciation),
+        ]:
+            prev_resources = await model.join(assocciation)\
+                .select()\
+                .where(assocciation.book_id == book.id)\
+                .gino.all()
+
+            prev_ids = set([item[str(item.keys()[4])]
+                            for item in prev_resources])
+            next_ids = set(form_data.get(key))
+
+            to_delete = prev_ids - next_ids
+            to_create = next_ids - prev_ids
+
+            await assocciation.delete.where(
+                and_(getattr(assocciation, 'book_id') == book.id,
+                     getattr(assocciation, id_key).in_(to_delete))
+            ).gino.status()
+
+            for create_id in list(to_create):
+                await assocciation.create(**{
+                    'book_id': book.id,
+                    id_key: create_id,
+                })
 
     async def inject_resources(self, id):
         resources = {}

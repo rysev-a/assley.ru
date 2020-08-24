@@ -28,7 +28,7 @@ export class BookDetailComponent implements OnInit {
 
     release_year: '',
 
-    release_format: '',
+    release_formates: [],
     translation_status: '',
     age_limit: '',
     seasons: [],

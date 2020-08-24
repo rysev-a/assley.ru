@@ -95,7 +95,7 @@ class BookList(ListResource):
             'pages': self.pages
         })
 
-    async def create_release_formattes(self, book_id, data):
+    async def create_release_formates(self, book_id, data):
         for release_format in data.get('release_formates'):
             await BookReleaseFormatAssocciation.create(**{
                 'book_id': book_id,
@@ -140,7 +140,7 @@ class BookList(ListResource):
             await Episode.upload(episode=episode, book_id=book.id)
 
         await self.create_resources(book.id, data)
-        await self.create_release_formattes(book.id, data)
+        await self.create_release_formates(book.id, data)
 
         return JSONResponse({
             'data': data,
@@ -177,15 +177,44 @@ class BookDetail(DetailResource):
                 await book.update(cover_image=cover_image)
 
         await self.udpate_resources(book, data)
+        await self.update_release_formates(book, data)
 
         await book.update(**{
             'title': data.get('title'),
             'description': data.get('description'),
+            'age_limit': data.get('age_limit'),
         }).apply()
 
         return JSONResponse({
             'success': True
         })
+
+    async def update_release_formates(self, book, data):
+        next_ids = set(data.get('release_formates'))
+
+        model = BookReleaseFormatAssocciation
+        release_formates_raw = await model.query.where(
+            model.book_id == book.id
+        ).gino.all()
+
+        prev_ids = set([str(
+            item.release_format).replace('ReleaseFormat.', '')
+            for item in release_formates_raw])
+
+        to_delete = prev_ids - next_ids
+        to_create = next_ids - prev_ids
+        id_key = 'release_format'
+
+        await model.delete.where(
+            and_(getattr(model, 'book_id') == book.id,
+                 getattr(model, id_key).in_(to_delete))
+        ).gino.status()
+
+        for create_id in list(to_create):
+            await model.create(**{
+                'book_id': book.id,
+                id_key: create_id,
+            })
 
     async def udpate_resources(self, book, form_data):
         for (key, id_key, model, assocciation) in [
@@ -277,6 +306,6 @@ class BookDetail(DetailResource):
                 **self.schema().dump(item),
                 **resources,
                 'seasons': seasons,
-                'release_formattes': release_formates,
+                'release_formates': release_formates,
             }
         })

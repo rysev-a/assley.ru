@@ -42,7 +42,15 @@
             <div class="info-item__title has-text-weight-semibol">
               Формат выпуска
             </div>
-            <div class="info-item__content">{{ book.release_format }}</div>
+            <div class="info-item__content">
+              <div class="info-item__content tags is-medium">
+                <span
+                  class="tag is-primary"
+                  *ngFor="let format of book.release_formates"
+                  >{{ format }}</span
+                >
+              </div>
+            </div>
           </div>
 
           <div class="info-item">

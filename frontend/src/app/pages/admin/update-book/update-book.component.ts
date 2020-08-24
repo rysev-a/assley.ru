@@ -26,6 +26,7 @@ export class UpdateBookComponent implements OnInit {
     id: 0,
     title: '',
     description: '',
+    age_limit: '',
     genres: [],
     tags: [],
     sections: [],
@@ -33,6 +34,7 @@ export class UpdateBookComponent implements OnInit {
     translators: [],
     publishers: [],
     painters: [],
+    release_formates: [],
   };
 
   bookForm = this.formBuilder.group({
@@ -48,6 +50,9 @@ export class UpdateBookComponent implements OnInit {
     translators: [[]],
     publishers: [[]],
     painters: [[]],
+    release_formates: [[]],
+
+    age_limit: [],
   });
 
   loaded = false;
@@ -65,6 +70,14 @@ export class UpdateBookComponent implements OnInit {
     publisher: [],
   };
 
+  release_format_options = [
+    { id: 'color', name: 'В цвете' },
+    { id: 'web', name: 'Веб' },
+    { id: 'sigle', name: 'Сингл' },
+    { id: 'compilation', name: 'Сборник' },
+    { id: 'doujinshi', name: 'Додзинси' },
+  ];
+
   constructor(
     private bookService: BookService,
     private route: ActivatedRoute,
@@ -77,6 +90,29 @@ export class UpdateBookComponent implements OnInit {
     private publisherService: PublisherService,
     private painterService: PainterService
   ) {}
+
+  get enumValues() {
+    return {
+      age_limit: [
+        { value: 'unlimited', label: 'Без ограничений' },
+        { value: 'sixteen', label: '16+' },
+        { value: 'eighteen', label: '18+' },
+      ],
+
+      translation_status: [
+        { value: 'complete', label: 'Завершен' },
+        { value: 'processing', label: 'В процессе' },
+        { value: 'frozen', label: 'Заморожен' },
+        { value: 'no_translator', label: 'Нет переводчика' },
+      ],
+    };
+  }
+
+  onSelectReleaseFormat = ($event) => {
+    this.bookForm.patchValue({
+      release_formates: $event,
+    });
+  };
 
   onSelectResource(model) {
     return ($event) => {
@@ -129,13 +165,16 @@ export class UpdateBookComponent implements OnInit {
     const payload = {
       title: book.title,
       description: book.description,
+      age_limit: book.age_limit,
       ...this.serializeResources(),
       // release_year: book.release_year,
 
       // enums
       // age_limit: book.age_limit,
       // translation_status: book.translation_status,
-      // release_formates: book.release_formates,
+      release_formates: book.release_formates.map((format) => {
+        return format.id;
+      }),
 
       // episodes: map((episode: Episode) => {
       //   return {
@@ -184,6 +223,7 @@ export class UpdateBookComponent implements OnInit {
     this.bookForm.patchValue({
       title: this.book.title,
       description: this.book.description,
+      age_limit: this.book.age_limit,
       genres: this.book.genres,
       tags: this.book.tags,
       sections: this.book.sections,
@@ -191,6 +231,11 @@ export class UpdateBookComponent implements OnInit {
       publishers: this.book.publishers,
       translators: this.book.translators,
       painters: this.book.painters,
+      release_formates: this.book.release_formates.map((format) => {
+        return this.release_format_options.find(
+          (option) => option.id === format
+        );
+      }),
     });
   }
 

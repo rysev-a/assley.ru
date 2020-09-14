@@ -9,7 +9,7 @@
           <a class="card-image" routerLink="/books/{{ book.id }}">
             <figure class="image is-4by3 book-cover">
               <img
-                [src]="book.cover_image"
+                src="{{ publicUrl }}/{{ book.cover_image }}"
                 alt="Placeholder image"
                 class="book-cover-image"
               />

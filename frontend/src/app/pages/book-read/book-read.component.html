@@ -2,9 +2,7 @@
   <ng-template [ngIf]="loaded">
     <div class="columns is-centered read-navigation">
       <div class="column-is-1">
-        <a routerLink="/" class="home-link navbar-item">
-          Assley Team
-        </a>
+        <a routerLink="/" class="home-link navbar-item"> Assley Team </a>
       </div>
       <div class="column is-3">
         <div class="field is-grouped">
@@ -13,9 +11,9 @@
               [(ngModel)]="read.episode"
               (change)="onSelectEpisode($event)"
             >
-              <option *ngFor="let episode of episodes" [ngValue]="episode">{{
-                episode.name
-              }}</option>
+              <option *ngFor="let episode of episodes" [ngValue]="episode">
+                {{ episode.name }}
+              </option>
             </select>
           </div>
 
@@ -34,7 +32,11 @@
     </div>
 
     <div class="read-container">
-      <img [src]="pageImg" class="read-image" (click)="nextPage()" />
+      <img
+        src="{{ this.publicUrl }}/{{ pageImg }}"
+        class="read-image"
+        (click)="nextPage()"
+      />
     </div>
   </ng-template>
 </section>

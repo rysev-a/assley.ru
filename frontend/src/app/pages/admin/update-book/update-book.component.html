@@ -14,17 +14,6 @@
   </div>
 
   <div class="field">
-    <label class="label">Описание</label>
-    <div class="control">
-      <textarea
-        formControlName="description"
-        class="textarea"
-        placeholder="Введите описание"
-      ></textarea>
-    </div>
-  </div>
-
-  <div class="field">
     <label class="label">Обложка</label>
     <div class="control">
       <div class="file">
@@ -39,9 +28,7 @@
             <span class="file-icon">
               <fa-icon [icon]="faUpload"></fa-icon>
             </span>
-            <span class="file-label">
-              Загрузить обложку
-            </span>
+            <span class="file-label"> Загрузить обложку </span>
           </span>
         </label>
       </div>
@@ -202,6 +189,55 @@
           {{ age_limit.label }}
         </option>
       </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Статус перевода</label>
+    <div class="select">
+      <select formControlName="translation_status">
+        <option
+          *ngFor="let translation_status of enumValues.translation_status"
+          [value]="translation_status.value"
+        >
+          {{ translation_status.label }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Год выпуска</label>
+    <div class="control">
+      <input
+        class="input"
+        min="1900"
+        max="2100"
+        formControlName="release_year"
+        type="number"
+        placeholder="Введите год выпуска"
+      />
+    </div>
+  </div>
+
+  <div class="field">
+    <update-book-episodes
+      [episodes]="episodes"
+      [addEpisode]="addEpisode.bind(this)"
+      [removeEpisode]="removeEpisode.bind(this)"
+      [onUploadEpisode]="onUploadEpisode.bind(this)"
+      [bookForm]="bookForm"
+    ></update-book-episodes>
+  </div>
+
+  <div class="field">
+    <label class="label">Описание</label>
+    <div class="control">
+      <textarea
+        formControlName="description"
+        class="textarea"
+        placeholder="Введите описание"
+      ></textarea>
     </div>
   </div>
 

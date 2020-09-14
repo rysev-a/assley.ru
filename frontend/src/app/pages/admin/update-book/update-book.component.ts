@@ -27,6 +27,9 @@ export class UpdateBookComponent implements OnInit {
     title: '',
     description: '',
     age_limit: '',
+    translation_status: '',
+    release_year: '',
+
     genres: [],
     tags: [],
     sections: [],
@@ -40,6 +43,8 @@ export class UpdateBookComponent implements OnInit {
   bookForm = this.formBuilder.group({
     title: ['', Validators.required],
     description: ['', Validators.required],
+    release_year: ['', Validators.required],
+
     cover_image: [null],
 
     // resource attributes
@@ -53,6 +58,7 @@ export class UpdateBookComponent implements OnInit {
     release_formates: [[]],
 
     age_limit: [],
+    translation_status: [],
   });
 
   loaded = false;
@@ -166,12 +172,10 @@ export class UpdateBookComponent implements OnInit {
       title: book.title,
       description: book.description,
       age_limit: book.age_limit,
-      ...this.serializeResources(),
-      // release_year: book.release_year,
+      translation_status: book.translation_status,
+      release_year: book.release_year,
 
-      // enums
-      // age_limit: book.age_limit,
-      // translation_status: book.translation_status,
+      ...this.serializeResources(),
       release_formates: book.release_formates.map((format) => {
         return format.id;
       }),
@@ -223,7 +227,10 @@ export class UpdateBookComponent implements OnInit {
     this.bookForm.patchValue({
       title: this.book.title,
       description: this.book.description,
+      release_year: this.book.release_year,
+
       age_limit: this.book.age_limit,
+      translation_status: this.book.translation_status,
       genres: this.book.genres,
       tags: this.book.tags,
       sections: this.book.sections,
@@ -237,6 +244,9 @@ export class UpdateBookComponent implements OnInit {
         );
       }),
     });
+
+    console.log(this.book);
+    console.log(this.bookForm.value);
   }
 
   loadResource(model) {
@@ -266,6 +276,15 @@ export class UpdateBookComponent implements OnInit {
         }
       });
   }
+
+  // update book episodes
+  get episodes() {
+    return this.bookForm.get('episodes') as FormArray;
+  }
+
+  addEpisode() {}
+  removeEpisode() {}
+  onUploadEpisode() {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');

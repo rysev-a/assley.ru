@@ -7,7 +7,7 @@
             <div class="card-image">
               <figure class="image is-4by3 book-cover">
                 <img
-                  [src]="book.cover_image"
+                  src="{{ this.publicUrl }}/{{ book.cover_image }}"
                   alt="Placeholder image"
                   class="book-cover-image"
                 />
@@ -61,9 +61,7 @@
           </div>
 
           <div class="info-item">
-            <div class="info-item__title has-text-weight-semibol">
-              Авторы
-            </div>
+            <div class="info-item__title has-text-weight-semibol">Авторы</div>
             <div class="info-item__content tags is-medium">
               <span
                 class="tag is-primary"
@@ -74,9 +72,7 @@
           </div>
 
           <div class="info-item">
-            <div class="info-item__title has-text-weight-semibol">
-              Жанры
-            </div>
+            <div class="info-item__title has-text-weight-semibol">Жанры</div>
             <div class="info-item__content tags is-medium">
               <span class="tag is-primary" *ngFor="let genre of book.genres">{{
                 genre.name

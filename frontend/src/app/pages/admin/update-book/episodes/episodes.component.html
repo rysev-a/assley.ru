@@ -1,0 +1,74 @@
+<div [formGroup]="bookForm">
+  <div formArrayName="episodes">
+    <label class="label">Главы</label>
+
+    <table class="table is-fullwidth">
+      <thead>
+        <tr>
+          <td>Том</td>
+          <td>Глава</td>
+          <td>Название главы</td>
+          <td>Переводчик</td>
+          <td>Управление</td>
+        </tr>
+      </thead>
+      <tbody class="episodes-table">
+        <tr
+          class="field"
+          *ngFor="let episode of episodes.controls; let episodeIndex = index"
+          [formGroupName]="episodeIndex"
+        >
+          <td>
+            <input class="input" formControlName="seasonNumber" />
+          </td>
+          <td>
+            <input class="input" formControlName="episodeNumber" />
+          </td>
+          <td>
+            <input class="input" formControlName="episodeName" />
+          </td>
+          <td>
+            <input class="input" formControlName="translator" />
+          </td>
+          <td>
+            <div class="field is-grouped">
+              <div class="control">
+                <div class="file">
+                  <label class="file-label">
+                    <input
+                      class="file-input"
+                      type="file"
+                      name="file"
+                      (change)="onUploadEpisode($event, episodeIndex)"
+                    />
+                    <span class="file-cta">
+                      <span class="file-icon">
+                        <fa-icon [icon]="faUpload"></fa-icon>
+                      </span>
+                      <span class="file-label"> Загрузить файл </span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="control">
+                <button
+                  class="button is-danger"
+                  (click)="removeEpisode(episodeIndex)"
+                >
+                  Удалить
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="field">
+      <button class="button is-success" (click)="addEpisode()">
+        Добавить главу
+      </button>
+    </div>
+  </div>
+</div>

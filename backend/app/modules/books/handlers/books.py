@@ -8,7 +8,7 @@ from starlette.config import Config
 from app.core.database import db
 from app.core.api import ListResource, DetailResource
 
-from ..utils import upload_cover, update_cover
+from ..utils import upload_cover, update_cover, remove_cover
 
 from ..schemas import (
     BookSchema,
@@ -157,6 +157,29 @@ class BookDetail(DetailResource):
     async def delete(self, request):
         id = request.path_params['id']
         book = await self.model.get(id)
+
+        seasons = await Season.query.where(
+            Season.book_id == book.id
+        ).gino.all()
+
+        # clear episodes files
+        try:
+            for season in seasons:
+                episodes = await Episode.query.where(
+                    Episode.season_id == season.id
+                ).gino.all()
+
+                for episode in episodes:
+                    episode.clear()
+
+            # clear book cover
+            remove_cover(book.cover_image)
+        except:
+            return JSONResponse({
+                'success': False,
+                'message': 'Can\'t remove book files'
+            }, 400)
+
         await book.delete()
         return JSONResponse({
             'success': True
@@ -183,6 +206,7 @@ class BookDetail(DetailResource):
             'title': data.get('title'),
             'description': data.get('description'),
             'age_limit': data.get('age_limit'),
+            'translation_status': data.get('translation_status'),
         }).apply()
 
         return JSONResponse({

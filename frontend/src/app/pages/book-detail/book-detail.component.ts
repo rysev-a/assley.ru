@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BookService } from 'src/app/services/book.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-book-detail',
@@ -13,6 +14,7 @@ export class BookDetailComponent implements OnInit {
     private bookService: BookService
   ) {}
 
+  publicUrl = environment.publicUrl;
   processing = false;
   loaded = false;
   book = {

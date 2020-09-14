@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BookService } from 'src/app/services/book.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-books',
@@ -14,6 +15,7 @@ export class BooksComponent implements OnInit {
   ) {}
 
   category: string = '';
+  publicUrl = environment.publicUrl;
 
   ngOnInit(): void {}
 }

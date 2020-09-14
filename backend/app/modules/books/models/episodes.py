@@ -1,6 +1,6 @@
 from app.core.database import db
 from sqlalchemy import and_
-from ..utils import unzip_episode
+from ..utils import unzip_episode, remove_episode
 from .seasons import Season
 
 
@@ -41,3 +41,6 @@ class Episode(db.Model):
             season_id=season.id,
             pages=upload_data,
         )
+
+    def clear(self):
+        remove_episode(self.pages.get('uuid'))

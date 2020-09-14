@@ -37,6 +37,7 @@ import { SectionsComponent } from './pages/admin/sections/sections.component';
 import { AdminBooksComponent } from './pages/admin/books/books.component';
 import { CreateBookComponent } from './pages/admin/create-book/create-book.component';
 import { CreateBookEpisodesComponent } from './pages/admin/create-book/episodes/episodes.component';
+import { UpdateBookEpisodesComponent } from './pages/admin/update-book/episodes/episodes.component';
 import { ProgressComponent } from './components/progress/progress.component';
 import { AuthorsComponent } from './pages/admin/authors/authors.component';
 import { TranslatorsComponent } from './pages/admin/translators/translators.component';
@@ -84,6 +85,7 @@ import { UpdateBookComponent } from './pages/admin/update-book/update-book.compo
     BookDetailComponent,
     BookReadComponent,
     UpdateBookComponent,
+    UpdateBookEpisodesComponent,
   ],
   imports: [
     BrowserModule,
@@ -96,10 +98,10 @@ import { UpdateBookComponent } from './pages/admin/update-book/update-book.compo
   ],
   providers: [
     httpInterceptorProviders,
-    // {
-    //   provide: ErrorHandler,
-    //   useClass: CustomErrorHandler,
-    // },
+    {
+      provide: ErrorHandler,
+      useClass: CustomErrorHandler,
+    },
   ],
   bootstrap: [AppComponent],
 })

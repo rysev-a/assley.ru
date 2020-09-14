@@ -3,10 +3,11 @@ import tempfile
 import zipfile
 import uuid
 import os
+import shutil
 from starlette.config import Config
 
 config = Config(".env")
-app_path = config('APP_PATH')
+upload_path = config('UPLOAD_PATH')
 
 
 def unzip_episode(file_content):
@@ -16,7 +17,7 @@ def unzip_episode(file_content):
     episode_file.close()
     episode_uuid = str(uuid.uuid4())
 
-    episode_folder = f'{app_path}/public/{episode_uuid}'
+    episode_folder = f'{upload_path}/public/{episode_uuid}'
     os.mkdir(episode_folder)
 
     episode_zip = zipfile.ZipFile(episode_filename)
@@ -30,11 +31,15 @@ def unzip_episode(file_content):
     }
 
 
+def remove_episode(episode_uuid):
+    shutil.rmtree(f'{upload_path}/public/{episode_uuid}')
+
+
 async def upload_cover(file):
     filename, file_extension = os.path.splitext(file.filename)
     cover_uuid = str(uuid.uuid4())
     cover_filename = f'{cover_uuid}{file_extension}'
-    cover_folder = f'{app_path}/public/'
+    cover_folder = f'{upload_path}/public/'
     cover_file = open(f'{cover_folder}{cover_filename}', 'wb')
     content = await file.read()
     cover_file.write(content)
@@ -43,7 +48,12 @@ async def upload_cover(file):
 
 
 async def update_cover(file, cover_filename):
-    cover_folder = f'{app_path}/public/'
+    cover_folder = f'{upload_path}/public/'
     cover_file = open(f'{cover_folder}{cover_filename}', 'wb')
     content = await file.read()
     cover_file.write(content)
+
+
+def remove_cover(cover_filename):
+    cover_folder = f'{upload_path}/public/'
+    os.remove(f'{cover_folder}{cover_filename}')

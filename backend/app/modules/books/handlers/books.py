@@ -175,10 +175,7 @@ class BookDetail(DetailResource):
             # clear book cover
             remove_cover(book.cover_image)
         except:
-            return JSONResponse({
-                'success': False,
-                'message': 'Can\'t remove book files'
-            }, 400)
+            pass
 
         await book.delete()
         return JSONResponse({

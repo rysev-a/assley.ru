@@ -1,22 +1,24 @@
 <div class="table-wrapper">
   <app-processing [processing]="processing"></app-processing>
-  <h1 class="title has-text-weight-normal is-size-2">Тэги</h1>
+  <h1 class="title has-text-weight-normal is-size-2">{{ tableTitle }}</h1>
   <table class="table is-fullwidth">
     <thead>
       <tr>
-        <td>id</td>
-        <td><span>Название</span></td>
-        <th>Действия</th>
+        <td *ngFor="let field of fields">
+          {{ field.label }}
+        </td>
+        <td>Действия</td>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let tag of tags">
-        <td>{{ tag.id }}</td>
-        <td>
-          <ng-template [ngIf]="editingItem.id !== tag.id">
-            {{ tag.name }}
-          </ng-template>
-          <ng-template [ngIf]="editingItem.id == tag.id">
+      <tr *ngFor="let item of items">
+        <ng-template [ngIf]="editingItem.id !== item.id">
+          <td *ngFor="let field of fields">
+            {{ item[field.name] }}
+          </td>
+        </ng-template>
+        <ng-template [ngIf]="editingItem.id == item.id">
+          <td [colSpan]="fields.length">
             <input
               class="input"
               (input)="editingItemError.name = ''"
@@ -28,24 +30,26 @@
             <ng-template [ngIf]="editingItemError.name">
               <p class="help is-danger">{{ editingItemError.name }}</p>
             </ng-template>
-          </ng-template>
-        </td>
+          </td>
+        </ng-template>
+
         <td>
           <div class="buttons">
-            <ng-template [ngIf]="editingItem.id !== tag.id">
-              <a class="button is-small is-link" (click)="setEditingItem(tag)"
+            <ng-template [ngIf]="editingItem.id !== item.id">
+              <a class="button is-small is-link" (click)="setEditingItem(item)"
                 ><span>Редактировать</span
                 ><span class="icon is-small">
                   <fa-icon [icon]="faPen"></fa-icon>
                 </span>
               </a>
-              <a class="button is-small is-danger" (click)="remove(tag.id)"
+
+              <a class="button is-small is-danger" (click)="remove(item.id)"
                 ><span>Удалить</span
                 ><span class="icon is-small">
                   <fa-icon [icon]="faTimes"></fa-icon> </span
               ></a>
             </ng-template>
-            <ng-template [ngIf]="editingItem.id == tag.id">
+            <ng-template [ngIf]="editingItem.id == item.id">
               <a class="button is-small is-success" (click)="update()"
                 ><span>Обновить</span
                 ><span class="icon is-small">
@@ -66,15 +70,15 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="3">
-          <form [formGroup]="tagForm" class="mb-4 mt-4">
+        <td [colSpan]="fields.length + 1">
+          <form class="mb-4 mt-4" [formGroup]="addForm">
             <div class="field has-addons">
               <div class="control">
                 <input
                   formControlName="name"
                   class="input is-small"
                   type="text"
-                  placeholder="Добавить тэг"
+                  placeholder="{{ addFormPlaceholder }}"
                   [ngClass]="{ 'is-danger': errors.name }"
                   (input)="errors.name = ''"
                 />
@@ -82,8 +86,8 @@
               <div class="control">
                 <button
                   class="button is-success is-small"
-                  [disabled]="!tagForm.valid"
-                  (click)="addTag()"
+                  [disabled]="!addForm.valid"
+                  (click)="addItem()"
                 >
                   Добавить
                 </button>
@@ -93,7 +97,6 @@
               <p class="help is-danger">{{ errors.name }}</p>
             </ng-template>
           </form>
-
           <app-pagination
             [page]="page"
             [pages]="pages"

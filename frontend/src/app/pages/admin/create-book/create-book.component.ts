@@ -1,4 +1,4 @@
-import { map, prop } from 'ramda';
+import { map, prop, range, reverse } from 'ramda';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormArray } from '@angular/forms';
 import { Validators } from '@angular/forms';
@@ -17,6 +17,11 @@ import { AuthorService } from 'src/app/services/author.service';
 import { TranslatorService } from 'src/app/services/translator.service';
 import { PublisherService } from 'src/app/services/publisher.service';
 import { PainterService } from 'src/app/services/painter.service';
+
+const getCurrentYear = () => {
+  const date = new Date();
+  return date.getFullYear();
+};
 
 interface Episode {
   file: any;
@@ -61,7 +66,7 @@ export class CreateBookComponent implements OnInit {
   bookForm = this.formBuilder.group({
     title: ['', Validators.required],
     description: ['', Validators.required],
-    release_year: ['', Validators.required],
+    release_year: [getCurrentYear()],
     cover_image: [null, Validators.required],
 
     // enum attributes
@@ -112,6 +117,12 @@ export class CreateBookComponent implements OnInit {
     return this.bookForm.get('episodes') as FormArray;
   }
 
+  get release_year_list() {
+    const now = new Date();
+    const year = now.getFullYear();
+    return reverse(range(1980, year + 1));
+  }
+
   newEpisode() {
     return this.formBuilder.group({
       seasonNumber: this.formBuilder.control([''], Validators.required),
@@ -132,11 +143,10 @@ export class CreateBookComponent implements OnInit {
 
   serialize() {
     const book = this.bookForm.value;
-
     const payload = {
       title: book.title,
       description: book.description,
-      release_year: book.release_year,
+      release_year: Number(book.release_year),
       genres: book.genres,
       tags: book.tags,
       sections: book.sections,

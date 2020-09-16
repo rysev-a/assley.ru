@@ -6,42 +6,33 @@
       <tr>
         <td>id</td>
         <td>Название</td>
-        <td>Год выпуска</td>
-        <th>Действия</th>
+        <td>Действия</td>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let item of items">
         <td>{{ item.id }}</td>
         <td>{{ item.title }}</td>
-        <td>{{ item.release_year }}</td>
         <td>
-          <div class="buttons">
-            <a
-              class="button is-small is-link"
-              routerLink="/admin/books/{{ item.id }}/update"
-              ><span>Редактировать</span
-              ><span class="icon is-small">
-                <fa-icon [icon]="faPen"></fa-icon>
-              </span>
-            </a>
-            <a class="button is-small is-danger" (click)="remove(item.id)"
-              ><span>Удалить</span
-              ><span class="icon is-small">
-                <fa-icon [icon]="faTimes"></fa-icon> </span
-            ></a>
-          </div>
+          <a
+            class="button is-small is-link"
+            routerLink="/admin/books/{{ item.id }}/update"
+            ><span>Редактировать</span
+            ><span class="icon is-small">
+              <fa-icon [icon]="faPen"></fa-icon>
+            </span>
+          </a>
+          <a class="button is-small is-danger" (click)="remove(item.id)"
+            ><span>Удалить</span
+            ><span class="icon is-small">
+              <fa-icon [icon]="faTimes"></fa-icon> </span
+          ></a>
         </td>
       </tr>
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="4">
-          <div class="buttons">
-            <button class="button is-info" routerLink="/admin/books/new">
-              Добавить книгу
-            </button>
-          </div>
+        <td [colSpan]="3">
           <app-pagination
             [page]="page"
             [pages]="pages"

@@ -16,8 +16,11 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { DevComponent } from './components/dev/dev.component';
+import { TableComponent } from './components/table/table.component';
 import { ProcessingComponent } from './components/processing/processing.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { MessageComponent } from './components/message/message.component';
+import { ProgressComponent } from './components/progress/progress.component';
 
 // regular pages
 import { LoginComponent } from './pages/login/login.component';
@@ -26,30 +29,40 @@ import { BooksComponent } from './pages/books/books.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { StartComponent } from './pages/start/start.component';
 
+import { BookDetailComponent } from './pages/book-detail/book-detail.component';
+import { BookReadComponent } from './pages/book-read/book-read.component';
+
 // admin
 import { AdminPanelComponent } from './pages/admin/panel/panel.component';
 import { AsideMenuComponent } from './pages/admin/panel/aside-menu/aside-menu.component';
-import { GenresComponent } from './pages/admin/genres/genres.component';
 import { AdminStartComponent } from './pages/admin/start/start.component';
-import { TagsComponent } from './pages/admin/tags/tags.component';
-import { MessageComponent } from './components/message/message.component';
-import { SectionsComponent } from './pages/admin/sections/sections.component';
+
+// book resources
+import { GenresComponent } from './pages/admin/book-resources/genres/genres.component';
+import { TagsComponent } from './pages/admin/book-resources/tags/tags.component';
+import { SectionsComponent } from './pages/admin/book-resources/sections/sections.component';
+import { AuthorsComponent } from './pages/admin/book-resources/authors/authors.component';
+import { TranslatorsComponent } from './pages/admin/book-resources/translators/translators.component';
+import { PaintersComponent } from './pages/admin/book-resources/painters/painters.component';
+import { PublishersComponent } from './pages/admin/book-resources/publishers/publishers.component';
+
+// book pages
 import { AdminBooksComponent } from './pages/admin/books/books.component';
 import { CreateBookComponent } from './pages/admin/create-book/create-book.component';
 import { CreateBookEpisodesComponent } from './pages/admin/create-book/episodes/episodes.component';
 import { UpdateBookEpisodesComponent } from './pages/admin/update-book/episodes/episodes.component';
-import { ProgressComponent } from './components/progress/progress.component';
-import { AuthorsComponent } from './pages/admin/authors/authors.component';
-import { TranslatorsComponent } from './pages/admin/translators/translators.component';
-import { PaintersComponent } from './pages/admin/painters/painters.component';
-import { PublishersComponent } from './pages/admin/publishers/publishers.component';
-import { UsersComponent } from './pages/admin/users/users.component';
-import { BookDetailComponent } from './pages/book-detail/book-detail.component';
-import { BookReadComponent } from './pages/book-read/book-read.component';
 import { UpdateBookComponent } from './pages/admin/update-book/update-book.component';
+
+// user pages
+import { UsersComponent } from './pages/admin/users/users.component';
 
 @NgModule({
   declarations: [
+    // ui components
+    ProcessingComponent,
+    PaginationComponent,
+    TableComponent,
+
     // components
     AppComponent,
     LoginComponent,
@@ -68,8 +81,7 @@ import { UpdateBookComponent } from './pages/admin/update-book/update-book.compo
     GenresComponent,
     AdminPanelComponent,
     AdminStartComponent,
-    ProcessingComponent,
-    PaginationComponent,
+
     TagsComponent,
     MessageComponent,
     SectionsComponent,
@@ -98,10 +110,10 @@ import { UpdateBookComponent } from './pages/admin/update-book/update-book.compo
   ],
   providers: [
     httpInterceptorProviders,
-    {
-      provide: ErrorHandler,
-      useClass: CustomErrorHandler,
-    },
+    // {
+    //   provide: ErrorHandler,
+    //   useClass: CustomErrorHandler,
+    // },
   ],
   bootstrap: [AppComponent],
 })

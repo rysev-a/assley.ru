@@ -3,7 +3,12 @@ from sqlalchemy import desc, asc
 from starlette.authentication import requires
 from starlette.responses import JSONResponse
 from app.core.database import db
-from app.core.api import ListResource, DetailResource
+from app.core.api import (
+    ListResource,
+    DetailResource,
+    check_unique_name_update,
+    check_unique_name_create
+)
 from ..models import Tag
 from ..schemas import TagSchema
 
@@ -14,17 +19,8 @@ class TagList(ListResource):
     db = db
 
     async def post(self, request):
-        data = await request.json()
-        name = data.get('name')
-        item = await self.model.query.where(self.model.name == name).gino.first()
-        if item:
-            return JSONResponse({
-                'success': False,
-                'message': {'name': 'Такой тэг уже существет'}
-            }, status_code=400)
-
-        response = await super().post(request)
-        return response
+        return await check_unique_name_create(
+            self, request, super().post, 'Такой тэг уже существет')
 
 
 class TagDetail(DetailResource):
@@ -33,17 +29,5 @@ class TagDetail(DetailResource):
     db = db
 
     async def put(self, request):
-        print('put')
-        id = request.path_params['id']
-
-        data = await request.json()
-        name = data.get('name')
-        item = await self.model.query.where(self.model.name == name).gino.first()
-        if item and item.id != id:
-            return JSONResponse({
-                'success': False,
-                'message': {'name': 'Такой тэг уже существет'}
-            }, status_code=400)
-
-        response = await super().put(request)
-        return response
+        return await check_unique_name_update(
+            self, request, super().put, 'Такой тэг уже существет')

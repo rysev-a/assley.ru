@@ -1,3 +1,4 @@
+import { map, flatten } from 'ramda';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BookService } from 'src/app/services/book.service';
@@ -45,6 +46,24 @@ export class BookDetailComponent implements OnInit {
     }
 
     return 0;
+  }
+
+  get episodes() {
+    if (this.loaded) {
+      return flatten(
+        this.book.seasons.map((season) => {
+          return map((episode: any) => {
+            return {
+              name: episode.name,
+              season: season.name,
+              link: `/books/${this.book.id}/read/${episode.id}`,
+            };
+          })(season.episodes);
+        })
+      );
+    }
+
+    return [];
   }
 
   ngOnInit(): void {

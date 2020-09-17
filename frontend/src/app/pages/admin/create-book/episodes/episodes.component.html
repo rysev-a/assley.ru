@@ -28,7 +28,19 @@
             <input class="input" formControlName="episodeName" />
           </td>
           <td>
-            <input class="input" formControlName="translator" />
+            <div class="field">
+              <div class="control">
+                <ng-select
+                  [items]="translators"
+                  [searchable]="true"
+                  bindLabel="name"
+                  placeholder="Выберите переводчиков"
+                  (change)="onSelectTranslator($event, episodeIndex)"
+                  (search)="onSearchTranslator($event)"
+                >
+                </ng-select>
+              </div>
+            </div>
           </td>
           <td>
             <div class="field is-grouped">
@@ -45,9 +57,7 @@
                       <span class="file-icon">
                         <fa-icon [icon]="faUpload"></fa-icon>
                       </span>
-                      <span class="file-label">
-                        Загрузить файл
-                      </span>
+                      <span class="file-label"> Загрузить файл </span>
                     </span>
                   </label>
                 </div>

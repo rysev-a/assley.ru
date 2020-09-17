@@ -94,6 +94,36 @@
           </div>
         </div>
       </div>
+      <!-- SEASONS -->
+      <div class="book-seasons">
+        <table class="table is-fullwidth">
+          <thead>
+            <tr>
+              <th>Том</th>
+              <th>Глава</th>
+              <th>---</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let episode of episodes">
+              <td>
+                {{ episode.season }}
+              </td>
+              <td>{{ episode.name }}</td>
+
+              <td>
+                <a
+                  class="button is-info is-small"
+                  routerLink="{{ episode.link }}"
+                  [queryParams]="{ page: 1 }"
+                >
+                  Читать
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </ng-template>
 </section>

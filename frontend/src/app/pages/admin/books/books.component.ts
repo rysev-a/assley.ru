@@ -1,10 +1,5 @@
 import { faPen, faTimes, faPenNib } from '@fortawesome/free-solid-svg-icons';
-import {
-  ApiService,
-  QueryParams,
-  ApiServiceResponse,
-} from 'src/app/core/api.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { QueryParams, ApiServiceResponse } from 'src/app/core/api.service';
 import { MessageService } from 'src/app/services/message.service';
 import { Component } from '@angular/core';
 import { BookService } from 'src/app/services/book.service';

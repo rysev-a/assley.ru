@@ -39,7 +39,7 @@ class SectionSchema(Schema):
 class EpisodeSchema(Schema):
     id = fields.Int()
     name = fields.Str()
-    translator = fields.Str()
+    translator_id = fields.Int()
     season_id = fields.Int()
     pages = fields.Str()
 

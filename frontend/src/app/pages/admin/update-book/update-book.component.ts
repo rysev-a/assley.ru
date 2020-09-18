@@ -1,6 +1,6 @@
-import { reduce, map, prop } from 'ramda';
+import { reduce, map, flatten, prop, reverse, range, path } from 'ramda';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormArray } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
@@ -16,10 +16,26 @@ import { TranslatorService } from 'src/app/services/translator.service';
 import { PublisherService } from 'src/app/services/publisher.service';
 import { PainterService } from 'src/app/services/painter.service';
 
+interface ResponseEpisode {
+  id: string;
+  name: string;
+  translator;
+}
+
+interface Season {
+  episodes: [];
+  name: string;
+}
+
+interface Episode {
+  file: any;
+  episodeName: string;
+  episodeNumber: string;
+}
+
 @Component({
   selector: 'app-update-book',
   templateUrl: './update-book.component.html',
-  styleUrls: ['./update-book.component.sass'],
 })
 export class UpdateBookComponent implements OnInit {
   book = {
@@ -38,6 +54,7 @@ export class UpdateBookComponent implements OnInit {
     publishers: [],
     painters: [],
     release_formates: [],
+    seasons: [],
   };
 
   bookForm = this.formBuilder.group({
@@ -59,6 +76,9 @@ export class UpdateBookComponent implements OnInit {
 
     age_limit: [],
     translation_status: [],
+
+    // episodes
+    episodes: this.formBuilder.array([]),
   });
 
   loaded = false;
@@ -94,7 +114,8 @@ export class UpdateBookComponent implements OnInit {
     private authorService: AuthorService,
     private translatorService: TranslatorService,
     private publisherService: PublisherService,
-    private painterService: PainterService
+    private painterService: PainterService,
+    private router: Router
   ) {}
 
   get enumValues() {
@@ -180,18 +201,20 @@ export class UpdateBookComponent implements OnInit {
         return format.id;
       }),
 
-      // episodes: map((episode: Episode) => {
-      //   return {
-      //     ...episode,
-      //     file: episode.file.name,
-      //   };
-      // }, book.episodes),
+      episodes: map((episode: Episode) => {
+        console.log(episode);
+
+        return {
+          ...episode,
+          file: path(['file', 'name'])(episode),
+        };
+      }, book.episodes),
     };
 
-    // const episodes = map(prop('file'))(book.episodes);
+    const episodes = map(prop('file'))(book.episodes);
     const cover_image = book.cover_image;
 
-    return { payload, cover_image };
+    return { payload, cover_image, episodes };
   }
 
   serializeResources() {
@@ -223,6 +246,41 @@ export class UpdateBookComponent implements OnInit {
     }
   }
 
+  deserializeEpisodes() {
+    const episodes = flatten(
+      map((season: Season) => {
+        return season.episodes.map((episode: ResponseEpisode) => {
+          const [episodeNumber, episodeName] = episode.name.split(' - ');
+
+          return this.formBuilder.group({
+            id: this.formBuilder.control(episode.id),
+            seasonNumber: this.formBuilder.control(
+              { value: season.name, disabled: true },
+              Validators.required
+            ),
+            episodeNumber: this.formBuilder.control(
+              { value: episodeNumber, disabled: true },
+              Validators.required
+            ),
+            episodeName: this.formBuilder.control(
+              { value: episodeName, disabled: true },
+              Validators.required
+            ),
+            translator: this.formBuilder.control(
+              { value: episode.translator, disabled: true },
+              Validators.required
+            ),
+            file: this.formBuilder.control(null),
+          });
+        });
+      })(this.book.seasons)
+    );
+
+    episodes.forEach((episodeForm) => {
+      this.episodes.push(episodeForm);
+    });
+  }
+
   fillForm() {
     this.bookForm.patchValue({
       title: this.book.title,
@@ -245,8 +303,7 @@ export class UpdateBookComponent implements OnInit {
       }),
     });
 
-    console.log(this.book);
-    console.log(this.bookForm.value);
+    this.deserializeEpisodes();
   }
 
   loadResource(model) {
@@ -256,35 +313,41 @@ export class UpdateBookComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    const { payload, cover_image } = this.serialize();
-    const bookForm = new FormData();
-
-    // append book cover image
-    if (cover_image) {
-      bookForm.append('cover', cover_image, cover_image.name);
-    }
-
-    // append main info
-    bookForm.append('payload', JSON.stringify(payload));
-
-    this.bookService
-      .putFormData(bookForm, `${this.book.id}`)
-      .subscribe((response) => {
-        if (response.type === HttpEventType.Response) {
-          console.log(response);
-        }
-      });
-  }
-
   // update book episodes
   get episodes() {
     return this.bookForm.get('episodes') as FormArray;
   }
 
-  addEpisode() {}
-  removeEpisode() {}
-  onUploadEpisode() {}
+  newEpisode() {
+    return this.formBuilder.group({
+      new: true,
+      seasonNumber: this.formBuilder.control([''], Validators.required),
+      episodeNumber: this.formBuilder.control([''], Validators.required),
+      episodeName: this.formBuilder.control([''], Validators.required),
+      translator_id: this.formBuilder.control([''], Validators.required),
+      file: this.formBuilder.control(null, Validators.required),
+    });
+  }
+
+  addEpisode() {
+    this.episodes.push(this.newEpisode());
+  }
+
+  removeEpisode(i) {
+    this.episodes.removeAt(i);
+  }
+
+  onUploadEpisode(event, index) {
+    const { episodes }: any = this.bookForm.controls;
+    const episodeForm = episodes.controls[index];
+
+    if (event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      episodeForm.patchValue({
+        file: file,
+      });
+    }
+  }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -306,5 +369,39 @@ export class UpdateBookComponent implements OnInit {
       'translator',
     ];
     resources.forEach((resource) => this.loadResource(resource));
+  }
+
+  get release_year_list() {
+    const now = new Date();
+    const year = now.getFullYear();
+    return reverse(range(1980, year + 1));
+  }
+
+  onSubmit() {
+    const { payload, cover_image, episodes } = this.serialize();
+    const bookForm = new FormData();
+
+    // append book cover image
+    if (cover_image) {
+      bookForm.append('cover', cover_image, cover_image.name);
+    }
+
+    // append main info
+    bookForm.append('payload', JSON.stringify(payload));
+
+    // append episode files
+    episodes.forEach((file: File) => {
+      if (file) {
+        bookForm.append(file.name, file, file.name);
+      }
+    });
+
+    this.bookService
+      .putFormData(bookForm, `${this.book.id}`)
+      .subscribe((response) => {
+        if (response.type === HttpEventType.Response) {
+          this.router.navigate([`/books/${this.book.id}`]);
+        }
+      });
   }
 }

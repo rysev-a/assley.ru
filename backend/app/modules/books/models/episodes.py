@@ -17,7 +17,7 @@ class Episode(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.Unicode())
     pages = db.Column(db.JSON)
-    translator = db.Column(db.Unicode())
+    translator_id = db.Column(db.Integer, db.ForeignKey('translators.id'))
     season_id = db.Column(db.Integer, db.ForeignKey('seasons.id'))
 
     @staticmethod
@@ -26,7 +26,7 @@ class Episode(db.Model):
         episode_number = episode.get('episodeNumber')
         episode_name = episode.get('episodeName')
         episode_file = episode.get('file')
-        translator = episode.get('translator')
+        translator_id = episode.get('translator_id')
 
         filename = episode_file.filename
         content = await episode_file.read()
@@ -41,7 +41,7 @@ class Episode(db.Model):
         await Episode.create(
             name=f'{episode_number} - {episode_name}',
             season_id=season.id,
-            translator=translator,
+            translator_id=translator_id,
             pages=upload_data,
         )
 

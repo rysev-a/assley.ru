@@ -209,14 +209,13 @@
   <div class="field">
     <label class="label">Год выпуска</label>
     <div class="control">
-      <input
-        class="input"
-        min="1900"
-        max="2100"
-        formControlName="release_year"
-        type="number"
-        placeholder="Введите год выпуска"
-      />
+      <div class="select">
+        <select formControlName="release_year">
+          <option *ngFor="let year of release_year_list" [value]="year">
+            {{ year }}
+          </option>
+        </select>
+      </div>
     </div>
   </div>
 

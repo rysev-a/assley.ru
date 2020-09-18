@@ -125,10 +125,11 @@ export class CreateBookComponent implements OnInit {
 
   newEpisode() {
     return this.formBuilder.group({
+      new: false,
       seasonNumber: this.formBuilder.control([''], Validators.required),
       episodeNumber: this.formBuilder.control([''], Validators.required),
       episodeName: this.formBuilder.control([''], Validators.required),
-      translator: this.formBuilder.control([''], Validators.required),
+      translator_id: this.formBuilder.control([''], Validators.required),
       file: this.formBuilder.control(null, Validators.required),
     });
   }

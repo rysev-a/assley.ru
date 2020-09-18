@@ -15,7 +15,8 @@ from ..schemas import (
     GenreSchema,
     TagSchema,
     SeasonSchema,
-    EpisodeSchema
+    EpisodeSchema,
+    TranslatorSchema
 )
 
 from ..models import (
@@ -198,17 +199,48 @@ class BookDetail(DetailResource):
 
         await self.udpate_resources(book, data)
         await self.update_release_formates(book, data)
+        await self.update_episodes(book, data, form)
 
         await book.update(**{
             'title': data.get('title'),
             'description': data.get('description'),
             'age_limit': data.get('age_limit'),
             'translation_status': data.get('translation_status'),
+            'release_year': int(data.get('release_year')),
         }).apply()
 
         return JSONResponse({
             'success': True
         })
+
+    async def update_episodes(self, book, data, form):
+        normalized_episodes = {}
+        for episode_data in data.get('episodes'):
+            normalized_episodes[episode_data.get('id')] = episode_data
+
+        seasons = await Season.query.where(Season.book_id == book.id).gino.all()
+        episodes = await Episode.query.where(Episode.season_id.in_(
+            [season.id for season in seasons]
+        )).gino.all()
+
+        existing_ids = [episode.id for episode in episodes]
+
+        # remove episodes
+        for episode in episodes:
+            if not normalized_episodes.get(episode.id):
+                # try to clear episode folders
+                try:
+                    await episode.clear()
+                except:
+                    pass
+                await episode.delete()
+
+        # add episodes
+        for episode_fields in data.get('episodes'):
+            if not episode_fields.get('id'):
+                file = form[episode_fields.get('file')]
+                episode = {**episode_fields, 'file': file}
+                await Episode.upload(episode=episode, book_id=book.id)
 
     async def update_release_formates(self, book, data):
         next_ids = set(data.get('release_formates'))
@@ -298,10 +330,18 @@ class BookDetail(DetailResource):
                 [season.id for season in seasons]
             )).gino.all())
 
+        episodes_with_translators = []
+        for episode in episodes:
+            translator = await Translator.get(episode.get("translator_id"))
+            episodes_with_translators.append({
+                **episode,
+                "translator":  TranslatorSchema().dump(translator)
+            })
+
         return [{
             **season,
             'episodes': [
-                episode for episode in episodes
+                episode for episode in episodes_with_translators
                 if episode.get('season_id') == season.get('id')
             ]
         } for season in SeasonSchema(many=True).dump(seasons)]

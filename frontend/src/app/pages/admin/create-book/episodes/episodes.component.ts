@@ -30,7 +30,7 @@ export class CreateBookEpisodesComponent implements OnInit {
   onSelectTranslator(event, episodeIndex) {
     const episodes: any = this.bookForm.controls.episodes;
     episodes.controls[episodeIndex].patchValue({
-      translator: event.name,
+      translator_id: event.id,
     });
   }
 

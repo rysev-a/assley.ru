@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AsideMenuComponent } from './aside-menu/aside-menu.component';
 
 @Component({
   selector: 'app-panel',

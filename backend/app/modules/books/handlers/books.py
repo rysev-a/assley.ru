@@ -127,7 +127,8 @@ class BookList(ListResource):
         cover_image = await upload_cover(form.get('cover'))
 
         book = await Book.create(
-            title=data.get('title'),
+            rus_title=data.get('rus_title'),
+            eng_title=data.get('eng_title'),
             description=data.get('description'),
             release_year=data.get('release_year'),
             age_limit=data.get('age_limit'),
@@ -202,7 +203,8 @@ class BookDetail(DetailResource):
         await self.update_episodes(book, data, form)
 
         await book.update(**{
-            'title': data.get('title'),
+            'rus_title': data.get('rus_title'),
+            'eng_title': data.get('eng_title'),
             'description': data.get('description'),
             'age_limit': data.get('age_limit'),
             'translation_status': data.get('translation_status'),

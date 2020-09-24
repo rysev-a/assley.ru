@@ -40,7 +40,8 @@ interface Episode {
 export class UpdateBookComponent implements OnInit {
   book = {
     id: 0,
-    title: '',
+    rus_title: '',
+    eng_title: '',
     description: '',
     age_limit: '',
     translation_status: '',
@@ -58,7 +59,8 @@ export class UpdateBookComponent implements OnInit {
   };
 
   bookForm = this.formBuilder.group({
-    title: ['', Validators.required],
+    rus_title: ['', Validators.required],
+    eng_title: ['', Validators.required],
     description: ['', Validators.required],
     release_year: ['', Validators.required],
 
@@ -190,7 +192,8 @@ export class UpdateBookComponent implements OnInit {
     const book = this.bookForm.value;
 
     const payload = {
-      title: book.title,
+      rus_title: book.rus_title,
+      eng_title: book.eng_title,
       description: book.description,
       age_limit: book.age_limit,
       translation_status: book.translation_status,
@@ -283,7 +286,8 @@ export class UpdateBookComponent implements OnInit {
 
   fillForm() {
     this.bookForm.patchValue({
-      title: this.book.title,
+      rus_title: this.book.rus_title,
+      eng_title: this.book.eng_title,
       description: this.book.description,
       release_year: this.book.release_year,
 

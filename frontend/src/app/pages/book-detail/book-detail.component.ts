@@ -20,7 +20,8 @@ export class BookDetailComponent implements OnInit {
   loaded = false;
   book = {
     id: 0,
-    title: '',
+    rus_title: '',
+    eng_title: '',
     description: '',
     cover_image: '',
 

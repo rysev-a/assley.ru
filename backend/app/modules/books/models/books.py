@@ -20,7 +20,8 @@ class Book(db.Model):
     __tablename__ = 'books'
 
     id = db.Column(db.Integer(), primary_key=True)
-    title = db.Column(db.Unicode())
+    rus_title = db.Column(db.Unicode())
+    eng_title = db.Column(db.Unicode())
     description = db.Column(db.Unicode())
     release_year = db.Column(db.Integer())
     cover_image = db.Column(db.Unicode())
@@ -31,7 +32,6 @@ class Book(db.Model):
         AgeLimit),  nullable=False, default=AgeLimit.unlimited)
     translation_status = db.Column(
         Enum(TranslationStatus), nullable=False,  default=TranslationStatus.processing)
-
 
     def __init__(self, **kw):
         super().__init__(**kw)

@@ -84,7 +84,8 @@ class ReleaseFormat(fields.Field):
 
 class BookSchema(Schema):
     id = fields.Int()
-    title = fields.Str()
+    rus_title = fields.Str()
+    eng_title = fields.Str()
     description = fields.Str()
     painter = fields.Str()
     cover_image = fields.Str()

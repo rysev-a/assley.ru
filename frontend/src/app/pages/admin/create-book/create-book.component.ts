@@ -64,7 +64,8 @@ export class CreateBookComponent implements OnInit {
   };
 
   bookForm = this.formBuilder.group({
-    title: ['', Validators.required],
+    rus_title: ['', Validators.required],
+    eng_title: ['', Validators.required],
     description: ['', Validators.required],
     release_year: [getCurrentYear()],
     cover_image: [null, Validators.required],
@@ -145,7 +146,8 @@ export class CreateBookComponent implements OnInit {
   serialize() {
     const book = this.bookForm.value;
     const payload = {
-      title: book.title,
+      rus_title: book.rus_title,
+      eng_title: book.eng_title,
       description: book.description,
       release_year: Number(book.release_year),
       genres: book.genres,

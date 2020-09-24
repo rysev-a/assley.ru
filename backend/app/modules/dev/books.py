@@ -45,7 +45,8 @@ async def generate_books():
             book_cover = book_sources.get('cover')
 
             new_book = await Book.create(**{
-                'title': book.get('title'),
+                'rus_title': book.get('rus_title'),
+                'eng_title': book.get('eng_title'),
                 'release_year': book.get('release_year'),
                 'description': book.get('description'),
                 'cover_image': book_cover

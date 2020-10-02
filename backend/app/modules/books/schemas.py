@@ -39,6 +39,7 @@ class SectionSchema(Schema):
 class EpisodeSchema(Schema):
     id = fields.Int()
     name = fields.Str()
+    number = fields.Str()
     translator_id = fields.Int()
     season_id = fields.Int()
     pages = fields.Str()
@@ -46,7 +47,7 @@ class EpisodeSchema(Schema):
 
 class SeasonSchema(Schema):
     id = fields.Int()
-    name = fields.Str()
+    number = fields.Str()
     book_id = fields.Int()
 
 

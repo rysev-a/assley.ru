@@ -12,5 +12,5 @@ class Season(db.Model):
     )
 
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.Unicode())
+    number = db.Column(db.Unicode())
     book_id = db.Column(db.Integer, db.ForeignKey('books.id'))

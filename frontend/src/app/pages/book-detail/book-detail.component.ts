@@ -55,8 +55,8 @@ export class BookDetailComponent implements OnInit {
         this.book.seasons.map((season) => {
           return map((episode: any) => {
             return {
-              name: episode.name,
-              season: season.name,
+              name: `Глава ${episode.number} - ${episode.name}`,
+              season: `Том ${season.number}`,
               link: `/books/${this.book.id}/read/${episode.id}`,
             };
           })(season.episodes);

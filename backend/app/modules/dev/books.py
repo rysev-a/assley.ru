@@ -59,30 +59,33 @@ async def generate_books():
             )
 
             for season in book_sources.get('seasons'):
-                season_name = season.get('name')
+                season_number = season.get('number')
                 new_season = await Season.create(
-                    name=season_name,
+                    number=season_number,
                     book_id=new_book.id,
                 )
                 for episode in season.get('episodes'):
+                    episode_name = episode.get('name')
+                    episode_number = episode.get('number')
                     episode_path = get_episode_path(
                         book_path,
-                        season_name,
-                        episode,
+                        season_number,
+                        episode_number,
                     )
 
-                    dest_path = f'{upload_path}/public/{book_path}-{episode}'
+                    dest_path = f'{upload_path}/public/{book_path}-{episode_number}'
                     shutil.copytree(
                         episode_path,
                         dest_path
                     )
 
                     new_episode = await Episode.create(
-                        name=episode,
+                        name=episode_name,
+                        number=episode_number,
                         translator_id=translator.id,
                         season_id=new_season.id,
                         pages={
-                            "uuid": f'{book_path}-{episode}',
+                            "uuid": f'{book_path}-{episode_number}',
                             "pages": os.listdir(dest_path)
                         }
                     )

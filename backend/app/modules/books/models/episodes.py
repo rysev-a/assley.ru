@@ -15,6 +15,7 @@ class Episode(db.Model):
     )
 
     id = db.Column(db.Integer(), primary_key=True)
+    number = db.Column(db.Unicode())
     name = db.Column(db.Unicode())
     pages = db.Column(db.JSON)
     translator_id = db.Column(db.Integer, db.ForeignKey('translators.id'))
@@ -22,7 +23,7 @@ class Episode(db.Model):
 
     @staticmethod
     async def upload(episode, book_id):
-        season_name = episode.get('seasonNumber')
+        season_number = episode.get('seasonNumber')
         episode_number = episode.get('episodeNumber')
         episode_name = episode.get('episodeName')
         episode_file = episode.get('file')
@@ -32,14 +33,15 @@ class Episode(db.Model):
         content = await episode_file.read()
 
         season = await Season.query.where(
-            and_(Season.book_id == book_id, Season.name == season_name)).gino.first()
+            and_(Season.book_id == book_id, Season.number == season_number)).gino.first()
 
         if not season:
-            season = await Season.create(name=season_name, book_id=book_id)
+            season = await Season.create(number=season_number, book_id=book_id)
 
         upload_data = unzip_episode(content)
         await Episode.create(
-            name=f'{episode_number} - {episode_name}',
+            name=episode_name,
+            number=episode_number,
             season_id=season.id,
             translator_id=translator_id,
             pages=upload_data,

@@ -11,6 +11,7 @@
 
 /fixtures/book_sources
 /fixtures/books.yaml
+/fixtures/scraper/node_modules
 
 **/.DS_Store
 

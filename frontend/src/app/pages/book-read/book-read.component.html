@@ -12,7 +12,7 @@
               (change)="onSelectEpisode($event)"
             >
               <option *ngFor="let episode of episodes" [ngValue]="episode">
-                {{ episode.name }}
+                {{ episode.number }} - {{ episode.name }}
               </option>
             </select>
           </div>

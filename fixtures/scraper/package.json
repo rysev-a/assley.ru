@@ -1,0 +1,17 @@
+{
+  "name": "mangalib-scraper",
+  "version": "0.0.1",
+  "description": "get info from mangalib site",
+  "main": "index.js",
+  "dependencies": {
+    "puppeteer": "^5.3.1",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "./node_modules/.bin/node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexei Rysev",
+  "license": "ISC"
+}

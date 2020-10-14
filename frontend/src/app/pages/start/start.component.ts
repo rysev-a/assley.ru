@@ -14,8 +14,15 @@ export class StartComponent implements OnInit {
   publicUrl = environment.publicUrl;
 
   ngOnInit(): void {
-    this.bookService.list().subscribe((response: any) => {
-      this.books = response.items;
-    });
+    this.bookService
+      .list({
+        pagination: {
+          page: 1,
+          limit: 50,
+        },
+      })
+      .subscribe((response: any) => {
+        this.books = response.items;
+      });
   }
 }

@@ -12,11 +12,15 @@ class Episode {
     const selectElement = await this.page.$('#reader-pages');
     const optionElements = await this.page.$$('#reader-pages > option');
 
-    await selectElement.click();
+    try {
+      await selectElement.click();
 
-    for (const option in optionElements) {
-      const value = Number(option) + 1;
-      await this.page.select('#reader-pages', String(value));
+      for (const option in optionElements) {
+        const value = Number(option) + 1;
+        await this.page.select('#reader-pages', String(value));
+      }
+    } catch {
+      return false;
     }
   }
 
@@ -80,7 +84,14 @@ class Episode {
 
   async download() {
     await this.page.goto(this.info.url);
-    await this.selectAllPages();
+
+    try {
+      await this.selectAllPages();
+    } catch {
+      console.log("can 't select pages");
+      return false;
+    }
+
     await this.downloadEpisodePages();
   }
 }

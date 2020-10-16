@@ -3,7 +3,6 @@ const yaml = require('yamljs');
 const fs = require('fs');
 const Book = require('./Book');
 const config = require('./config');
-const start = 20;
 
 class Parser {
   START_URL = 'https://mangalib.me/manga-list?types[]=1';
@@ -14,29 +13,32 @@ class Parser {
       elements.map((item) => item.href)
     );
 
-    return bookLinks.slice(start, start + 10);
+    this.bookLinks = bookLinks.slice(
+      config.start_books,
+      config.start_books + config.max_books
+    );
   }
 
   async loadBooks() {
-    const books = [];
     for (const [index, link] of this.bookLinks.entries()) {
-      const book = new Book(this.page, link, index + start);
+      const book = new Book(this.page, link, index + config.start_books);
       const bookData = await book.load();
+
       if (bookData.sources.seasons.length) {
-        books.push(bookData);
+        await this.writeBookToYaml(bookData, book.index);
+        console.log(`success load book ${book.index}`);
       }
     }
-
-    return books;
   }
 
-  async writeBooksToYaml() {
-    const yamlString = yaml.stringify(this.books, 8);
-    const bookFixturesPath = `../books.yaml`;
+  async writeBookToYaml(data, index) {
+    const yamlString = yaml.stringify(data);
+    const bookFixturePath = `../book_sources/book_${index}/info.yaml`;
 
     await new Promise((resolve, reject) => {
-      fs.writeFile(bookFixturesPath, yamlString, function (err) {
+      fs.writeFile(bookFixturePath, yamlString, function (err) {
         if (err) {
+          console.log(err);
           reject();
         }
         resolve();
@@ -49,10 +51,9 @@ class Parser {
     this.page = await browser.newPage();
     await this.page.goto(this.START_URL);
 
-    this.bookLinks = await this.getBookLinks();
-    this.books = await this.loadBooks();
+    await this.getBookLinks();
+    await this.loadBooks();
 
-    await this.writeBooksToYaml();
     await browser.close();
   }
 }

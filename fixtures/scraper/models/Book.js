@@ -149,33 +149,41 @@ class Book {
   async getBookEpisodesData() {
     const seasonListElement = await this.page.$('.chapters-list');
 
-    const seasonsLinks = await this.page.evaluate(
-      (element, max_episodes) => {
-        const info = [];
-        const count = element.children.length;
+    if (seasonListElement) {
+      const seasonsLinks = await this.page.evaluate(
+        (element, max_episodes) => {
+          const info = [];
+          const count = element.children.length;
 
-        for (let i = 1; i < count && i < max_episodes + 1; i++) {
-          const url = element.children[i].querySelector('.link-default');
-          const seasonNumber = element.children[i].getAttribute('data-volume');
-          const episodeNumber = element.children[i].getAttribute('data-number');
+          for (let i = 1; i < count && i < max_episodes + 1; i++) {
+            const url = element.children[i].querySelector('.link-default');
+            const seasonNumber = element.children[i].getAttribute(
+              'data-volume'
+            );
+            const episodeNumber = element.children[i].getAttribute(
+              'data-number'
+            );
 
-          if (url) {
-            info.push({
-              url: url && url.href,
-              episodeName: url && url.title,
-              seasonNumber,
-              episodeNumber,
-            });
+            if (url) {
+              info.push({
+                url: url && url.href,
+                episodeName: url && url.title,
+                seasonNumber,
+                episodeNumber,
+              });
+            }
           }
-        }
 
-        return info;
-      },
-      seasonListElement,
-      config.max_episodes
-    );
+          return info;
+        },
+        seasonListElement,
+        config.max_episodes
+      );
 
-    return seasonsLinks;
+      return seasonsLinks;
+    }
+
+    return [];
   }
 
   async getBookSeasons() {

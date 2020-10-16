@@ -4,7 +4,7 @@
   </div>
   <div class="container">
     <div class="columns is-multiline">
-      <div class="column is-3" *ngFor="let book of books">
+      <div class="column is-12-mobile is-6-tablet is-3-desktop" *ngFor="let book of books">
         <div class="card">
           <a class="card-image" routerLink="/books/{{ book.id }}">
             <figure class="image is-4by3 book-cover">
@@ -18,13 +18,12 @@
           <div class="card-content">
             <div class="media">
               <div class="media-content">
-                <p class="title is-4">{{ book.rus_title }}</p>
-                <p class="subtitle is-6">Автор</p>
+                <p class="title is-4">{{ limitText(book.rus_title, 30) }}</p>
               </div>
             </div>
 
             <div class="content">
-              {{ book.description }}
+              {{ limitText(book.description, 70) }}
             </div>
           </div>
         </div>

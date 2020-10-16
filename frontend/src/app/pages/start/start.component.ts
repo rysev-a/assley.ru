@@ -13,6 +13,26 @@ export class StartComponent implements OnInit {
   books = [];
   publicUrl = environment.publicUrl;
 
+  limitText = (text, max) => {
+    let length = 0;
+    let result = '';
+    const chunks = text.split(' ');
+    chunks.reverse();
+    
+    while (length < max && chunks.length > 0) {
+      const word = chunks.pop();
+
+      result = `${result} ${word}`;
+      length = length + word.length;
+    }
+
+    if (chunks.length) {
+      result = `${result}...`;
+    }
+
+    return result;
+  }
+
   ngOnInit(): void {
     this.bookService
       .list({

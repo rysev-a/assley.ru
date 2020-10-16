@@ -10,7 +10,7 @@ config = Config(".env")
 app = Starlette(
     routes=routes,
     debug=config('DEBUG', cast=bool, default=False),
-    middleware=[auth]
+    middleware=[auth],
 )
 
 

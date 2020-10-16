@@ -2,6 +2,7 @@ from starlette.routing import Route
 from .handlers import (
     BookList,
     BookDetail,
+    BookSearch,
     GenreList,
     GenreDetail,
     TagList,
@@ -24,7 +25,8 @@ from .handlers import (
 
 books_routes = [
     Route('/', BookList),
-    Route('/{id:int}', BookDetail)
+    Route('/{id:int}', BookDetail),
+    Route('/search', BookSearch),
 ]
 
 genres_routes = [

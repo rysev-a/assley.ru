@@ -29,6 +29,7 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { BooksComponent } from './pages/books/books.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { StartComponent } from './pages/start/start.component';
+import { BookFiltersComponent } from './pages/start/book-filters/book-filters.component';
 
 import { BookDetailComponent } from './pages/book-detail/book-detail.component';
 import { BookReadComponent } from './pages/book-read/book-read.component';
@@ -73,6 +74,7 @@ import { UsersComponent } from './pages/admin/users/users.component';
 
     // regular pages
     StartComponent,
+    BookFiltersComponent,
     BooksComponent,
     ProfileComponent,
     DevComponent,

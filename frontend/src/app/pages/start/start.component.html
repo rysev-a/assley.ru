@@ -2,9 +2,19 @@
   <div class="container">
     <h1 class="is-title is-size-2">Книги</h1>
   </div>
+
   <div class="container">
+    <app-processing [processing]="processing"></app-processing>
+    <book-filters
+      [load]="this.load.bind(this)"
+      [setFilters]="this.setFilters.bind(this)"
+    ></book-filters>
+
     <div class="columns is-multiline">
-      <div class="column is-12-mobile is-6-tablet is-3-desktop" *ngFor="let book of books">
+      <div
+        class="column is-12-mobile is-6-tablet is-4-desktop is-3-fullhd"
+        *ngFor="let book of items"
+      >
         <div class="card">
           <a class="card-image" routerLink="/books/{{ book.id }}">
             <figure class="image is-4by3 book-cover">
@@ -29,5 +39,11 @@
         </div>
       </div>
     </div>
+
+    <app-pagination
+      [page]="page"
+      [pages]="pages"
+      [setPage]="setPage.bind(this)"
+    ></app-pagination>
   </div>
 </div>

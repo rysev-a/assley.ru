@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { BookService } from 'src/app/services/book.service';
+import { BookSearchService } from 'src/app/services/search.service';
+import { QueryParams, ApiServiceResponse } from 'src/app/core/api.service';
+import { faThList } from '@fortawesome/free-solid-svg-icons';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -8,9 +10,15 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./start.component.sass'],
 })
 export class StartComponent implements OnInit {
-  constructor(private bookService: BookService) {}
+  constructor(private bookSearchService: BookSearchService) {}
 
-  books = [];
+  processing: boolean = false;
+  loaded: boolean = false;
+  page = 1;
+  pages = 0;
+  limit = 10;
+  items = [];
+  filters = [];
   publicUrl = environment.publicUrl;
 
   limitText = (text, max) => {
@@ -18,7 +26,7 @@ export class StartComponent implements OnInit {
     let result = '';
     const chunks = text.split(' ');
     chunks.reverse();
-    
+
     while (length < max && chunks.length > 0) {
       const word = chunks.pop();
 
@@ -31,18 +39,50 @@ export class StartComponent implements OnInit {
     }
 
     return result;
+  };
+
+  setPage(page) {
+    this.page = page;
+    this.load();
+  }
+
+  load() {
+    this.processing = true;
+    console.log(this.filters);
+    const queryParams: QueryParams = {
+      pagination: {
+        page: this.page,
+        limit: this.limit,
+      },
+      filters: this.filters,
+    };
+
+    this.bookSearchService
+      .list(queryParams)
+      .subscribe((response: ApiServiceResponse) => {
+        this.items = response.items;
+        this.pages = response.pages;
+
+        console.log(response.pages);
+        console.log(this.pages);
+
+        this.loaded = true;
+        this.processing = false;
+      });
+  }
+
+  setFilters(filters) {
+    this.filters = filters;
   }
 
   ngOnInit(): void {
-    this.bookService
-      .list({
-        pagination: {
-          page: 1,
-          limit: 50,
-        },
-      })
-      .subscribe((response: any) => {
-        this.books = response.items;
-      });
+    const config = {
+      pagination: {
+        page: 1,
+        limit: 6,
+      },
+    };
+
+    this.load();
   }
 }

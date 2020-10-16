@@ -68,8 +68,8 @@ class ListResource(HTTPEndpoint):
     async def get(self, request):
         self.request = request
         self.query = self.model.query.order_by(asc(self.model.id))
-        await self.apply_paginate()
         await self.apply_filters()
+        await self.apply_paginate()
 
         items = await self.query.gino.all()
 

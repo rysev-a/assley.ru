@@ -82,6 +82,15 @@
           </div>
 
           <div class="info-item">
+            <div class="info-item__title has-text-weight-semibol">Тэги</div>
+            <div class="info-item__content tags is-medium">
+              <span class="tag is-primary" *ngFor="let tag of book.tags">{{
+                tag.name
+              }}</span>
+            </div>
+          </div>
+
+          <div class="info-item">
             <div class="info-item__title has-text-weight-semibol">
               Категории
             </div>

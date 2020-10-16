@@ -1,4 +1,5 @@
 from .books import BookDetail, BookList
+from .search import BookSearch
 from .genres import GenreDetail, GenreList
 from .sections import SectionDetail, SectionList
 from .tags import TagDetail, TagList

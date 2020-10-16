@@ -1,0 +1,69 @@
+<div
+  class="dropdown"
+  [ngClass]="{
+    'is-active': isActive
+  }"
+>
+  <div class="dropdown-trigger">
+    <button
+      class="button"
+      aria-haspopup="true"
+      aria-controls="dropdown-menu"
+      (click)="toggleVisibility()"
+    >
+      <span>Поиск</span>
+      <span class="icon is-small">
+        <fa-icon [icon]="faSearch"></fa-icon>
+      </span>
+    </button>
+  </div>
+  <div class="dropdown-menu" id="dropdown-menu" role="menu">
+    <div class="dropdown-content">
+      <div class="book-filters">
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Жанры</label>
+              <div class="control">
+                <ng-select
+                  [items]="resources.genre"
+                  [multiple]="true"
+                  [closeOnSelect]="false"
+                  [searchable]="true"
+                  bindLabel="name"
+                  placeholder="Выберите жанры"
+                  (change)="onSelectGenre($event)"
+                  (search)="onSearchGenre($event)"
+                >
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="column">
+            <div class="field">
+              <label class="label">Теги</label>
+              <div class="control">
+                <ng-select
+                  [items]="resources.tag"
+                  [multiple]="true"
+                  [closeOnSelect]="false"
+                  [searchable]="true"
+                  bindLabel="name"
+                  placeholder="Выберите теги"
+                  (change)="onSelectTag($event)"
+                  (search)="onSearchTag($event)"
+                >
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <a class="button is-link" (click)="search()">Найти</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

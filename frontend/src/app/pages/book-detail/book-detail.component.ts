@@ -29,6 +29,7 @@ export class BookDetailComponent implements OnInit {
 
     genres: [],
     sections: [],
+    tags: [],
 
     release_year: '',
 

@@ -78,8 +78,6 @@ class BookSearch(BookList):
                 else:
                     self.where = where
 
-                self.query = self.query.where(self.where)
-
             if book_filter.get('key') == 'genres' and len(book_filter.get('value')):
                 filter_genres = book_filter.get('value')
 
@@ -94,4 +92,4 @@ class BookSearch(BookList):
                 else:
                     self.where = where
 
-                self.query = self.query.where(self.where)
+        self.query = self.query.where(self.where)

@@ -26,7 +26,7 @@ from .handlers import (
 books_routes = [
     Route('/', BookList),
     Route('/{id:int}', BookDetail),
-    Route('/search', BookSearch),
+    Route('/search/', BookSearch),
 ]
 
 genres_routes = [

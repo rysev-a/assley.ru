@@ -73,16 +73,10 @@ export class StartComponent implements OnInit {
 
   setFilters(filters) {
     this.filters = filters;
+    this.page = 1;
   }
 
   ngOnInit(): void {
-    const config = {
-      pagination: {
-        page: 1,
-        limit: 6,
-      },
-    };
-
     this.load();
   }
 }

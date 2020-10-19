@@ -12,7 +12,6 @@ from ..models import (
 
 
 class BookSearch(BookList):
-
     async def get(self, request):
         self.where = False
         self.request = request
@@ -42,6 +41,7 @@ class BookSearch(BookList):
                            .where(self.where)
                            .gino
                            .scalar())
+            self.query = self.query.where(self.where)
         else:
             count = await self.db.func.count(self.model.id).gino.scalar()
 
@@ -91,5 +91,3 @@ class BookSearch(BookList):
                     self.where = or_(self.where, where)
                 else:
                     self.where = where
-
-        self.query = self.query.where(self.where)
